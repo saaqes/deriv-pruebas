@@ -1,6 +1,6 @@
 // @ts-nocheck — vendored bot code with known upstream type gaps; see AGENTS.md
 import { memo } from 'react';
-import { ChartMode, DrawTools, ToolbarWidget } from '@deriv-com/smartcharts-champion';
+import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from '@deriv-com/smartcharts-champion';
 import { useDevice } from '@deriv-com/ui';
 
 type TToolbarWidgetsProps = {
@@ -22,8 +22,30 @@ type TToolbarWidgetsProps = {
 // componente DrawTools (es de la librería @deriv-com/smartcharts-champion),
 // así que se tapa con este.
 const ToolbarWidgets = ({ updateChartType, updateGranularity, position }: TToolbarWidgetsProps) => {
-    const { isMobile } = useDevice();
+    const { isMobile, isDesktop } = useDevice();
     const validPosition = position === 'top' || position === 'bottom' ? position : 'top';
+
+    // COMPUTADOR: barra lateral original del Deriv Bot, en columna a la
+    // izquierda de la gráfica — Chart types, Indicators, Templates,
+    // Drawing tools y Download (íconos originales de la librería). Estilos
+    // en chart.scss (bloque "SOLO COMPUTADOR"). Celular/tablet no cambia:
+    // sigue usando el bloque de abajo, tal cual estaba.
+    if (isDesktop) {
+        return (
+            <ToolbarWidget position={validPosition}>
+                <ChartMode portalNodeId='modal_root' onChartType={updateChartType} onGranularity={updateGranularity} />
+                <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
+                <Views
+                    portalNodeId='modal_root'
+                    onChartType={updateChartType}
+                    onGranularity={updateGranularity}
+                    searchInputClassName='data-hj-whitelist'
+                />
+                <DrawTools portalNodeId='modal_root' />
+                <Share portalNodeId='modal_root' />
+            </ToolbarWidget>
+        );
+    }
 
     return (
         <ToolbarWidget position={validPosition || (isMobile ? 'bottom' : null)}>
