@@ -78,3 +78,35 @@
         }
     }
 }
+
+// Escritorio, Summary vacío: el contenedor de la pestaña toma todo el alto
+// entre las pestañas (Summary/Transactions/Journal) y las estadísticas, y el
+// texto queda centrado vertical y horizontalmente, como en el Deriv Bot.
+// Doble clase: la regla base .run-panel-tab__content (height:auto,
+// max-height) se compila después en el mismo CSS y de lo contrario ganaría.
+.run-panel-tab__content.run-panel-tab__content--summary-empty {
+    @include desktop-screen {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 42rem);
+        height: calc(100dvh - 42rem);
+        max-height: none;
+
+        > .summary {
+            flex: 1 1 auto;
+            height: auto;
+            min-height: 0;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .db-summary-card {
+            align-items: center;
+            justify-content: center;
+        }
+
+        .db-summary-card__placeholder {
+            max-width: 26rem;
+        }
+    }
+}

@@ -274,7 +274,8 @@ const AppHeader = observer(() => {
             >
                 <Wrapper variant='left'>
                     <MobileMenu onLogout={handleLogout} />
-                    <AppLogo />
+                    {/* En escritorio el logo vive en la barra lateral izquierda */}
+                    {!isDesktop && <AppLogo />}
                     {isDesktop ? <MenuItems /> : renderAccountSection('left')}
                 </Wrapper>
                 <Wrapper variant='right'>

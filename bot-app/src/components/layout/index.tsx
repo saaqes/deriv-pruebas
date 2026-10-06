@@ -10,6 +10,7 @@ import { crypto_currencies_display_order, fiat_currencies_display_order } from '
 import Footer from './footer';
 import AppHeader from './header';
 import Body from './main-body';
+import AppSidebar from './sidebar';
 import './layout.scss';
 
 const Layout = observer(() => {
@@ -146,9 +147,11 @@ const Layout = observer(() => {
         <div
             className={clsx('layout', {
                 responsive: isDesktop,
+                'layout--with-sidebar': isDesktop && !isCallbackPage,
                 'quick-strategy-active': is_quick_strategy_active && !isDesktop,
             })}
         >
+            {!isCallbackPage && isDesktop && <AppSidebar />}
             {!isCallbackPage && <AppHeader isAuthenticating={isAuthenticating || !isInitialAuthCheckComplete} />}
             <Body>
                 <Outlet />

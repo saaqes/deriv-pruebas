@@ -22,6 +22,25 @@
         height: 5.6rem;
     }
 
+    // Escritorio: barra lateral izquierda fija (ver sidebar/sidebar.scss).
+    // Todo el contenido (header, pestañas, gráfico, footer) se corre a la
+    // derecha exactamente el ancho de la barra, sin superponerse.
+    &--with-sidebar {
+        --app-sidebar-width: 6.8rem;
+
+        padding-inline-start: var(--app-sidebar-width);
+        box-sizing: border-box;
+
+        .app-footer {
+            left: var(--app-sidebar-width);
+        }
+
+        // El área de Blockly calculaba su ancho con 100vw completo.
+        #scratch_div {
+            width: calc(100vw - 3.2rem - var(--app-sidebar-width));
+        }
+    }
+
     &.quick-strategy-active {
         .deriv-header {
             @include mobile-or-tablet-screen {
