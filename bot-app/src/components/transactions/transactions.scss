@@ -289,3 +289,32 @@
         }
     }
 }
+
+// SOLO ESCRITORIO: el contenedor de la pestaña Transactions tenía alto
+// "auto", así que .transactions__content (calc(100% - 11rem)) y la lista
+// virtual (AutoSizer de DataList) medían 0px de alto y no se dibujaba
+// ninguna transacción aunque el bot estuviera comprando contratos.
+// Se le da el mismo alto disponible que usa Summary (entre las pestañas y
+// las estadísticas) y la lista ocupa todo el espacio restante.
+// Doble clase para ganarle a la regla base .run-panel-tab__content
+// (height:auto, max-height), que se compila después en el CSS.
+.transactions.run-panel-tab__content {
+    @include desktop-screen {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 42rem);
+        height: calc(100dvh - 42rem);
+        max-height: none;
+        overflow: hidden;
+
+        .transactions__header {
+            flex: none;
+        }
+
+        .transactions__content {
+            flex: 1 1 auto;
+            height: auto;
+            min-height: 0;
+        }
+    }
+}
