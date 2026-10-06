@@ -16,6 +16,14 @@ const sleep = (observer, arg = 1) => {
     );
 };
 
+const isDesktopScreen = () => {
+    try {
+        return window.matchMedia('(min-width: 1280px)').matches;
+    } catch (e) {
+        return false;
+    }
+};
+
 const Interface = $scope => {
     const tradeEngine = new TradeEngine($scope);
     const { observer } = $scope;
@@ -29,7 +37,11 @@ const Interface = $scope => {
             // Modal personalizado con el nombre real de la app
             // ("Deriv Bot dice:") — no un dominio inventado. Ver
             // utils/bot-dialogs.ts.
-            alert: (...args) => showBotAlert(...args),
+            // Computador (≥1280px, mismo corte que useDevice().isDesktop):
+            // mensaje nativo predeterminado del navegador, como el Deriv Bot
+            // original. Celular/tablet: se mantiene el modal personalizado.
+            alert: (...args) =>
+                isDesktopScreen() ? Promise.resolve(window.alert(...args)) : showBotAlert(...args),
             prompt: (...args) => showBotPrompt(...args),
             console: {
                 log(...args) {
