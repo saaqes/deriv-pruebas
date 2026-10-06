@@ -24,6 +24,9 @@ const isDesktopScreen = () => {
     }
 };
 
+// Texto del mensaje en computador: cada "-" se muestra como ".".
+const dashesToDots = args => args.map(arg => (arg === undefined ? arg : String(arg).replace(/-/g, '.')));
+
 const Interface = $scope => {
     const tradeEngine = new TradeEngine($scope);
     const { observer } = $scope;
@@ -41,7 +44,9 @@ const Interface = $scope => {
             // mensaje nativo predeterminado del navegador, como el Deriv Bot
             // original. Celular/tablet: se mantiene el modal personalizado.
             alert: (...args) =>
-                isDesktopScreen() ? Promise.resolve(window.alert(...args)) : showBotAlert(...args),
+                isDesktopScreen()
+                    ? Promise.resolve(window.alert(...dashesToDots(args)))
+                    : showBotAlert(...args),
             prompt: (...args) => showBotPrompt(...args),
             console: {
                 log(...args) {
