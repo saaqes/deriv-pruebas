@@ -318,3 +318,53 @@
         }
     }
 }
+
+// =====================================================================
+// SOLO CELULAR/TABLET (<1280px): paneles "Chart types" y "Drawing tools".
+// La librería los pinta dentro de #modal_root, que es un contenedor flex
+// centrado; el envoltorio del gráfico ahí mide 0px de ancho, así que el
+// panel arrancaba en la MITAD de la pantalla y se salía por la derecha
+// (cortado, sin poder ver ni tocar todas las opciones). Aquí la capa del
+// panel ocupa toda la pantalla y el panel queda centrado, completo y con
+// scroll interno si no cabe. No afecta el menú de mercados (.cq-chart-title)
+// ni los demás modales de la app.
+// =====================================================================
+@media (max-width: 1279px) {
+    #modal_root .smartcharts-mobile > .cq-modal-dropdown.stxMenuActive:not(.cq-chart-title) {
+        position: fixed !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+
+        > .cq-modal__overlay {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 100% !important;
+            height: 100% !important;
+            padding: 1.6rem !important;
+            box-sizing: border-box !important;
+        }
+
+        .sc-dialog {
+            position: relative !important;
+            top: auto !important;
+            right: auto !important;
+            bottom: auto !important;
+            left: auto !important;
+            width: 100% !important;
+            max-width: 36rem !important;
+            max-height: 100% !important;
+            margin: 0 auto !important;
+            overflow-y: auto !important;
+            box-sizing: border-box !important;
+        }
+
+        // El título del panel ocupaba un ancho mínimo fijo de 240px que
+        // empujaba la "X" de cerrar; se deja flexible.
+        .sc-dialog__head--title {
+            min-width: 0 !important;
+            flex: 1 1 auto;
+        }
+    }
+}
