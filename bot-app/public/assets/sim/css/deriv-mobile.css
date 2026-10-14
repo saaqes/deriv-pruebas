@@ -192,7 +192,11 @@
 /* Barra inferior (4 pestañas): iconos más grandes, etiquetas en negrita y activa en rojo */
 @media (max-width:860px){
   .dd-bottom-nav{justify-content:space-around;padding:0.625rem 0 max(0.625rem,env(safe-area-inset-bottom));border-top:1px solid #ececee;}
-  .dd-bn-item{flex:1;min-width:0;gap:0.5rem;font-size:0.8125rem;font-weight:700;color:#2b2e33;}
-  .dd-bn-item .ic{width:1.5rem;height:1.5rem;color:#2b2e33;}
-  .dd-bn-item.active,.dd-bn-item.active .ic{color:#ff444f;}
+  .dd-bn-item{flex:1;min-width:0;gap:0.5625rem;font-size:0.8125rem;font-weight:600;color:#3a3d42;}
+  .dd-bn-item .ic{color:#2b2e33;}
+  .dd-bn-item.active,.dd-bn-item.active .ic{color:#ff4d5a;}
+}
+@media (max-width:860px){
+  .dd-bn-item{font-size:0.75rem;gap:0.625rem;}
+  .dd-bn-item .ic{transform:scale(1.2);}
 }

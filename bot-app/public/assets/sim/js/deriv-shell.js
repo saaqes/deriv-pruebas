@@ -40,7 +40,8 @@
   }
 
   function buildSidebar(active) {
-    var nav = NAV.map(function (n) {
+    // Exchange ya no aparece en el menú.
+    var nav = NAV.filter(function (n) { return n.id !== 'exchange'; }).map(function (n) {
       return '<a class="dd-nav-item' + (n.id === active ? ' active' : '') + '" href="' + n.href + '">' + (n.id === active ? IA[n.id] : I[n.id]) + '<span>' + n.label + '</span></a>';
     }).join('');
     return '' +
