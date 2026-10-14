@@ -3,15 +3,16 @@ import { getAppName, getLogoCandidates } from './branding';
 import { isPreviewMode } from './is-preview-mode';
 import brandConfig from '../../brand.config.json';
 
+export const DOCUMENT_TITLE = 'Automate Your Trades | Deriv Bot';
+
 /**
- * Sets the document title from the resolved app name. The BFF injects the partner app
+ * Sets the document title (fixed to DOCUMENT_TITLE) instead of from the resolved app name. The BFF injects the partner app
  * name into .env.production (NEXT_PUBLIC_DERIV_APP_NAME) at deploy time, so the deployed
  * app's tab title reflects the partner brand. In preview, the App Builder's
  * PREVIEW_BRANDING `appName` overrides this afterwards.
  */
 export function applyDocumentTitle(): void {
-    const name = getAppName();
-    if (name) document.title = name;
+    document.title = DOCUMENT_TITLE;
 }
 
 /**
