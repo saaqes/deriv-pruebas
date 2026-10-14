@@ -123,7 +123,7 @@
     d.innerHTML =
       '<div class="dd-m-left">' + (opts.avatar ? '<span class="dd-m-av">' + esc(ini) + '</span>' : '') +
         '<span class="dd-m-search" role="button" aria-label="Buscar">' + MSEARCH + '</span></div>' +
-      (opts.amy ? '<div class="dd-m-amy">' + SPARK + '<span>Ask Amy</span></div>' : '') +
+      (opts.amy ? '<div class="dd-m-amy"><svg class="dd-m-star" viewBox="0 0 26 24" width="26" height="24" aria-hidden="true"><defs><linearGradient id="ddAmyG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffa6c8"/><stop offset="1" stop-color="#8fa8ff"/></linearGradient></defs><path fill="url(#ddAmyG)" d="M8.5 4.5Q9.6 10.4 15 12 9.6 13.6 8.5 19.5 7.4 13.6 2 12 7.4 10.4 8.5 4.5Z"/><path fill="#f1c56b" d="M19.5 3.5Q20.2 6.5 23 7.2 20.2 7.9 19.5 11 18.8 7.9 16 7.2 18.8 6.5 19.5 3.5Z"/><path fill="#f1c56b" d="M19.5 14Q20.1 16.7 22.5 17.3 20.1 17.9 19.5 20.6 18.9 17.9 16.5 17.3 18.9 16.7 19.5 14Z"/></svg><span>Ask Amy</span></div>' : '') +
       '<div class="dd-m-bell" role="button" aria-label="Notificaciones">' + BELL + '<span class="badge">5</span></div>';
     d.querySelector('.dd-m-bell').addEventListener('click', function () {
       if (window.DD_openSettings) window.DD_openSettings(); else window.location.href = 'home.html#ajustes';
