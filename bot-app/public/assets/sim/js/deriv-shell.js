@@ -99,6 +99,19 @@
       .catch(function () {});
   }
 
+  function buildNotif() {
+    var d = document.createElement('div');
+    d.className = 'dd-notif'; d.id = 'ddNotif'; d.setAttribute('role', 'dialog'); d.setAttribute('aria-label', 'Notificaciones');
+    var rows = ''; for (var i = 0; i < 5; i++) rows += '<div class="dd-nt-row"><i></i><span><b></b><b></b></span></div>';
+    d.innerHTML =
+      '<div class="dd-nt-head"><div class="dd-nt-title">Notificaciones <svg viewBox="0 0 8 5" width="8" height="5"><path d="M0 0h8L4 5z" fill="currentColor"/></svg></div>' +
+        '<button class="dd-nt-more" aria-label="Más opciones"><svg viewBox="0 0 16 4" width="14" height="4" fill="currentColor"><circle cx="2" cy="2" r="1.5"/><circle cx="8" cy="2" r="1.5"/><circle cx="14" cy="2" r="1.5"/></svg></button>' +
+        '<div class="dd-nt-menu" hidden><button data-nt="read">Marcar todo como leído</button><button data-nt="settings">Ajustes del simulador</button></div></div>' +
+      '<div class="dd-nt-body"><div class="dd-nt-list">' + rows + '</div><div class="dd-nt-empty">Estás al día</div></div>' +
+      '<div class="dd-nt-foot">Inbox by <svg viewBox="0 0 12 12" width="10" height="10" fill="currentColor"><path d="M6 0l1.6 4.4L12 6 7.600 7.600 6 12 4.400 7.600 0 6l4.400-1.600z"/></svg> Novu</div>';
+    return d;
+  }
+
   function init() {
     document.body.classList.add('dd-loading');
     setTimeout(function () { document.body.classList.remove('dd-loading'); }, 750);
@@ -110,12 +123,43 @@
 
     loadUser();
 
-    // Campana: en home abre el panel de ajustes (lo maneja home.html);
-    // en las demás páginas lleva a home.html, como antes.
+    // Campana. Escritorio: menú de notificaciones desplegable bajo la campana (con acceso
+    // a los ajustes del simulador). Móvil: se mantiene el comportamiento anterior
+    // (en home abre el panel de ajustes; en las demás páginas lleva a home.html).
     var bell = document.getElementById('bellToggle');
-    if (bell && !document.getElementById('notifPanel')) {
-      bell.addEventListener('click', function () { window.location.href = 'home.html'; });
+    var desktop = function () { return window.matchMedia('(min-width: 861px)').matches; };
+    var pop = buildNotif();
+    document.body.appendChild(pop);
+    function placeNotif() {
+      var sb = document.querySelector('.dd-sidebar');
+      var r = sb ? sb.getBoundingClientRect() : { left: 16 };
+      pop.style.left = Math.max(8, r.left) + 'px';
     }
+    function closeNotif() { pop.classList.remove('open'); pop.querySelector('.dd-nt-menu').hidden = true; }
+    function toggleNotif() { placeNotif(); pop.classList.toggle('open'); }
+    if (bell) {
+      bell.addEventListener('click', function (ev) {
+        if (desktop()) { ev.stopImmediatePropagation(); ev.stopPropagation(); toggleNotif(); }
+        else if (!document.getElementById('notifPanel')) { window.location.href = 'home.html#ajustes'; }
+      }, true);
+    }
+    document.addEventListener('click', function (ev) {
+      if (!pop.classList.contains('open')) return;
+      if (pop.contains(ev.target) || (bell && bell.contains(ev.target))) return;
+      closeNotif();
+    });
+    document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') closeNotif(); });
+    window.addEventListener('resize', function () { if (pop.classList.contains('open')) placeNotif(); });
+    pop.querySelector('.dd-nt-more').addEventListener('click', function (ev) {
+      ev.stopPropagation(); var m = pop.querySelector('.dd-nt-menu'); m.hidden = !m.hidden;
+    });
+    pop.querySelector('[data-nt=settings]').addEventListener('click', function () {
+      closeNotif();
+      if (window.DD_openSettings) window.DD_openSettings(); else window.location.href = 'home.html#ajustes';
+    });
+    pop.querySelector('[data-nt=read]').addEventListener('click', function () {
+      var b = document.querySelector('.dd-bell .badge'); if (b) b.remove(); closeNotif();
+    });
 
     // Saldo del banner (cfds / exchange / options / portfolio): lee los mismos
     // saldos virtuales de sim-shared.js. Real = saldo virtual, Demo = saldo demo.

@@ -416,11 +416,15 @@
     const panel = document.getElementById('notifPanel');
     const backBtn = document.getElementById('notifBack');
 
-    bellBtn.addEventListener('click', () => {
+    function openSettingsPanel(){
       panel.classList.add('open');
       document.body.classList.add('panel-open');
       refreshBalances();
-    });
+    }
+    // En escritorio la campana abre el menú de notificaciones (deriv-shell.js); en móvil abre este panel.
+    bellBtn.addEventListener('click', openSettingsPanel);
+    window.DD_openSettings = openSettingsPanel;
+    if (location.hash === '#ajustes') { openSettingsPanel(); history.replaceState(null, '', location.pathname); }
 
     backBtn.addEventListener('click', () => {
       panel.classList.remove('open');
