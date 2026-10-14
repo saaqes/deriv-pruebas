@@ -50,6 +50,14 @@
         </div>
         <div class="dd-eye" id="eyeToggle" role="button" aria-label="Mostrar u ocultar saldo"><i id="eyeIcon" class="ic ic-eye"></i></div>
       </div>
+      <div class="dd-home-m">
+        <div class="hm-text">
+          <div class="hm-label">Valor total <i class="hm-chev">›</i></div>
+          <div class="hm-amount"><span class="balance-amount" id="totalValueBalanceM" data-value="2.98">2.98</span><span class="balance-currency">USD</span><i class="ic ic-refresh"></i></div>
+          <div class="hm-updated">Actualizado ahora</div>
+        </div>
+        <button class="hm-deposit" type="button">Deposit</button>
+      </div>
       <div class="dd-hero-skel"><div><i class="dd-skel"></i><b class="dd-skel" style="border-radius:0.3125rem"></b></div><div><i class="dd-skel"></i><b class="dd-skel" style="border-radius:0.3125rem"></b></div></div>
       <div class="dd-hero-body">
         <div class="header-text">
@@ -230,7 +238,7 @@
   <div class="notif-panel" id="notifPanel">
     <div class="notif-panel-header">
       <button class="notif-back-btn" id="notifBack" aria-label="Volver"><i class="fa-solid fa-arrow-left"></i></button>
-      <div class="notif-title">Notifications <i class="fa-solid fa-chevron-down"></i></div>
+      <div class="notif-title">Notificaciones <i class="fa-solid fa-chevron-down"></i></div>
       <button class="notif-more-btn" aria-label="Más opciones"><i class="fa-solid fa-ellipsis"></i></button>
     </div>
     <div class="notif-body">
@@ -377,6 +385,8 @@
       if(virtualEl) virtualEl.textContent = TradeLabSim.formatMoney(data.virtual);
       if(mt5El) mt5El.dataset.value = TradeLabSim.formatMoney(data.demo);
       if(totalEl) totalEl.dataset.value = TradeLabSim.formatMoney(currentAccount === 'demo' ? data.demo : data.virtual);
+      const totalElM = document.getElementById('totalValueBalanceM');
+      if(totalElM) totalElM.dataset.value = TradeLabSim.formatMoney(data.virtual);
       applyVisibility();
     }
 

@@ -94,6 +94,7 @@
           if (me.name) localStorage.setItem('tl_user_name', me.name);
           if (me.email) localStorage.setItem('tl_user_email', me.email);
         } catch (_) {}
+        document.querySelectorAll('.dd-m-av').forEach(function (e) { e.textContent = me.initials || ''; });
         document.dispatchEvent(new CustomEvent('dd:user', { detail: me }));
       })
       .catch(function () {});
@@ -112,7 +113,33 @@
     return d;
   }
 
+  // Barra superior de la versión móvil (se oculta en escritorio por CSS): iniciales + buscar,
+  // "Ask Amy" y campana dentro del banner oscuro, como en la app móvil de referencia.
+  var MSEARCH = '<svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>';
+  function mobileBar(opts) {
+    var d = document.createElement('div');
+    d.className = 'dd-m-bar';
+    var ini = ''; try { ini = localStorage.getItem('tl_user_initials') || ''; } catch (_) {}
+    d.innerHTML =
+      '<div class="dd-m-left">' + (opts.avatar ? '<span class="dd-m-av">' + esc(ini) + '</span>' : '') +
+        '<span class="dd-m-search" role="button" aria-label="Buscar">' + MSEARCH + '</span></div>' +
+      (opts.amy ? '<div class="dd-m-amy">' + SPARK + '<span>Ask Amy</span></div>' : '') +
+      '<div class="dd-m-bell" role="button" aria-label="Notificaciones">' + BELL + '<span class="badge">5</span></div>';
+    d.querySelector('.dd-m-bell').addEventListener('click', function () {
+      if (window.DD_openSettings) window.DD_openSettings(); else window.location.href = 'home.html#ajustes';
+    });
+    return d;
+  }
+
   function init() {
+    var heroes = document.querySelectorAll('.dd-hero, .pr-hero');
+    heroes.forEach(function (hero) {
+      var page = document.body.getAttribute('data-page');
+      var isPr = hero.classList.contains('pr-hero');
+      var amy = !isPr && !hero.querySelector('.dd-toggle');
+      hero.insertBefore(mobileBar({ avatar: page === 'home', amy: amy }), hero.firstChild);
+    });
+
     document.body.classList.add('dd-loading');
     setTimeout(function () { document.body.classList.remove('dd-loading'); }, 750);
     var active = document.body.getAttribute('data-page') || 'home';
