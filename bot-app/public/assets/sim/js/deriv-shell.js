@@ -62,7 +62,8 @@
   }
 
   function buildBottomNav(active) {
-    return NAV.map(function (n) {
+    // En teléfono la barra inferior no incluye Exchange.
+    return NAV.filter(function (n) { return n.id !== 'exchange'; }).map(function (n) {
       return '<a class="dd-bn-item' + (n.id === active ? ' active' : '') + '" href="' + n.href + '">' + (n.id === active ? IA[n.id] : I[n.id]) + n.label + '</a>';
     }).join('');
   }
