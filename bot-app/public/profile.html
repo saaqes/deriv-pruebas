@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Deriv Bot">
+<!-- Acelera la navegación hacia el bot-app (pestaña Chart): ver home.html. -->
+<link rel="preconnect" href="https://api.derivws.com" crossorigin>
+<link rel="dns-prefetch" href="https://api.derivws.com">
+<link rel="preconnect" href="https://auth.deriv.com">
+<link rel="dns-prefetch" href="https://auth.deriv.com">
+<link rel="prefetch" href="/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Deriv - Perfil</title>
+<link rel="stylesheet" href="assets/sim/css/browser-frame.css">
+<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css">
+</head>
+<body class="bf-static-page" data-page="profile">
+<script src="assets/sim/js/sim-shared.js"></script>
+<script src="assets/sim/js/browser-frame.js"></script>
+<script>BrowserFrame.init();</script>
+<div class="dd-shell">
+  <div id="ddSidebar"></div>
+  <main class="dd-main">
+    <section class="pr-hero">
+      <a class="pr-back" href="home.html" aria-label="Volver"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6H2.500M5.500 2.500 2 6l3.500 3.500"/></svg></a>
+      <div class="pr-avatar"><svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="5.200" r="2.800"/><path d="M2.600 14c0-2.900 2.400-4.600 5.400-4.600s5.400 1.700 5.400 4.600z"/></svg></div>
+      <div class="pr-name" id="prName">&nbsp;</div>
+      <div class="pr-id">019f....5063<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="4" y="4" width="6.500" height="6.500" rx="1"/><path d="M8 4V2.500A1 1 0 0 0 7 1.500H2.500a1 1 0 0 0-1 1V7a1 1 0 0 0 1 1H4"/></svg></div>
+    </section>
+
+    <section class="pr-group"><h3>Sobre ti</h3>
+      <div class="pr-item"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="5" r="2.500"/><path d="M3 13.500c.3-2.600 2.300-4 5-4s4.700 1.400 5 4"/></svg><div class="t">Datos personales</div><svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 2.5 3.5 3.5-3.5 3.5"/></svg></div>
+      <div class="pr-item"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7.500 8 2.500l6 5M3.500 6.500V13h9V6.500"/></svg><div class="t">Dirección de casa</div><svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 2.5 3.5 3.5-3.5 3.5"/></svg></div>
+      <div class="pr-item"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2h5l3 3v9H4zM9 2v3h3M6 8h4M6 10.500h4"/></svg><div class="t">Información adicional</div><svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 2.5 3.5 3.5-3.5 3.5"/></svg></div>
+      <div class="pr-item"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.500" y="2" width="9" height="12" rx="1.500"/><path d="M6 5.500h4M6 8h4M6 10.500h2"/></svg><div class="t">Información fiscal</div><svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 2.5 3.5 3.5-3.5 3.5"/></svg></div>
+    </section>
+
+    <section class="pr-group"><h3>Verificación</h3>
+      <div class="pr-item"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.500" y="3" width="11" height="10" rx="1.500"/><circle cx="8" cy="7" r="1.500"/><path d="M5.500 11c.4-1 1.300-1.500 2.500-1.500s2.100.5 2.500 1.500"/></svg><div class="t">Prueba de identidad<small class="ok">Verificado</small></div><svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 2.5 3.5 3.5-3.5 3.5"/></svg></div>
+      <div class="pr-item"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7.500 8 2.500l6 5M3.500 6.500V13h9V6.500"/></svg><div class="t">Comprobante de domicilio<small class="ok">Verificado</small></div><svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 2.5 3.5 3.5-3.5 3.5"/></svg></div>
+    </section>
+
+    <section class="pr-group"><h3>Evaluación</h3>
+      <div class="pr-item"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.500" cy="5.500" r="2"/><path d="M1.500 13c.2-2 1.600-3 4-3M9 10l2 2 3-3.500"/></svg><div class="t">Evaluación financiera<small class="">Incompleto</small></div><svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 2.5 3.5 3.5-3.5 3.5"/></svg></div>
+    </section>
+
+    <section class="pr-group"><h3>Seguridad</h3>
+      <div class="pr-item"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1.500" y="4.500" width="13" height="7" rx="1.500"/><path d="M4.500 8h.01M7 8h.01M9.500 8h.01"/></svg><div class="t">Cambiar contraseña</div><svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 2.5 3.5 3.5-3.5 3.5"/></svg></div>
+      <div class="pr-item disabled"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="2.500"/><path d="M10.500 8v1a1.500 1.500 0 0 0 3 0V8a5.500 5.500 0 1 0-2.200 4.400"/></svg><div class="t">Dirección de correo<small id="prMail">&nbsp;</small></div><svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 2.5 3.5 3.5-3.5 3.5"/></svg></div>
+      <div class="pr-item"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="1.500" width="6" height="13" rx="1.500"/><path d="M7.500 12.500h1"/></svg><div class="t">Cambiar número de teléfono<small class="">+573166219962</small></div><svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 2.5 3.5 3.5-3.5 3.5"/></svg></div>
+      <div class="pr-item"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="8" r="3"/><path d="M8.500 8H14M12 8v2"/></svg><div class="t">Claves de acceso</div><svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 2.5 3.5 3.5-3.5 3.5"/></svg></div>
+      <div class="pr-item"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.500" y="7" width="9" height="7" rx="1.500"/><path d="M5.500 7V5a2.500 2.500 0 0 1 5 0v2"/></svg><div class="t">Autenticación de dos factores</div><svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 2.5 3.5 3.5-3.5 3.5"/></svg></div>
+      <div class="pr-item"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.500" cy="6.500" r="3.500"/><path d="m9 9 5 5M12 8.500l2.500.5"/></svg><div class="t">Cerrar cuenta</div><svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 2.5 3.5 3.5-3.5 3.5"/></svg></div>
+    </section>
+
+    <section class="pr-group"><h3>Gestión de API</h3>
+      <div class="pr-item"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg><div class="t">Aplicaciones conectadas</div><svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 2.5 3.5 3.5-3.5 3.5"/></svg></div>
+      <div class="pr-item"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.500" cy="9" r="2.500"/><circle cx="10.500" cy="5" r="2.500"/><path d="M7.500 7.500 8.500 6.500"/></svg><div class="t">Ficha API</div><svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 2.5 3.5 3.5-3.5 3.5"/></svg></div>
+      <div class="pr-item"><svg class="ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="12" height="8" rx="1"/><path d="M1 13.500h14"/></svg><div class="t">Explorar la API Deriv</div><svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.500 8.500 8.500 3.500M4 3.500h4.500V8"/></svg></div>
+    </section>
+
+  </main>
+</div>
+<div id="ddBottomNav"></div>
+<script src="assets/sim/js/deriv-shell.js"></script>
+<script>
+  // Nombre y correo de la cuenta que inició sesión (los mismos que muestra la barra lateral).
+  (function(){
+    var n = document.getElementById('prName'), m = document.getElementById('prMail');
+    function paint(){
+      var sn = document.getElementById('ddUserName'), sm = document.getElementById('ddUserMail');
+      if(sn && sn.textContent.trim()) n.textContent = sn.textContent;
+      if(sm && sm.textContent.trim()) m.textContent = sm.textContent;
+    }
+    paint();
+    document.addEventListener('dd:user', paint);
+  })();
+</script>
+</body>
+</html>
