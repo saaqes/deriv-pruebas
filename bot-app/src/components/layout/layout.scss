@@ -35,6 +35,14 @@
             left: var(--app-sidebar-width);
         }
 
+        // Gráfico con el panel de Run/Transactions abierto: main.scss le da
+        // 100vw - 39.8rem, sin contar la barra lateral. Así se metía 6.8rem
+        // DEBAJO del panel derecho y tapaba la columna de precios (eje
+        // derecho) y la etiqueta de precio que sigue al mouse. Se resta.
+        .dashboard__chart-wrapper--expanded {
+            width: calc(100vw - 39.8rem - var(--app-sidebar-width));
+        }
+
         // El área de Blockly calculaba su ancho con 100vw completo.
         #scratch_div {
             width: calc(100vw - 3.2rem - var(--app-sidebar-width));
