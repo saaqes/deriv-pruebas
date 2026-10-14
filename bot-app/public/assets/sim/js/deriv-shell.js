@@ -72,8 +72,8 @@
     var mailEl = document.getElementById('ddUserMail');
     var av = document.getElementById('userAvatar');
     try {
-      var cn = localStorage.getItem('tl_user_name');
-      var cm = localStorage.getItem('tl_user_email');
+      var cn = localStorage.getItem('tl_user_name_custom') || localStorage.getItem('tl_user_name');
+      var cm = localStorage.getItem('tl_user_email_custom') || localStorage.getItem('tl_user_email');
       if (cn) nameEl.textContent = cn;
       if (cm) mailEl.textContent = cm;
     } catch (_) {}
@@ -84,9 +84,10 @@
       })
       .then(function (me) {
         if (!me) return;
-        if (me.name) nameEl.textContent = me.name;
-        if (me.email) mailEl.textContent = me.email;
-        else if (!mailEl.textContent.trim()) mailEl.textContent = '';
+        var custom = ''; try { custom = localStorage.getItem('tl_user_name_custom') || ''; } catch (_) {}
+        if (custom) nameEl.textContent = custom; else if (me.name) nameEl.textContent = me.name;
+        var savedMail = ''; try { savedMail = localStorage.getItem('tl_user_email_custom') || ''; } catch (_) {}
+        if (savedMail) mailEl.textContent = savedMail; else if (me.email) mailEl.textContent = me.email;
         av.title = me.name || '';
         try {
           localStorage.setItem('tl_user_initials', me.initials || '');
