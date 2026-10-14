@@ -28,6 +28,7 @@
 <meta name="description" content="Simulador educativo independiente. No es Deriv ni ninguna plataforma de trading real, y no gestiona dinero real.">
 <link rel="stylesheet" href="assets/sim/css/browser-frame.css">
 <link rel="stylesheet" href="assets/sim/css/deriv-desktop.css">
+<link rel="stylesheet" href="assets/sim/css/deriv-icons.css">
 </head>
 <body class="bf-static-page" data-page="home">
 <script src="assets/sim/js/sim-shared.js"></script>
@@ -47,20 +48,21 @@
           <button class="active" data-acct="real">Real</button>
           <button data-acct="demo">Demo</button>
         </div>
-        <div class="dd-eye" id="eyeToggle" role="button" aria-label="Mostrar u ocultar saldo"><svg id="eyeIcon" data-eye viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><path d="M1.5 12S5.5 5 12 5s10.5 7 10.5 7-4 7-10.5 7S1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3"/><path class="slash" d="M3 3l18 18" style="display:none"/></svg></div>
+        <div class="dd-eye" id="eyeToggle" role="button" aria-label="Mostrar u ocultar saldo"><i id="eyeIcon" class="ic ic-eye"></i></div>
       </div>
+      <div class="dd-hero-skel"><div><i class="dd-skel"></i><b class="dd-skel" style="border-radius:5px"></b></div><div><i class="dd-skel"></i><b class="dd-skel" style="border-radius:5px"></b></div></div>
       <div class="dd-hero-body">
         <div class="header-text">
           <div class="valor-total-label">Valor total de las operaciones</div>
           <div class="valor-total-amount">
             <span class="balance-amount" id="totalValueBalance" data-value="2.98">2.98</span><span class="balance-currency">USD</span>
-            <svg class="valor-refresh-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13.2 6.2A5.4 5.4 0 0 0 3.3 5M2.8 2.4V5h2.6M2.8 9.8a5.4 5.4 0 0 0 9.9 1.2M13.2 13.6V11h-2.6"/></svg>
+            <i class="ic ic-refresh"></i>
           </div>
           <div class="valor-total-updated">Actualizado ahora</div>
         </div>
         <div class="dd-hero-actions">
-          <div class="dd-action deposit-btn-wrap"><div class="circle primary"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg></div>Depósito</div>
-          <div class="dd-action"><div class="circle ghost"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 5.5v13.2c0 .6.5 1.1 1.1 1.1h16.7a.6.6 0 0 1 0 1.2H3.6A2.3 2.3 0 0 1 1.3 18.7V5.5a.6.6 0 0 1 1.2 0m11.6 0v1.9c.7.2 1.2.8 1.2 1.5v3.1c0 .7-.5 1.3-1.2 1.5v1.8a.6.6 0 0 1-1.2 0v-1.8c-.7-.2-1.2-.8-1.2-1.5V8.9c0-.7.5-1.3 1.2-1.5V5.5a.6.6 0 0 1 1.2 0M8.4 7c.3 0 .6.3.6.6v1.9c.7.2 1.2.8 1.2 1.5v4.2c0 .7-.5 1.3-1.2 1.5v1.8a.6.6 0 0 1-1.2 0v-1.8c-.7-.2-1.2-.8-1.2-1.5V11c0-.7.5-1.3 1.2-1.5V7.6c0-.3.3-.6.6-.6m10.9 2.5c.3 0 .6.3.6.6v1.9c.7.2 1.2.8 1.2 1.5v1.5c0 .7-.5 1.3-1.2 1.5v1.8a.6.6 0 0 1-1.2 0v-1.8c-.7-.2-1.2-.8-1.2-1.5V13.5c0-.7.5-1.3 1.2-1.5v-1.9c0-.3.3-.6.6-.6"/></svg></div>Comercio</div>
+          <div class="dd-action deposit-btn-wrap"><div class="circle primary"><i class="ic ic-h_plus"></i></div>Depósito</div>
+          <div class="dd-action"><div class="circle ghost"><i class="ic ic-h_chart"></i></div>Comercio</div>
         </div>
       </div>
     </section>
@@ -68,7 +70,7 @@
     <!-- CUENTAS COMERCIALES -->
     <section class="dd-section">
       <div class="dd-section-head">
-        <div class="section-title">Mis cuentas comerciales</div>
+        <div class="section-title big-title">Mis cuentas comerciales</div>
         <div class="carousel-arrows"><button id="acPrev" aria-label="Anterior">‹</button><button id="acNext" aria-label="Siguiente">›</button></div>
       </div>
       <div class="accounts-scroll" id="accountsScroll">
@@ -88,7 +90,7 @@
           <div class="account-balance"><span class="balance-amount" id="mt5TradingBalance" data-value="0.00">0.00</span><span class="balance-currency">USD</span></div>
         </div>
         <div class="account-card">
-          <div class="account-icon icon-dxn"><svg class="dxn" viewBox="0 0 36 36"><rect width="36" height="36" rx="9" fill="#e8173f"/><text x="18" y="22.5" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="11" fill="#fff">DXN</text></svg></div>
+          <div class="account-icon icon-dxn"><img class="dd-ico" src="assets/sim/img/v/dxn_icon.png" alt="DXN" style="width:100%;height:100%"></div>
           <div class="account-name">Deriv Exchange</div>
           <div class="account-balance"><span class="balance-amount" data-value="0.00">0.00</span><span class="balance-currency">USDT</span></div>
         </div>
@@ -102,10 +104,10 @@
         <div class="promo-slide slide-exchange">
           <div class="promo-close">✕</div>
           <div class="promo-text">
-            <h3><span class="dd-badge-dxn"><svg class="dxn" viewBox="0 0 36 36"><rect width="36" height="36" rx="9" fill="#e8173f"/><text x="18" y="22.5" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="11" fill="#fff">DXN</text></svg></span>Deriv Exchange</h3>
+            <h3><span class="dd-badge-dxn"><img class="dd-ico" src="assets/sim/img/v/dxn_icon.png" alt="" style="width:100%;height:100%"></span>Deriv Exchange</h3>
             <p>Compra, vende y opera con los pares cripto más populares en spot y futuros 24/7.</p>
           </div>
-          <div class="promo-art"><svg viewBox="0 0 150 118"><g transform="translate(40 16)"><rect x="8" y="22" width="62" height="56" rx="8" fill="#d8566e" opacity=".85"/><circle cx="40" cy="48" r="22" fill="#ff7a59"/><text x="40" y="57" text-anchor="middle" font-family="Inter,Arial" font-weight="800" font-size="26" fill="#fff">₿</text><circle cx="14" cy="70" r="9" fill="#ff5a73"/><circle cx="66" cy="30" r="7" fill="#ff8aa0"/></g></svg></div>
+          <img class="promo-art-img" src="assets/sim/img/v/promo_exchange.png" alt="">
         </div>
         <div class="promo-slide slide-tv">
           <div class="promo-close">✕</div>
@@ -113,7 +115,7 @@
             <h3>Opera con TradingView</h3>
             <p>Gráficos y herramientas avanzadas para los índices Deriv disponibles las 24 horas, todos los días.</p>
           </div>
-          <div class="promo-art"><svg viewBox="0 0 150 118"><g transform="translate(22 34)"><rect width="46" height="46" rx="12" fill="#ff444f"/><path d="m31 11-1.9 10.6h-6.5c-6 0-11.800 4.900-12.900 11l-.4 2.600c-1.100 6.100 3 11 9 11h5.400c4.400 0 8.600-3.600 9.400-8L40 10z" fill="#fff" transform="scale(.7) translate(4 2)"/><rect x="52" y="12" width="34" height="30" rx="6" fill="#2a2e39"/><text x="69" y="33" text-anchor="middle" font-family="Inter,Arial" font-weight="800" font-size="13" fill="#fff">TV</text></g></svg></div>
+          <img class="promo-art-img" src="assets/sim/img/v/promo_tv.png" alt="">
         </div>
         <div class="promo-slide slide-spacex">
           <div class="promo-close">✕</div>
@@ -121,7 +123,7 @@
             <h3>SpaceX CFDs</h3>
             <p>Opera con el gigante espacial con apalancamiento competitivo.</p>
           </div>
-          <div class="promo-art"><img src="assets/sim/img/spaceX.gif" alt="SpaceX Logo"></div>
+          <img class="promo-art-gif" src="assets/sim/img/spaceX.gif" alt="SpaceX Logo">
         </div>
         <div class="promo-slide slide-ai">
           <div class="promo-close">✕</div>
@@ -129,15 +131,7 @@
             <h3 class="ai-title">Análisis de mercado con IA</h3>
             <p>Obtén información basada en IA sobre Oro, BTC, Plata, ETH y más.</p>
           </div>
-          <div class="promo-art"><img src="assets/sim/img/trade.gif" alt="Ilustración IA"></div>
-        </div>
-        <div class="promo-slide slide-metals">
-          <div class="promo-close">✕</div>
-          <div class="promo-text">
-            <h3>Metales con spreads ajustados</h3>
-            <p>Oro, plata y cobre con apalancamiento de hasta 1:800.</p>
-          </div>
-          <div class="promo-art"><img src="assets/sim/img/metals.png" alt="Metales" style="height:100px"></div>
+          <img class="promo-art-img" src="assets/sim/img/v/promo_ai.png" alt="">
         </div>
       </div>
     </div>
@@ -146,15 +140,14 @@
       <div class="promo-dot"><span class="fill"></span></div>
       <div class="promo-dot"><span class="fill"></span></div>
       <div class="promo-dot"><span class="fill"></span></div>
-      <div class="promo-dot"><span class="fill"></span></div>
     </div>
 
     <!-- EXPLORAR -->
     <section class="dd-section">
-      <div class="section-title" style="margin-bottom:16px">Explorar Deriv</div>
+      <div class="section-title big-title" style="margin-bottom:21px">Explorar Deriv</div>
       <div class="explore-grid">
         <div class="explore-item">
-          <div class="explore-icon"><span class="nuevo">Nuevo</span><svg class="dxn" viewBox="0 0 36 36"><rect width="36" height="36" rx="9" fill="#e8173f"/><text x="18" y="22.5" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="11" fill="#fff">DXN</text></svg></div>
+          <div class="explore-icon"><span class="nuevo">Nuevo</span><img class="dxn-sm" src="assets/sim/img/v/dxn_icon.png" alt="DXN"></div>
           <div class="explore-label">Exchange</div>
         </div>
         <div class="explore-item" onclick="window.location.href='options.html'">
@@ -183,12 +176,12 @@
     <!-- LO MÁS DESTACADO -->
     <section class="dd-section">
       <div class="dd-section-head">
-        <div class="section-title">Lo más destacado</div>
+        <div class="section-title big-title">Lo más destacado</div>
         <div class="carousel-arrows"><button id="hlPrev" aria-label="Anterior">‹</button><button id="hlNext" aria-label="Siguiente">›</button></div>
       </div>
       <div class="highlights-scroll" id="highlightsScroll">
         <div class="highlight-card">
-          <div class="highlight-image" style="background:linear-gradient(135deg,#2a0d12,#0b0b0f)"><svg viewBox="0 0 240 76" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%"><g stroke-width="2"><line x1="78" y1="8" x2="78" y2="62" stroke="#e8e8ec"/><rect x="70" y="20" width="16" height="30" fill="#e8e8ec"/><line x1="110" y1="14" x2="110" y2="70" stroke="#ff444f"/><rect x="102" y="26" width="16" height="30" fill="#ff444f"/><line x1="142" y1="6" x2="142" y2="58" stroke="#e8e8ec"/><rect x="134" y="14" width="16" height="32" fill="#e8e8ec"/><line x1="168" y1="22" x2="168" y2="72" stroke="#ff444f"/><rect x="160" y="30" width="16" height="30" fill="#ff444f"/></g></svg></div>
+          <div class="highlight-image"><img src="assets/sim/img/v/hl_dxn.png" alt="DXN Futures"></div>
           <div class="highlight-body">
             <h4>DXN Futures</h4>
             <p>Opera en largo o en corto con los principales pares, con un apalancamiento de hasta 50x.</p>
@@ -302,7 +295,7 @@
     const dots = document.querySelectorAll('#promoProgress .promo-dot');
     let index = 0;
     const total = dots.length;
-    const duration = 5000;
+    const duration = 4000;
 
     function showSlide(i){
       index = i;
@@ -314,12 +307,12 @@
 
         if(idx === i){
           dot.classList.add('active');
-          // start empty, then fill from left to right over 5s
+          // start empty, then fill from left to right over 4s
           fill.style.transition = 'none';
           fill.style.animation = 'none';
           fill.style.transform = 'scaleX(0)';
           void fill.offsetWidth; // force reflow
-          fill.style.animation = 'fillBar 5s linear forwards';
+          fill.style.animation = 'fillBar 4s linear forwards';
         } else if(idx < i){
           // dot ya recorrido: conserva el color de la carga progresiva
           dot.classList.add('filled');
@@ -408,7 +401,7 @@
     eyeBtn.addEventListener('click', () => {
       balancesHidden = !balancesHidden;
       applyVisibility();
-      eyeIcon.querySelector('.slash').style.display = balancesHidden ? '' : 'none';
+      eyeIcon.style.opacity = balancesHidden ? '.45' : '1';
     });
 
     document.querySelectorAll('#acctToggle button').forEach(btn => {
