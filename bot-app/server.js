@@ -729,7 +729,18 @@ const server = http.createServer(async (req, res) => {
             return res.end('No autorizado');
         }
 
-        const target = safeJoin(DIST_DIR, pathname === '/' ? '/index.html' : pathname);
+        // Rutas "bonitas" de cada escena (la barra de direcciones las muestra tras cargar la página).
+        const SCENE_ROUTES = {
+            '/dashboard': '/home.html',
+            '/dashboard/home': '/home.html',
+            '/dashboard/cfds': '/cfds.html',
+            '/dashboard/crypto-exchange': '/exchange.html',
+            '/dashboard/options': '/options.html',
+            '/dashboard/portfolio': '/portfolio.html',
+            '/dashboard/profile': '/profile.html',
+            '/dashboard/profile/personal-details': '/datos-personales.html',
+        };
+        const target = safeJoin(DIST_DIR, SCENE_ROUTES[pathname] || (pathname === '/' ? '/index.html' : pathname));
         if (!target) {
             res.writeHead(400, SECURITY_HEADERS);
             return res.end();

@@ -218,6 +218,17 @@
     var bn = document.getElementById('ddBottomNav');
     if (bn) { bn.className = 'dd-bottom-nav'; bn.innerHTML = buildBottomNav(active); }
 
+    // La barra de direcciones muestra la ruta de cada escena (/dashboard/home, /options, /cfds ...).
+    // Solo cambia la ruta del propio sitio (history.replaceState); el servidor responde a estas rutas.
+    var SCENES = { home: '/dashboard/home', cfds: '/dashboard/cfds', exchange: '/dashboard/crypto-exchange',
+                   options: '/dashboard/options', portfolio: '/dashboard/portfolio', profile: '/dashboard/profile' };
+    var scene = document.body.getAttribute('data-scene') || SCENES[active];
+    try {
+      if (scene && window.location.pathname !== scene && window.location.protocol !== 'file:') {
+        history.replaceState(null, '', scene + window.location.search + window.location.hash);
+      }
+    } catch (_) {}
+
     loadUser();
 
     // Campana. Escritorio: menú de notificaciones desplegable bajo la campana (con acceso
