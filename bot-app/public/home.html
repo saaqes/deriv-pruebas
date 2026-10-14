@@ -50,7 +50,7 @@
         </div>
         <div class="dd-eye" id="eyeToggle" role="button" aria-label="Mostrar u ocultar saldo"><i id="eyeIcon" class="ic ic-eye"></i></div>
       </div>
-      <div class="dd-hero-skel"><div><i class="dd-skel"></i><b class="dd-skel" style="border-radius:5px"></b></div><div><i class="dd-skel"></i><b class="dd-skel" style="border-radius:5px"></b></div></div>
+      <div class="dd-hero-skel"><div><i class="dd-skel"></i><b class="dd-skel" style="border-radius:0.3125rem"></b></div><div><i class="dd-skel"></i><b class="dd-skel" style="border-radius:0.3125rem"></b></div></div>
       <div class="dd-hero-body">
         <div class="header-text">
           <div class="valor-total-label">Valor total de las operaciones</div>
@@ -144,7 +144,7 @@
 
     <!-- EXPLORAR -->
     <section class="dd-section">
-      <div class="section-title big-title" style="margin-bottom:21px">Explorar Deriv</div>
+      <div class="section-title big-title" style="margin-bottom:1.3125rem">Explorar Deriv</div>
       <div class="explore-grid">
         <div class="explore-item">
           <div class="explore-icon"><span class="nuevo">Nuevo</span><img class="dxn-sm" src="assets/sim/img/v/dxn_icon.png" alt="DXN"></div>
@@ -236,22 +236,22 @@
     <div class="notif-body">
       <div class="balance-manager-card" id="aspectoRow" style="cursor:pointer; display:flex; align-items:center; justify-content:space-between;" onclick="BrowserFrame.openSelector()">
         <span class="balance-manager-name">Aspecto</span>
-        <i class="fa-solid fa-chevron-right" style="color:var(--text-muted); font-size:13px;"></i>
+        <i class="fa-solid fa-chevron-right" style="color:var(--text-muted); font-size:0.8125rem;"></i>
       </div>
 
       <div class="balance-manager-card">
         <div class="balance-manager-header">
           <span class="balance-manager-name">Porcentaje de ganancia</span>
         </div>
-        <label style="display:flex; align-items:center; gap:8px; margin-bottom:10px; cursor:pointer;">
+        <label style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.625rem; cursor:pointer;">
           <input type="radio" name="winPercentMode" id="winPercentDefault" value="default">
-          <span style="font-size:14px;">Predeterminado de Deriv — <span id="winPercentDefaultLabel">51.8%</span></span>
+          <span style="font-size:0.875rem;">Predeterminado de Deriv — <span id="winPercentDefaultLabel">51.8%</span></span>
         </label>
-        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+        <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
           <input type="radio" name="winPercentMode" id="winPercentCustom" value="custom">
-          <span style="font-size:14px;">Personalizada</span>
+          <span style="font-size:0.875rem;">Personalizada</span>
         </label>
-        <input type="number" inputmode="decimal" min="0" max="100" step="0.1" class="balance-input" id="winPercentInput" placeholder="Porcentaje (0-100)" style="display:none; margin-top:10px;">
+        <input type="number" inputmode="decimal" min="0" max="100" step="0.1" class="balance-input" id="winPercentInput" placeholder="Porcentaje (0-100)" style="display:none; margin-top:0.625rem;">
         <div class="balance-manager-feedback" id="winPercentFeedback"></div>
       </div>
 
