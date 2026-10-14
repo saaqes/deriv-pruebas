@@ -136,7 +136,7 @@
     heroes.forEach(function (hero) {
       var page = document.body.getAttribute('data-page');
       var isPr = hero.classList.contains('pr-hero');
-      var amy = !isPr && !hero.querySelector('.dd-toggle');
+      var amy = !isPr && (page === 'home' || !hero.querySelector('.dd-toggle'));
       hero.insertBefore(mobileBar({ avatar: page === 'home', amy: amy }), hero.firstChild);
     });
 
