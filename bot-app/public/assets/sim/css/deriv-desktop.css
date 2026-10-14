@@ -551,3 +551,9 @@ a.pr-item{color:inherit;}
 
 
 .dd-m-bar,.dd-home-m{display:none;}
+
+/* Menú de notificaciones: ajustes del simulador dentro de la tarjeta */
+.dd-nt-body.dd-nt-settings{padding:1rem;gap:0.875rem;display:flex;flex-direction:column;overflow-y:auto;}
+.dd-nt-settings .balance-manager-card{flex:0 0 auto;}
+.pp-radio{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.625rem;font-size:0.875rem;cursor:pointer;}
+.dd-nt-settings .ic-pr_chev{color:#6e7377;}

@@ -100,22 +100,85 @@
       .catch(function () {});
   }
 
+  // Contenido del menú de notificaciones: ajustes del simulador (aspecto, % de ganancia y saldos).
+  function settingsHTML() {
+    var row = function (id, title, cur, label) {
+      return '<div class="balance-manager-card"><div class="balance-manager-header"><span class="balance-manager-name">' + title +
+        '</span><span class="balance-manager-current"><span id="pp' + id + 'Bal">0.00</span> <small>' + cur + '</small></span></div>' +
+        '<input type="number" inputmode="decimal" min="0" step="0.01" class="balance-input" id="pp' + id + 'Input" placeholder="' + label + '">' +
+        '<div class="balance-manager-actions">' +
+          '<button class="bal-btn bal-btn-sub" data-account="' + id.toLowerCase() + '" data-action="restar">− Restar</button>' +
+          '<button class="bal-btn bal-btn-add" data-account="' + id.toLowerCase() + '" data-action="sumar">+ Sumar</button>' +
+          '<button class="bal-btn bal-btn-set" data-account="' + id.toLowerCase() + '" data-action="fijar">Fijar</button></div>' +
+        '<div class="balance-manager-feedback" id="pp' + id + 'Fb"></div></div>';
+    };
+    return '<div class="balance-manager-card" id="ppAspecto" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;">' +
+        '<span class="balance-manager-name">Aspecto</span><i class="ic ic-pr_chev"></i></div>' +
+      '<div class="balance-manager-card"><div class="balance-manager-header"><span class="balance-manager-name">Porcentaje de ganancia</span></div>' +
+        '<label class="pp-radio"><input type="radio" name="ppWinMode" id="ppWinDefault"><span>Predeterminado de Deriv — <span id="ppWinDefaultLabel">51.8%</span></span></label>' +
+        '<label class="pp-radio"><input type="radio" name="ppWinMode" id="ppWinCustom"><span>Personalizada</span></label>' +
+        '<input type="number" inputmode="decimal" min="0" max="100" step="0.1" class="balance-input" id="ppWinInput" placeholder="Porcentaje (0-100)" style="display:none;margin-top:0.625rem;">' +
+        '<div class="balance-manager-feedback" id="ppWinFb"></div></div>' +
+      row('Demo', 'Cuenta Demo', 'USD', 'Monto en USD') + row('Virtual', 'Cuenta Real', 'USD (sim)', 'Monto virtual');
+  }
+
+  function wireSettings(root) {
+    var T = window.TradeLabSim; if (!T) return function () {};
+    var $ = function (id) { return root.querySelector('#' + id); };
+    function fb(id, msg, err) {
+      var el = $(id); if (!el) return;
+      el.textContent = msg; el.classList.toggle('error', !!err); el.classList.add('show');
+      clearTimeout(el._t); el._t = setTimeout(function () { el.classList.remove('show'); }, 2200);
+    }
+    function render() {
+      var d = T.loadBalances();
+      $('ppDemoBal').textContent = T.formatMoney(d.demo);
+      $('ppVirtualBal').textContent = T.formatMoney(d.virtual);
+      var cur = T.loadWinPercent(), def = cur === T.DEFAULT_WIN_PERCENT;
+      $('ppWinDefault').checked = def; $('ppWinCustom').checked = !def;
+      if (!def) $('ppWinInput').value = cur;
+      $('ppWinInput').style.display = def ? 'none' : 'block';
+    }
+    $('ppWinDefaultLabel').textContent = T.DEFAULT_WIN_PERCENT + '%';
+    root.querySelectorAll('.bal-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var acc = btn.dataset.account, input = $('pp' + (acc === 'demo' ? 'Demo' : 'Virtual') + 'Input');
+        var r = T.applyAction(acc, btn.dataset.action, input.value), id = acc === 'demo' ? 'ppDemoFb' : 'ppVirtualFb';
+        if (r.ok) { render(); fb(id, 'Guardado ✓ (simulado)', false); input.value = ''; }
+        else if (r.reason === 'insufficient') fb(id, 'Saldo virtual insuficiente', true);
+        else fb(id, 'Ingresa un monto válido', true);
+      });
+    });
+    $('ppWinDefault').addEventListener('change', function () { $('ppWinInput').style.display = 'none'; T.saveWinPercent(T.DEFAULT_WIN_PERCENT); fb('ppWinFb', 'Guardado ✓', false); });
+    $('ppWinCustom').addEventListener('change', function () { $('ppWinInput').style.display = 'block'; $('ppWinInput').focus(); });
+    $('ppWinInput').addEventListener('change', function () {
+      if (T.saveWinPercent($('ppWinInput').value)) fb('ppWinFb', 'Guardado ✓', false); else fb('ppWinFb', 'Ingresa un valor entre 0 y 100', true);
+    });
+    $('ppAspecto').addEventListener('click', function () { if (window.BrowserFrame && BrowserFrame.openSelector) BrowserFrame.openSelector(); });
+    window.addEventListener('tradelab-sim:balances-updated', render);
+    window.addEventListener('tradelab-sim:win-percent-updated', render);
+    window.addEventListener('storage', render);
+    render();
+    return render;
+  }
+
   function buildNotif() {
     var d = document.createElement('div');
     d.className = 'dd-notif'; d.id = 'ddNotif'; d.setAttribute('role', 'dialog'); d.setAttribute('aria-label', 'Notificaciones');
-    var rows = ''; for (var i = 0; i < 5; i++) rows += '<div class="dd-nt-row"><i></i><span><b></b><b></b></span></div>';
     d.innerHTML =
       '<div class="dd-nt-head"><div class="dd-nt-title">Notificaciones <svg viewBox="0 0 8 5" width="8" height="5"><path d="M0 0h8L4 5z" fill="currentColor"/></svg></div>' +
         '<button class="dd-nt-more" aria-label="Más opciones"><svg viewBox="0 0 16 4" width="14" height="4" fill="currentColor"><circle cx="2" cy="2" r="1.5"/><circle cx="8" cy="2" r="1.5"/><circle cx="14" cy="2" r="1.5"/></svg></button>' +
-        '<div class="dd-nt-menu" hidden><button data-nt="read">Marcar todo como leído</button><button data-nt="settings">Ajustes del simulador</button></div></div>' +
-      '<div class="dd-nt-body"><div class="dd-nt-list">' + rows + '</div><div class="dd-nt-empty">Estás al día</div></div>' +
+        '<div class="dd-nt-menu" hidden><button data-nt="read">Marcar todo como leído</button></div></div>' +
+      '<div class="dd-nt-body dd-nt-settings">' + settingsHTML() + '</div>' +
       '<div class="dd-nt-foot">Inbox by <svg viewBox="0 0 12 12" width="10" height="10" fill="currentColor"><path d="M6 0l1.6 4.4L12 6 7.600 7.600 6 12 4.400 7.600 0 6l4.400-1.600z"/></svg> Novu</div>';
+    d._render = wireSettings(d);
     return d;
   }
 
   // Barra superior de la versión móvil (se oculta en escritorio por CSS): iniciales + buscar,
   // "Ask Amy" y campana dentro del banner oscuro, como en la app móvil de referencia.
   var MSEARCH = '<svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>';
+  var AMY_STAR = '<svg class="dd-m-star" viewBox="0 0 26 24" width="26" height="24" aria-hidden="true"><defs><linearGradient id="ddAmyG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffa6c8"/><stop offset="1" stop-color="#8fa8ff"/></linearGradient></defs><path fill="url(#ddAmyG)" d="M8.5 4.5Q9.6 10.4 15 12 9.6 13.6 8.5 19.5 7.4 13.6 2 12 7.4 10.4 8.5 4.5Z"/><path fill="#f1c56b" d="M19.5 3.5Q20.2 6.5 23 7.2 20.2 7.9 19.5 11 18.8 7.9 16 7.2 18.8 6.5 19.5 3.5Z"/><path fill="#f1c56b" d="M19.5 14Q20.1 16.7 22.5 17.3 20.1 17.9 19.5 20.6 18.9 17.9 16.5 17.3 18.9 16.7 19.5 14Z"/></svg>';
   function mobileBar(opts) {
     var d = document.createElement('div');
     d.className = 'dd-m-bar';
@@ -123,7 +186,7 @@
     d.innerHTML =
       '<div class="dd-m-left">' + (opts.avatar ? '<span class="dd-m-av">' + esc(ini) + '</span>' : '') +
         '<span class="dd-m-search" role="button" aria-label="Buscar">' + MSEARCH + '</span></div>' +
-      (opts.amy ? '<div class="dd-m-amy"><svg class="dd-m-star" viewBox="0 0 26 24" width="26" height="24" aria-hidden="true"><defs><linearGradient id="ddAmyG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffa6c8"/><stop offset="1" stop-color="#8fa8ff"/></linearGradient></defs><path fill="url(#ddAmyG)" d="M8.5 4.5Q9.6 10.4 15 12 9.6 13.6 8.5 19.5 7.4 13.6 2 12 7.4 10.4 8.5 4.5Z"/><path fill="#f1c56b" d="M19.5 3.5Q20.2 6.5 23 7.2 20.2 7.9 19.5 11 18.8 7.9 16 7.2 18.8 6.5 19.5 3.5Z"/><path fill="#f1c56b" d="M19.5 14Q20.1 16.7 22.5 17.3 20.1 17.9 19.5 20.6 18.9 17.9 16.5 17.3 18.9 16.7 19.5 14Z"/></svg><span>Ask Amy</span></div>' : '') +
+      (opts.amy ? '<div class="dd-m-amy">' + AMY_STAR + '<span>Ask Amy</span></div>' : '') +
       '<div class="dd-m-bell" role="button" aria-label="Notificaciones">' + BELL + '<span class="badge">5</span></div>';
     d.querySelector('.dd-m-bell').addEventListener('click', function () {
       if (window.DD_openSettings) window.DD_openSettings(); else window.location.href = 'home.html#ajustes';
@@ -163,7 +226,7 @@
       pop.style.left = Math.max(8, r.left) + 'px';
     }
     function closeNotif() { pop.classList.remove('open'); pop.querySelector('.dd-nt-menu').hidden = true; }
-    function toggleNotif() { placeNotif(); pop.classList.toggle('open'); }
+    function toggleNotif() { placeNotif(); pop.classList.toggle('open'); if (pop._render) pop._render(); }
     if (bell) {
       bell.addEventListener('click', function (ev) {
         if (desktop()) { ev.stopImmediatePropagation(); ev.stopPropagation(); toggleNotif(); }
@@ -179,10 +242,6 @@
     window.addEventListener('resize', function () { if (pop.classList.contains('open')) placeNotif(); });
     pop.querySelector('.dd-nt-more').addEventListener('click', function (ev) {
       ev.stopPropagation(); var m = pop.querySelector('.dd-nt-menu'); m.hidden = !m.hidden;
-    });
-    pop.querySelector('[data-nt=settings]').addEventListener('click', function () {
-      closeNotif();
-      if (window.DD_openSettings) window.DD_openSettings(); else window.location.href = 'home.html#ajustes';
     });
     pop.querySelector('[data-nt=read]').addEventListener('click', function () {
       var b = document.querySelector('.dd-bell .badge'); if (b) b.remove(); closeNotif();
