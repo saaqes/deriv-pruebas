@@ -19,12 +19,33 @@
   var STORAGE_KEY = 'tradelab-sim-balances';
   var DEFAULT_BALANCES = { demo: 10006.76, virtual: 0 };
 
+  // bot-app (el gráfico / Deriv Bot) aplica cada ganancia o pérdida directamente sobre las claves
+  // espejo `configuredBalance` (Demo) y `configuredRealBalance` (Real). saveBalances() las escribe
+  // junto con el JSON, así que si difieren es porque bot-app movió el saldo después: ese valor es el
+  // más reciente y es el que debe verse en home.
+  var MIRROR_DEMO = 'configuredBalance';
+  var MIRROR_REAL = 'configuredRealBalance';
+
+  function readMirror(key) {
+    try {
+      var raw = localStorage.getItem(key);
+      if (raw === null || raw === '') return null;
+      var n = Number(raw);
+      return isFinite(n) && n >= 0 ? n : null;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function round2(n) { return Math.round(n * 100) / 100; }
+
   function loadBalances() {
+    var data = Object.assign({}, DEFAULT_BALANCES);
     try {
       var raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         var parsed = JSON.parse(raw);
-        return {
+        data = {
           demo: typeof parsed.demo === 'number' ? parsed.demo : DEFAULT_BALANCES.demo,
           virtual: typeof parsed.virtual === 'number' ? parsed.virtual : DEFAULT_BALANCES.virtual,
         };
@@ -32,7 +53,13 @@
     } catch (err) {
       console.warn('[TradeLab Sim] No se pudo leer el saldo guardado, usando valores por defecto.', err);
     }
-    return Object.assign({}, DEFAULT_BALANCES);
+    var md = readMirror(MIRROR_DEMO), mr = readMirror(MIRROR_REAL), changed = false;
+    if (md !== null && round2(md) !== round2(data.demo)) { data.demo = round2(md); changed = true; }
+    if (mr !== null && round2(mr) !== round2(data.virtual)) { data.virtual = round2(mr); changed = true; }
+    if (changed) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (err) { /* solo en memoria */ }
+    }
+    return data;
   }
 
   function saveBalances(data) {
@@ -140,6 +167,12 @@
       '⚠ TradeLab Sim — simulador educativo con fondos virtuales. No es Deriv ni ninguna plataforma real, y no representa ganancias reales.';
     document.body.insertBefore(banner, document.body.firstChild);
   }
+
+  window.addEventListener('storage', function (e) {
+    if (e.key === MIRROR_DEMO || e.key === MIRROR_REAL) {
+      window.dispatchEvent(new CustomEvent('tradelab-sim:balances-updated', { detail: loadBalances() }));
+    }
+  });
 
   global.TradeLabSim = {
     STORAGE_KEY: STORAGE_KEY,
