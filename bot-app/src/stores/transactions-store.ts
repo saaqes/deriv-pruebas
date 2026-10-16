@@ -61,45 +61,64 @@ export default class TransactionsStore {
         return [];
     }
 
+    /**
+     * Resumen de la ejecución actual (Total stake, Total payout, No. of runs, Contracts won/lost,
+     * Total profit/loss). Se RECALCULA cada vez desde la lista de transacciones (no hay acumuladores
+     * en memoria que puedan quedar con valores viejos) y SOLO con contratos cerrados:
+     *   profitLoss = payout real - stake
+     *   totalStake = Σ stake · totalPayout = Σ payout real · totalProfitLoss = totalPayout - totalStake
+     *   numberOfRuns = contratos cerrados · won: profitLoss > 0 · lost: profitLoss < 0
+     * El "payout real" es lo que realmente se cobró al cerrar (sell_price); nunca el potential
+     * payout (`payout`), que solo es el máximo posible mientras el contrato sigue abierto.
+     * Cada contrato se cuenta una sola vez aunque llegue repetido por varios eventos/listeners.
+     */
     get statistics() {
-        let total_runs = 0;
-        // Filter out only contract transactions and remove dividers
-        const trxs = this.transactions.filter(
-            trx => trx.type === transaction_elements.CONTRACT && typeof trx.data === 'object'
-        );
-        const statistics = trxs.reduce(
-            (stats, { data }) => {
-                const contract = data as TContractInfo;
-                const profit = Number(contract.profit) || 0;
-                const is_completed = contract.is_completed || false;
-                const buy_price = Number(contract.buy_price) || 0;
-                const payout = Number(contract.payout) || Number(contract.bid_price) || 0;
-                const bid_price = Number(contract.bid_price) || 0;
+        const toCents = (value: unknown) => Math.round((Number(value) || 0) * 100);
+        const hasValue = (value: unknown) =>
+            value !== undefined && value !== null && value !== '' && Number.isFinite(Number(value));
 
-                if (is_completed) {
-                    if (profit > 0) {
-                        stats.won_contracts += 1;
-                        stats.total_payout += payout ?? bid_price ?? 0;
-                    } else {
-                        stats.lost_contracts += 1;
-                    }
-                    stats.total_profit += profit;
-                    stats.total_stake += buy_price;
-                    total_runs += 1;
-                }
-                return stats;
-            },
-            {
-                lost_contracts: 0,
-                number_of_runs: 0,
-                total_profit: 0,
-                total_payout: 0,
-                total_stake: 0,
-                won_contracts: 0,
+        const seen = new Set<string>();
+        let stake_cents = 0;
+        let payout_cents = 0;
+        let won_contracts = 0;
+        let lost_contracts = 0;
+        let number_of_runs = 0;
+
+        this.transactions.forEach(trx => {
+            if (trx.type !== transaction_elements.CONTRACT || typeof trx.data !== 'object') return;
+            const contract = trx.data as TContractInfo;
+            // Solo contratos cerrados: un contrato abierto no suma nada (ni stake, ni payout, ni runs).
+            if (!contract.is_completed) return;
+
+            // Una misma operación nunca se cuenta dos veces.
+            const key = String(contract.contract_id ?? contract.transaction_ids?.buy ?? '');
+            if (key) {
+                if (seen.has(key)) return;
+                seen.add(key);
             }
-        );
-        statistics.number_of_runs = total_runs;
-        return statistics;
+
+            const stake = toCents(contract.buy_price);
+            let payout: number;
+            if (hasValue(contract.sell_price)) payout = toCents(contract.sell_price);
+            else if (hasValue(contract.bid_price)) payout = toCents(contract.bid_price);
+            else payout = stake + toCents(contract.profit); // último recurso: stake + ganancia reportada
+            const profit_loss = payout - stake;
+
+            stake_cents += stake;
+            payout_cents += payout;
+            number_of_runs += 1;
+            if (profit_loss > 0) won_contracts += 1;
+            else if (profit_loss < 0) lost_contracts += 1;
+        });
+
+        return {
+            lost_contracts,
+            number_of_runs,
+            total_profit: (payout_cents - stake_cents) / 100,
+            total_payout: payout_cents / 100,
+            total_stake: stake_cents / 100,
+            won_contracts,
+        };
     }
 
     toggleTransactionDetailsModal = (is_open: boolean) => {
@@ -136,11 +155,13 @@ export default class TransactionsStore {
 
         const same_contract_index = this.elements[current_account]?.findIndex(c => {
             if (typeof c.data === 'string') return false;
-            return (
-                c.type === transaction_elements.CONTRACT &&
-                c.data?.transaction_ids &&
-                c.data.transaction_ids.buy === data.transaction_ids?.buy
-            );
+            if (c.type !== transaction_elements.CONTRACT) return false;
+            // Mismo contrato = misma transacción de compra o mismo contract_id (evita duplicados
+            // cuando el evento llega varias veces o desde la recuperación de contratos pendientes).
+            const same_buy =
+                !!c.data?.transaction_ids?.buy && c.data.transaction_ids.buy === data.transaction_ids?.buy;
+            const same_id = !!c.data?.contract_id && c.data.contract_id === data.contract_id;
+            return same_buy || same_id;
         });
 
         if (same_contract_index === -1) {
