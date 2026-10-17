@@ -22,15 +22,15 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Portfolio | Deriv</title>
-<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017i">
-<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017i">
-<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017i" media="(max-width:860px)">
-<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017i">
-<link rel="stylesheet" href="assets/sim/css/deriv-withdraw.css?v=20261017i">
+<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017j">
+<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017j">
+<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017j" media="(max-width:860px)">
+<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017j">
+<link rel="stylesheet" href="assets/sim/css/deriv-withdraw.css?v=20261017j">
 </head>
 <body class="bf-static-page" data-page="portfolio">
-<script src="assets/sim/js/sim-shared.js?v=20261017i"></script>
-<script src="assets/sim/js/browser-frame.js?v=20261017i"></script>
+<script src="assets/sim/js/sim-shared.js?v=20261017j"></script>
+<script src="assets/sim/js/browser-frame.js?v=20261017j"></script>
 <script>BrowserFrame.init();</script>
 <div class="dd-shell">
   <div id="ddSidebar"></div>
@@ -66,11 +66,6 @@
       </div>
     </section>
 
-    <section class="dd-section" id="pfPending" hidden>
-      <div class="pf-pend-head"><div class="section-title title-lg">Transacciones pendientes <i class="ic ic-refresh"></i></div><button class="pf-chev" aria-label="Ver"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="#111" stroke-width="1.600" stroke-linecap="round" stroke-linejoin="round"><path d="m6 3.500 4.500 4.500L6 12.500"/></svg></button></div>
-      <div id="pfPendList"></div>
-    </section>
-
     <section class="dd-section">
       <div class="section-title title-lg" style="margin-bottom:0.75rem">Billetera</div>
       <div class="pf-trade">
@@ -91,18 +86,13 @@
   </main>
 </div>
 <div id="ddBottomNav"></div>
-<script src="assets/sim/js/deriv-shell.js?v=20261017i"></script>
+<script src="assets/sim/js/deriv-shell.js?v=20261017j"></script>
 
-<script src="assets/sim/js/withdraw.js?v=20261017i"></script>
+<script src="assets/sim/js/withdraw.js?v=20261017j"></script>
 <script>(function(){
   function paintPend(){
-    var l=[];try{l=TradeLabSim.loadWithdrawals().filter(function(w){return w.status==='Procesando';});}catch(_){}
-    var sec=document.getElementById('pfPending');sec.hidden=!l.length;
-    var funded=l.length>0||TradeLabSim.loadWallet().USD>0||TradeLabSim.loadTransactions().length>0;
+    var funded=TradeLabSim.loadWallet().USD>0||TradeLabSim.loadTransactions().length>0;
     document.getElementById('pfDeposit').hidden=funded;document.getElementById('pfMethodsSec').hidden=funded;
-    document.getElementById('pfPendList').innerHTML=l.map(function(w){
-      return '<div class="pf-pend"><span class="mi"><i></i></span><span class="t"><b>Retiro</b><small>hoy</small></span><span class="a"><b data-hideable data-value="'+TradeLabSim.formatMoney(w.amount)+'">'+TradeLabSim.formatMoney(w.amount)+'</b> USD<small>Procesando</small></span></div>';
-    }).join('');
   }
   paintPend();window.addEventListener('tradelab-sim:balances-updated',paintPend);
   var u=document.getElementById('updatedTxt');if(u)u.textContent='Actualizado ahora';

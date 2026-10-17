@@ -233,6 +233,22 @@
     return { ok: true, balances: b, wallet: w };
   }
 
+  /** Cancela retiros pendientes: devuelve el dinero a la Billetera. */
+  function cancelWithdrawals(ids) {
+    var list = loadWithdrawals(), w = loadWallet(), n = 0;
+    list.forEach(function (r) {
+      if (ids.indexOf(r.id) >= 0 && r.status === 'Procesando') { r.status = 'Cancelado'; w.USD = round2(w.USD + r.amount); n++; }
+    });
+    if (!n) return 0;
+    try { localStorage.setItem(WD_KEY, JSON.stringify(list)); } catch (err) { return 0; }
+    saveWallet(w); return n;
+  }
+  /** Correos "enviados" (simulados): ya pasaron 3 minutos desde el retiro. */
+  function sentMails() {
+    var now = Date.now();
+    return loadWithdrawals().filter(function (r) { return r.mail && r.mailAt && now >= r.mailAt; });
+  }
+
   /** Depósito simulado en la Billetera USD (también queda en el historial). */
   function depositWallet(amount) {
     var amt = round2(Number(amount)); if (!isFinite(amt) || amt <= 0) return false;
@@ -258,10 +274,12 @@
     return round2(loadWithdrawals().reduce(function (a, w) { return a + (w.status === 'Procesando' ? w.amount : 0); }, 0));
   }
   /** Solicita un retiro: descuenta de la Billetera y lo deja "Procesando". */
-  function requestWithdrawal(amount, method) {
+  var MAIL_DELAY_MS = 3 * 60 * 1000; // el correo de confirmación "sale" 3 min después del retiro
+  function requestWithdrawal(amount, method, acct) {
     var amt = round2(Number(amount)), w = loadWallet();
     if (!isFinite(amt) || amt <= 0 || amt > w.USD + 1e-9) return { ok: false, reason: 'insufficient' };
-    var rec = { id: String(Math.floor(1e7 + Math.random() * 9e7)), amount: amt, method: method || 'PSE', ts: Date.now(), status: 'Procesando' };
+    var mail = ''; try { mail = localStorage.getItem('tl_user_email_custom') || localStorage.getItem('tl_user_email') || ''; } catch (err) { /* sin correo */ }
+    var rec = { id: String(Math.floor(1e7 + Math.random() * 9e7)), amount: amt, method: method || 'PSE', acct: acct || '', ts: Date.now(), status: 'Procesando', mail: mail, mailAt: Date.now() + MAIL_DELAY_MS };
     var list = loadWithdrawals(); list.unshift(rec);
     try { localStorage.setItem(WD_KEY, JSON.stringify(list)); } catch (err) { return { ok: false, reason: 'storage' }; }
     w.USD = round2(w.USD - amt); saveWallet(w);
@@ -269,6 +287,8 @@
   }
 
   global.TradeLabSim = {
+    cancelWithdrawals: cancelWithdrawals,
+    sentMails: sentMails,
     loadTransactions: loadTransactions,
     addLedger: addLedger,
     depositWallet: depositWallet,

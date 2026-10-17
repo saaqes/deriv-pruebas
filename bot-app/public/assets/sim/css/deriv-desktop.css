@@ -557,3 +557,6 @@ a.pr-item{color:inherit;}
 .dd-nt-settings .balance-manager-card{flex:0 0 auto;}
 .pp-radio{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.625rem;font-size:0.875rem;cursor:pointer;}
 .dd-nt-settings .ic-pr_chev{color:#6e7377;}
+
+.dd-nt-mails{display:flex;flex-direction:column;gap:0.875rem;}
+.dd-nt-mail small{display:block;margin-top:0.25rem;font-size:0.75rem;color:#6e7377;line-height:1rem;word-break:break-all;}

@@ -178,7 +178,20 @@
         '<div class="dd-nt-menu" hidden><button data-nt="read">Marcar todo como leído</button></div></div>' +
       '<div class="dd-nt-body dd-nt-settings">' + settingsHTML() + '</div>' +
       '<div class="dd-nt-foot">Inbox by <svg viewBox="0 0 12 12" width="10" height="10" fill="currentColor"><path d="M6 0l1.6 4.4L12 6 7.600 7.600 6 12 4.400 7.600 0 6l4.400-1.600z"/></svg> Novu</div>';
-    d._render = wireSettings(d);
+    var renderSettings = wireSettings(d);
+    // Correos "enviados" (simulados): aparecen 3 minutos después de solicitar un retiro.
+    var mailBox = document.createElement('div'); mailBox.className = 'dd-nt-mails';
+    d.querySelector('.dd-nt-settings').insertBefore(mailBox, d.querySelector('.dd-nt-settings').firstChild);
+    function renderMails() {
+      var T = window.TradeLabSim, list = [];
+      try { list = T.sentMails(); } catch (_) {}
+      mailBox.innerHTML = list.map(function (w) {
+        return '<div class="balance-manager-card dd-nt-mail"><span class="balance-manager-name">Correo enviado: retiro de ' + T.formatMoney(w.amount) + ' USD</span>' +
+          '<small>Enviamos la confirmación de tu solicitud a ' + esc(w.mail) + '.</small></div>';
+      }).join('');
+    }
+    d._render = function () { renderSettings(); renderMails(); };
+    renderMails();
     return d;
   }
 
