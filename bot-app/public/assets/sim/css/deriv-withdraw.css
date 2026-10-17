@@ -299,3 +299,6 @@ body.wd-open{overflow:hidden;}
 .wd-sms.show{transform:translate(-50%,0);}
 .wd-sms b{display:block;font-size:0.875rem;}
 .wd-sms span{display:block;font-size:0.8125rem;color:#c9ccd3;margin-top:0.125rem;}
+
+.wd-ask{background:linear-gradient(90deg,#e9f9f5 0%,#eef7fc 8%,#ecf0fd 18%,#eeebfc 35%,#f1e9fa 46%,#f6e7fb 58%,#f8ebe8 70%,#fcf3eb 80%,#fdf8ec 90%,#fbfbea 95%,#f7fbe6 100%);box-shadow:none;}
+.wd-ask .ic{background:#2d1b6b;color:#2d1b6b;}

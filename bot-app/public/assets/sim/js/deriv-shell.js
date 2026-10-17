@@ -30,6 +30,7 @@
   var LOGO = ic('logo');
   var BELL = ic('bell');
   var SPARK = ic('amy');
+  var AMY_DESK = '<svg class="dd-amy-star" viewBox="0 0 26 24" width="20" height="19" aria-hidden="true"><path fill="#2d1b6b" d="M8.500 4.500Q9.600 10.400 15 12 9.600 13.600 8.500 19.500 7.400 13.600 2 12 7.400 10.400 8.500 4.500Z"/><path fill="#8b6b3d" d="M19.500 3.500Q20.200 6.500 23 7.200 20.200 7.900 19.500 11 18.800 7.900 16 7.200 18.800 6.500 19.500 3.500Z"/><path fill="#8b6b3d" d="M19.500 14Q20.100 16.700 22.500 17.300 20.100 17.900 19.500 20.600 18.900 17.900 16.500 17.300 18.900 16.700 19.500 14Z"/></svg>';
   var SEARCH = ic('search_amy');
   var CHEV = ic('chev_user');
 
@@ -52,7 +53,7 @@
         '</div>' +
         '<label class="dd-search">' + SEARCH + '<input type="text" placeholder="¿Qué tienes en mente?" aria-label="Buscar"></label>' +
         '<nav class="dd-nav">' + nav + '</nav>' +
-        '<div class="dd-amy" role="button">' + SPARK + '<span>Ask Amy</span></div>' +
+        '<div class="dd-amy" role="button">' + AMY_DESK + '<span>Ask Amy</span></div>' +
         '<div class="dd-spacer"></div>' +
         '<a class="dd-user" id="ddUser" href="profile.html">' +
           '<div class="dd-avatar" id="userAvatar" title=""><img src="assets/sim/img/v/avatar_side.png" alt=""></div>' +

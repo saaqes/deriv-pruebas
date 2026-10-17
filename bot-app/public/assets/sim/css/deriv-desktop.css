@@ -78,12 +78,11 @@ body.panel-open{overflow:hidden;}
 .dd-amy{
   margin:1.0625rem 0.1875rem 0 0.1875rem;height:2.5rem;border-radius:1.25rem;
   display:flex;align-items:center;justify-content:center;gap:0.375rem;
-  font-weight:700;font-size:0.9375rem;cursor:pointer;
-  background:linear-gradient(90deg,#d9f4f9 0%,#e3e6fb 28%,#f2e8f6 52%,#fdf1e2 78%,#fef7e4 100%);
-  box-shadow:0 0 0.875rem 2px rgba(230,236,252,.7);
+  font-weight:700;font-size:0.9rem;cursor:pointer;
+  background:linear-gradient(90deg,#e9f9f5 0%,#eef7fc 8%,#ecf0fd 18%,#eeebfc 35%,#f1e9fa 46%,#f6e7fb 58%,#f8ebe8 70%,#fcf3eb 80%,#fdf8ec 90%,#fbfbea 95%,#f7fbe6 100%);
 }
-.dd-amy .ic{color:#2c1a78;}
-.dd-amy span{background:linear-gradient(90deg,#241a7a,#7a5a12);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.dd-amy .dd-amy-star{flex:0 0 auto;}
+.dd-amy span{background:linear-gradient(90deg,#2a6a7c 0%,#2a2a7a 28%,#4a1c6e 52%,#6a3a46 72%,#6c6a30 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
 
 .dd-spacer{flex:1;}
 .dd-user{display:flex;align-items:center;gap:0.75rem;padding:0 0 0 0.1875rem;border-radius:0.75rem;cursor:pointer;height:3.75rem;margin-left:0;}
