@@ -141,11 +141,11 @@
       $('tfDoneTxt').textContent = T.formatMoney(amt) + ' USD transferido a su saldo USD.';
       $('tfDone').classList.add('show');
       setTimeout(function () { $('tfIr').classList.add('show'); }, 1100);
-    }, 1400);
+    }, 1500);
   });
   $('tfIr').addEventListener('click', function () {
     this.classList.add('busy');
-    setTimeout(function () { window.location.href = 'portfolio.html'; }, 700);
+    setTimeout(function () { window.location.href = 'portfolio.html'; }, 1500);
   });
 
   render();

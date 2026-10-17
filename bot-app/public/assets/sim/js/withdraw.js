@@ -76,7 +76,6 @@
     var phone = savedPhone();
     if (!phone) { window.location.replace('datos-personales.html?need=phone'); return; }
     $('wdPhone').textContent = phone;
-    smsToast(phone);
     $('wdBack').addEventListener('click', function () { window.location.href = 'portfolio.html'; });
     var loader = $('wdLoader'), msg = $('wdMsg');
 
@@ -85,7 +84,7 @@
       wrap.classList.add('busy'); $('wdEmail').disabled = true;
       setTimeout(function () {
         loader.classList.add('show');
-        setTimeout(function () { window.location.href = 'withdraw-currency.html?from=portfolio'; }, 1300);
+        setTimeout(function () { window.location.href = 'withdraw-currency.html?from=portfolio'; }, 1500);
       }, 1100);
     }
     inputs.forEach(function (inp, i) {
@@ -218,10 +217,10 @@
       $('wdSelCur').textContent = b.label; $('fBankV').textContent = b.name; $('fAccV').textContent = b.num;
       closeMenu(); flash(['fName', 'fBank', 'fType', 'fAcc']);
     });
-    $('wdFormBack').addEventListener('click', function () { show('list', 900); });
+    $('wdFormBack').addEventListener('click', function () { show('list', 1500); });
     $('wdSend').addEventListener('click', function () {
       var r = T.requestWithdrawal(amount, method, maskAcct(bankNum));
-      if (!r.ok) { show('list', 900); paintStats(); return; }
+      if (!r.ok) { show('list', 1500); paintStats(); return; }
       var d = new Date();
       $('dAmt').textContent = '$ ' + money(amount);
       $('dDate').textContent = ('0' + (d.getMonth() + 1)).slice(-2) + '/' + ('0' + d.getDate()).slice(-2) + '/' + d.getFullYear();
@@ -271,7 +270,7 @@
       }).join('') : '<tr><td colspan="6" class="none">No tienes solicitudes de retiro pendientes.</td></tr>';
       $('pdTotal').textContent = '$ ' + money(list.reduce(function (a, w) { return a + w.amount; }, 0));
     }
-    $('pdBack').addEventListener('click', function () { paintStats(); show('list', 1200); });
+    $('pdBack').addEventListener('click', function () { paintStats(); show('list', 1500); });
     $('pdCancel').addEventListener('click', function () {
       var ids = Array.prototype.map.call(document.querySelectorAll('.pdck:checked'), function (c) { return c.dataset.id; });
       if (!ids.length) return;
