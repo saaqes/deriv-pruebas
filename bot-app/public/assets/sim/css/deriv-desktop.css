@@ -559,3 +559,5 @@ a.pr-item{color:inherit;}
 
 .dd-nt-mails{display:flex;flex-direction:column;gap:0.875rem;}
 .dd-nt-mail small{display:block;margin-top:0.25rem;font-size:0.75rem;color:#6e7377;line-height:1rem;word-break:break-all;}
+.dp-wd{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid #e8e8ea;}
+.dp-sub{font-size:1.25rem;font-weight:700;line-height:1.75rem;margin:0 0 1.25rem;color:#0e0e0e;}

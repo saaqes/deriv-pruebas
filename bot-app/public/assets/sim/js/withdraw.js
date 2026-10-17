@@ -25,6 +25,14 @@
       if (TradeLabSim.loadWallet().USD <= 0 && !TradeLabSim.loadWithdrawals().length) TradeLabSim.depositWallet(10);
     } catch (_) {}
   }
+  // Datos de retiro guardados en Datos personales (Nequi, beneficiario, cédula, cuenta)
+  function wdInfo() {
+    try {
+      var i = JSON.parse(localStorage.getItem('tl_wd_info') || 'null');
+      if (i && i.nequi && i.name && i.cc) return { nequi: i.nequi, name: i.name, cc: i.cc, account: i.account || i.nequi };
+    } catch (_) {}
+    return null;
+  }
   function savedPhone() { try { return localStorage.getItem('tl_user_phone') || ''; } catch (_) { return ''; } }
   function maskAcct(n) { n = String(n || ''); return n.length > 6 ? n.slice(0, 2) + '*****' + n.slice(-4) : n; }
   function realBalance() { try { return TradeLabSim.loadWallet().USD; } catch (_) { return 0; } }
@@ -136,13 +144,18 @@
     var sc = $('wdScroll'); if (!sc) return;
     var T = window.TradeLabSim; seedWallet();
     var views = { list: $('wdList'), form: $('wdForm'), done: $('wdDone'), pend: $('wdPend2') };
-    var bankNum = '3058905802', bankName = 'NEQUI';
+    var info = wdInfo(), bankNum = info ? info.account : '', bankName = 'NEQUI';
+    function fillInfo() {
+      if (!info) return;
+      $('fNameV').textContent = info.name; $('fCcV').textContent = info.cc;
+      $('wdSelCur').textContent = 'NEQUI #' + info.nequi; $('fBankV').textContent = 'NEQUI'; $('fAccV').textContent = info.account; $('dName').textContent = info.name;
+    }
     var spin = $('wdSpin'), up = $('wdUp'), loader = $('wdLoader');
     var amtInput = $('wdAmt'), amtWrap = $('wdAmtWrap');
     var amount = 0, method = null;
     var USER = 'Cristhian David Hurtado Sanchez';
     try { USER = localStorage.getItem('tl_user_name_custom') || localStorage.getItem('tl_user_name') || USER; } catch (_) {}
-    $('dName').textContent = USER; $('fNameV').textContent = USER;
+    $('dName').textContent = USER; fillInfo();
 
     function show(name, delay) {
       spin.hidden = false; up.classList.remove('show');
@@ -190,6 +203,7 @@
         if (T.loadWallet().USD <= 0) return;
         var a = parse(amtInput.value);
         if (!allowed(m, a)) { amtInput.focus(); return; }
+        if (!info) { window.location.href = 'datos-personales.html?need=wd'; return; }
         if (m.dataset.m !== 'pse') return; // solo PSE tiene formulario en la simulación
         amount = a; method = 'PSE';
         $('fAmt').textContent = '$ ' + money(a); $('fTot').textContent = '$ ' + money(a);
@@ -198,15 +212,13 @@
     });
 
     /* --- formulario PSE --- */
-    var BANKS = [
-      { name: 'NEQUI', num: '3058905802', label: 'NEQUI #3058905802' },
-      { name: 'BANCOLOMBIA', num: '86533090437', label: 'BANCOLOMBIA #86533090437' }
-    ];
+    var BANKS = info ? [{ name: 'NEQUI', num: info.account, label: 'NEQUI #' + info.nequi }] : [];
     var BANK_SVG = '<svg viewBox="0 0 16 16"><path d="M8 1.500 1.500 5v1.200h13V5L8 1.500ZM3 7.200v4.800h1.700V7.200H3Zm3.300 0v4.800H8V7.200H6.300Zm3.300 0v4.800h1.700V7.200H9.600Zm3.300 0v4.800h.1V7.200h-.1ZM1.500 13v1.300h13V13h-13Z" fill="currentColor"/></svg>';
     var menu = $('wdSelMenu'), sel = $('wdSel');
     menu.innerHTML = BANKS.map(function (b, i) {
-      return '<div data-i="' + i + '">' + BANK_SVG + '<span>' + b.name + ' <small>#' + b.num + '</small></span></div>';
+      return '<div data-i="' + i + '">' + BANK_SVG + '<span>' + b.name + ' <small>#' + (info ? info.nequi : b.num) + '</small></span></div>';
     }).join('') + '<div data-add="1"><span style="color:#2a9d3f;font-weight:700">+</span>' + BANK_SVG + '<span>[Agregar banco]</span></div>';
+    menu.addEventListener('click', function (e) { if (e.target.closest('div[data-add]')) window.location.href = 'datos-personales.html?need=wd'; });
     function closeMenu() { menu.hidden = true; sel.classList.remove('open'); }
     $('wdSelBtn').addEventListener('click', function (e) { e.stopPropagation(); menu.hidden = !menu.hidden; sel.classList.toggle('open', !menu.hidden); });
     $('wdSelCur').addEventListener('click', function (e) { e.stopPropagation(); $('wdSelBtn').click(); });

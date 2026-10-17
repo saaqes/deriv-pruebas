@@ -22,14 +22,14 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Personal details | Deriv</title>
-<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017n">
-<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017n">
-<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017n" media="(max-width:860px)">
-<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017n">
+<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017o">
+<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017o">
+<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017o" media="(max-width:860px)">
+<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017o">
 </head>
 <body class="bf-static-page" data-page="profile" data-scene="/dashboard/profile/personal-details">
-<script src="assets/sim/js/sim-shared.js?v=20261017n"></script>
-<script src="assets/sim/js/browser-frame.js?v=20261017n"></script>
+<script src="assets/sim/js/sim-shared.js?v=20261017o"></script>
+<script src="assets/sim/js/browser-frame.js?v=20261017o"></script>
 <script>BrowserFrame.init();</script>
 <div class="dd-shell">
   <div id="ddSidebar"></div>
@@ -47,10 +47,18 @@
       <label class="dp-field"><span>Número de teléfono</span><input id="dpTel" type="tel" maxlength="20" inputmode="tel" placeholder="+57 300 000 0000"></label>
       <div class="dp-actions"><span class="dp-msg" id="dpMsg"></span><button type="submit" class="dp-save" id="dpSave" disabled>Guardar</button></div>
     </form>
+    <form class="dp-form dp-wd" id="wdForm2" autocomplete="off">
+      <h2 class="dp-sub">Retiros</h2>
+      <label class="dp-field"><span>Número de Nequi</span><input id="wdNequi" type="tel" inputmode="numeric" maxlength="12" placeholder="3001234567"></label>
+      <label class="dp-field"><span>Nombre del beneficiario</span><input id="wdName" type="text" maxlength="80" placeholder="Nombre completo"></label>
+      <label class="dp-field"><span>Cédula Ciudadanía (CC)</span><input id="wdCc" type="text" inputmode="numeric" maxlength="12" placeholder="1234567890"></label>
+      <label class="dp-field"><span>Número de cuenta</span><input id="wdAcc" type="text" inputmode="numeric" maxlength="20" placeholder="Número de cuenta"></label>
+      <div class="dp-actions"><span class="dp-msg" id="wdMsg2"></span><button type="submit" class="dp-save" id="wdSave2" disabled>Guardar</button></div>
+    </form>
   </main>
 </div>
 <div id="ddBottomNav"></div>
-<script src="assets/sim/js/deriv-shell.js?v=20261017n"></script>
+<script src="assets/sim/js/deriv-shell.js?v=20261017o"></script>
 <script>
   // Datos personales: el nombre y el correo guardados aparecen en la barra lateral (junto al avatar).
   (function(){
@@ -92,6 +100,33 @@
       if (sn && full) sn.textContent = full;
       if (sm) sm.textContent = m || sm.textContent;
       tel.value = t; initial = { n: nom.value, a: ape.value, m: mail.value, t: tel.value }; dirty();
+      msg.textContent = 'Guardado ✓'; msg.className = 'dp-msg';
+      setTimeout(function(){ msg.textContent = ''; }, 2200);
+    });
+  })();
+
+  // Datos de retiro: se guardan aquí y se muestran en Retirar USD antes de enviar la solicitud.
+  (function(){
+    var $ = function(id){ return document.getElementById(id); };
+    var f = { nequi: $('wdNequi'), name: $('wdName'), cc: $('wdCc'), account: $('wdAcc') }, save = $('wdSave2'), msg = $('wdMsg2'), initial = '';
+    function read(){ try { return JSON.parse(localStorage.getItem('tl_wd_info') || '{}') || {}; } catch(_) { return {}; } }
+    function snap(){ return JSON.stringify([f.nequi.value, f.name.value, f.cc.value, f.account.value]); }
+    var cur = read();
+    f.nequi.value = cur.nequi || ''; f.name.value = cur.name || ''; f.cc.value = cur.cc || ''; f.account.value = cur.account || '';
+    initial = snap(); save.disabled = true;
+    Object.keys(f).forEach(function(k){ f[k].addEventListener('input', function(){ save.disabled = (snap() === initial); }); });
+    if (/[?&]need=wd/.test(location.search)) {
+      msg.textContent = 'Agrega tus datos de retiro para poder enviar la solicitud.'; msg.className = 'dp-msg error';
+      setTimeout(function(){ f.nequi.scrollIntoView({block:'center'}); f.nequi.focus(); }, 300);
+    }
+    $('wdForm2').addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var n = f.nequi.value.replace(/\D/g,''), nm = f.name.value.trim().replace(/\s+/g,' '), cc = f.cc.value.replace(/\D/g,''), ac = f.account.value.replace(/\D/g,'');
+      var err = !/^\d{10}$/.test(n) ? 'El número de Nequi debe tener 10 dígitos' : nm.length < 3 ? 'Ingresa el nombre del beneficiario' : !/^\d{6,12}$/.test(cc) ? 'Ingresa una cédula válida (6 a 12 dígitos)' : (f.account.value.trim() && !/^\d{6,20}$/.test(ac)) ? 'Número de cuenta no válido (6 a 20 dígitos)' : '';
+      if (err) { msg.textContent = err; msg.className = 'dp-msg error'; return; }
+      try { localStorage.setItem('tl_wd_info', JSON.stringify({ nequi: n, name: nm, cc: cc, account: ac || n })); } catch(_) {}
+      f.nequi.value = n; f.name.value = nm; f.cc.value = cc; f.account.value = ac || n;
+      initial = snap(); save.disabled = true;
       msg.textContent = 'Guardado ✓'; msg.className = 'dp-msg';
       setTimeout(function(){ msg.textContent = ''; }, 2200);
     });

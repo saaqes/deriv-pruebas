@@ -12,11 +12,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Withdraw | Deriv</title>
-<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017n">
-<link rel="stylesheet" href="assets/sim/css/deriv-withdraw.css?v=20261017n">
+<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017o">
+<link rel="stylesheet" href="assets/sim/css/deriv-withdraw.css?v=20261017o">
 </head>
 <body class="wd-body" data-scene="/dashboard/withdraw/currency/USD">
-<script src="assets/sim/js/sim-shared.js?v=20261017n"></script>
+<script src="assets/sim/js/sim-shared.js?v=20261017o"></script>
 <div class="wd-cashier">
   <div class="wd-cashier-top"><span></span><span class="wd-ask"><i class="ic ic-amy"></i>Ask Amy</span><button class="wd-xbtn" id="wdClose" aria-label="Cerrar"><svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m2.5 2.5 7 7M9.5 2.5l-7 7"/></svg></button></div>
   <h1 class="wd-title" style="margin-left:0">Retirar USD</h1>
@@ -47,13 +47,13 @@
       <div class="wd-warn"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7.200" fill="#f5a623"/><path d="M8 4.200v4.600M8 10.800v.6" stroke="#fff" stroke-width="1.700" stroke-linecap="round"/></svg><div><p>Tenga en cuenta que los retiros pueden tardar hasta 24 horas.</p><p><b>Antes de enviar la solicitud:</b> Asegúrese de que el número de su cuenta bancaria activa, el tipo de cuenta y el número de identificación coincidan exactamente con los registros de su banco. Los datos incorrectos pueden provocar el rechazo de su retiro.</p></div></div>
       <div class="wd-fields">
         <label class="fl"><span><svg class="bk" viewBox="0 0 16 16"><path d="M8 1.500 1.500 5v1.200h13V5L8 1.500ZM3 7.200v4.800h1.700V7.200H3Zm3.300 0v4.800H8V7.200H6.300Zm3.300 0v4.800h1.700V7.200H9.600Zm3.300 0v4.800h.1V7.200h-.1ZM1.500 13v1.300h13V13h-13Z" fill="#555"/></svg> Usado por última vez:</span>
-          <div class="wd-sel" id="wdSel"><div class="cur" id="wdSelCur">NEQUI #3058905802</div><button type="button" class="arr" id="wdSelBtn" aria-label="Elegir banco"><svg viewBox="0 0 12 8" width="12" height="8" fill="none" stroke="#777" stroke-width="1.300"><path d="m1.500 1.500 4.500 4.500 4.500-4.500"/></svg></button>
+          <div class="wd-sel" id="wdSel"><div class="cur" id="wdSelCur"></div><button type="button" class="arr" id="wdSelBtn" aria-label="Elegir banco"><svg viewBox="0 0 12 8" width="12" height="8" fill="none" stroke="#777" stroke-width="1.300"><path d="m1.500 1.500 4.500 4.500 4.500-4.500"/></svg></button>
             <div class="menu" id="wdSelMenu" hidden></div></div></label>
-        <label class="fl"><span>Nombre del beneficiario:</span><div class="inp w265" id="fName"><span id="fNameV">Cristhian David Hurtado Sanchez</span><i class="ico-ok"></i></div></label>
-        <label class="fl"><span>Cédula Ciudadanía (CC):</span><div class="inp w265" id="fCc"><span>1094919963</span><svg class="ico-id" viewBox="0 0 20 14"><rect x=".5" y=".5" width="19" height="13" rx="2" fill="none" stroke="#8a8a8a"/><circle cx="6" cy="5.500" r="2" fill="#8a8a8a"/><path d="M2.500 11.500c.4-2 5.600-2 7 0" fill="#8a8a8a"/><path d="M11.500 4.500h5M11.500 7h5M11.500 9.500h3.500" stroke="#8a8a8a"/></svg></div></label>
+        <label class="fl"><span>Nombre del beneficiario:</span><div class="inp w265" id="fName"><span id="fNameV"></span><i class="ico-ok"></i></div></label>
+        <label class="fl"><span>Cédula Ciudadanía (CC):</span><div class="inp w265" id="fCc"><span id="fCcV"></span><svg class="ico-id" viewBox="0 0 20 14"><rect x=".5" y=".5" width="19" height="13" rx="2" fill="none" stroke="#8a8a8a"/><circle cx="6" cy="5.500" r="2" fill="#8a8a8a"/><path d="M2.500 11.500c.4-2 5.600-2 7 0" fill="#8a8a8a"/><path d="M11.500 4.500h5M11.500 7h5M11.500 9.500h3.500" stroke="#8a8a8a"/></svg></div></label>
         <label class="fl"><span>Nombre del Banco:</span><div class="inp w275 bank" id="fBank"><span id="fBankV">NEQUI</span></div></label>
         <label class="fl"><span>Tipo de Cuenta:</span><div class="inp w275" id="fType"><span>Savings</span></div></label>
-        <label class="fl"><span>Número de Cuenta (CardID):</span><div class="inp w275" id="fAcc"><span id="fAccV">3058905802</span></div></label>
+        <label class="fl"><span>Número de Cuenta (CardID):</span><div class="inp w275" id="fAcc"><span id="fAccV"></span></div></label>
         <label class="fl"><span>Comentarios o Instrucciones:</span><textarea class="ta" placeholder="Comentarios o Instrucciones"></textarea></label>
         <div class="wd-send"><button type="button" id="wdSend">Enviar Solicitud <svg viewBox="0 0 14 14" width="13" height="13"><circle cx="7" cy="7" r="6" fill="none" stroke="#fff" stroke-width="1.300"/><path d="M4.500 7h5M7.500 5l2 2-2 2" fill="none" stroke="#fff" stroke-width="1.300" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       </div>
@@ -82,6 +82,6 @@
 </div>
 <div class="wd-loader show" id="wdLoader"><div class="wd-ring"><img src="deriv-d-48.png" alt=""></div></div>
 <script src="assets/sim/js/nequi-sim.js?v=1"></script>
-<script src="assets/sim/js/withdraw.js?v=20261017n"></script>
+<script src="assets/sim/js/withdraw.js?v=20261017o"></script>
 </body>
 </html>
