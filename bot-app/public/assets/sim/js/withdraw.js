@@ -136,7 +136,7 @@
     var sc = $('wdScroll'); if (!sc) return;
     var T = window.TradeLabSim; seedWallet();
     var views = { list: $('wdList'), form: $('wdForm'), done: $('wdDone'), pend: $('wdPend2') };
-    var bankNum = '3058905802';
+    var bankNum = '3058905802', bankName = 'NEQUI';
     var spin = $('wdSpin'), up = $('wdUp'), loader = $('wdLoader');
     var amtInput = $('wdAmt'), amtWrap = $('wdAmtWrap');
     var amount = 0, method = null;
@@ -213,7 +213,7 @@
     document.addEventListener('click', closeMenu);
     menu.addEventListener('click', function (e) {
       var it = e.target.closest('div[data-i]'); if (!it) { closeMenu(); return; }
-      var b = BANKS[+it.dataset.i]; bankNum = b.num;
+      var b = BANKS[+it.dataset.i]; bankNum = b.num; bankName = b.name;
       $('wdSelCur').textContent = b.label; $('fBankV').textContent = b.name; $('fAccV').textContent = b.num;
       closeMenu(); flash(['fName', 'fBank', 'fType', 'fAcc']);
     });
@@ -225,6 +225,15 @@
       $('dAmt').textContent = '$ ' + money(amount);
       $('dDate').textContent = ('0' + (d.getMonth() + 1)).slice(-2) + '/' + ('0' + d.getDate()).slice(-2) + '/' + d.getFullYear();
       $('dId').textContent = r.record.id;
+      // Nequi: registro interno SIMULADO (una vez por retiro; no hay transferencia real)
+      var nq = $('wdNqRcpt');
+      if (nq) {
+        nq.style.display = 'none';
+        if (bankName === 'NEQUI' && window.NequiSim) {
+          var q = NequiSim.register(r.record);
+          if (q.ok) { nq.style.display = ''; nq.onclick = function () { window.location.href = 'nequi-retiros.html#' + encodeURIComponent(q.record.id); }; }
+        }
+      }
       show('done', 2000);
     });
     $('wdReview').addEventListener('click', function () { amtInput.value = ''; paintStats(); show('pend', 1500); });
