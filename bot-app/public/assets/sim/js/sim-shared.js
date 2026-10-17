@@ -206,7 +206,32 @@
     return { ok: true, balances: b, wallet: w };
   }
 
+  // ---- Retiros pendientes (simulados) ----
+  var WD_KEY = 'tradelab-sim-withdrawals';
+  function loadWithdrawals() {
+    try {
+      var l = JSON.parse(localStorage.getItem(WD_KEY) || '[]');
+      return Array.isArray(l) ? l : [];
+    } catch (err) { return []; }
+  }
+  function pendingTotal() {
+    return round2(loadWithdrawals().reduce(function (a, w) { return a + (w.status === 'Procesando' ? w.amount : 0); }, 0));
+  }
+  /** Solicita un retiro: descuenta de la Billetera y lo deja "Procesando". */
+  function requestWithdrawal(amount, method) {
+    var amt = round2(Number(amount)), w = loadWallet();
+    if (!isFinite(amt) || amt <= 0 || amt > w.USD + 1e-9) return { ok: false, reason: 'insufficient' };
+    var rec = { id: String(Math.floor(1e7 + Math.random() * 9e7)), amount: amt, method: method || 'PSE', ts: Date.now(), status: 'Procesando' };
+    var list = loadWithdrawals(); list.unshift(rec);
+    try { localStorage.setItem(WD_KEY, JSON.stringify(list)); } catch (err) { return { ok: false, reason: 'storage' }; }
+    w.USD = round2(w.USD - amt); saveWallet(w);
+    return { ok: true, record: rec };
+  }
+
   global.TradeLabSim = {
+    loadWithdrawals: loadWithdrawals,
+    pendingTotal: pendingTotal,
+    requestWithdrawal: requestWithdrawal,
     loadWallet: loadWallet,
     saveWallet: saveWallet,
     transfer: transfer,

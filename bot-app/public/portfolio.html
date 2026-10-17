@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261015p">
 <link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261015p" media="(max-width:860px)">
 <link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261015p">
-<link rel="stylesheet" href="assets/sim/css/deriv-withdraw.css?v=20261017b">
+<link rel="stylesheet" href="assets/sim/css/deriv-withdraw.css?v=20261017d">
 </head>
 <body class="bf-static-page" data-page="portfolio">
 <script src="assets/sim/js/sim-shared.js?v=20261017c"></script>
@@ -48,7 +48,7 @@
       </div>
     </section>
 
-    <div class="pf-deposit">
+    <div class="pf-deposit" id="pfDeposit">
       <h3>Haz tu primer depósito</h3>
       <p>Deposite en cripto o en su moneda local, al instante.</p>
       <div class="pf-tiles">
@@ -56,7 +56,7 @@
       </div>
     </div>
 
-    <section class="dd-section">
+    <section class="dd-section" id="pfMethodsSec">
       <div class="section-title" style="margin-bottom:0.875rem">Explorar todos los métodos de pago</div>
       <div class="pf-methods">
         <div class="pf-method"><i class="ic ic-pm_usd"></i><div><b>USD</b><span>Financiar a través de banco, tarjeta, billetera electrónica y criptografía.</span></div></div>
@@ -64,6 +64,11 @@
         <div class="pf-method"><i class="ic ic-pm_p2p"></i><div><b>P2P</b><span>Compra y vende USD con otros traders. Deposita y retira en tu moneda local.</span></div></div>
         <div class="pf-method"><i class="ic ic-pm_agent"></i><div><b>Agente de pago</b><span>Deposita y retira en tu moneda local a través de un agente local verificado.</span></div></div>
       </div>
+    </section>
+
+    <section class="dd-section" id="pfPending" hidden>
+      <div class="pf-pend-head"><div class="section-title title-lg">Transacciones pendientes <i class="ic ic-refresh"></i></div><button class="pf-chev" aria-label="Ver"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="#111" stroke-width="1.600" stroke-linecap="round" stroke-linejoin="round"><path d="m6 3.500 4.500 4.500L6 12.500"/></svg></button></div>
+      <div id="pfPendList"></div>
     </section>
 
     <section class="dd-section">
@@ -89,7 +94,20 @@
 <div id="ddBottomNav"></div>
 <script src="assets/sim/js/deriv-shell.js?v=20261017c"></script>
 
-<script src="assets/sim/js/withdraw.js?v=20261017c"></script>
+<script src="assets/sim/js/withdraw.js?v=20261017d"></script>
+<script>(function(){
+  function paintPend(){
+    var l=[];try{l=TradeLabSim.loadWithdrawals().filter(function(w){return w.status==='Procesando';});}catch(_){}
+    var sec=document.getElementById('pfPending');sec.hidden=!l.length;
+    var funded=l.length>0||TradeLabSim.loadWallet().USD>0||TradeLabSim.loadWithdrawals().length>0;
+    document.getElementById('pfDeposit').hidden=funded;document.getElementById('pfMethodsSec').hidden=funded;
+    document.getElementById('pfPendList').innerHTML=l.map(function(w){
+      return '<div class="pf-pend"><span class="mi"><i></i></span><span class="t"><b>Retiro</b><small>hoy</small></span><span class="a"><b data-hideable data-value="'+TradeLabSim.formatMoney(w.amount)+'">'+TradeLabSim.formatMoney(w.amount)+'</b> USD<small>Procesando</small></span></div>';
+    }).join('');
+  }
+  paintPend();window.addEventListener('tradelab-sim:balances-updated',paintPend);
+  var u=document.getElementById('updatedTxt');if(u)u.textContent='Actualizado ahora';
+})();</script>
 <script>document.addEventListener('click',function(e){var a=e.target.closest('[data-go]');if(a)location.href=a.getAttribute('data-go');});</script>
 </body>
 </html>

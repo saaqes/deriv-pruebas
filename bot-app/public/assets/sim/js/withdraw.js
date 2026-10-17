@@ -118,17 +118,107 @@
   /* ---------- Cashier "Retirar USD" ---------- */
   function initCashier() {
     var sc = $('wdScroll'); if (!sc) return;
-    $('wdClose').addEventListener('click', function () { window.location.href = 'portfolio.html'; });
-    var bal = realBalance();
-    $('wdBal').textContent = '$ ' + money(bal);
-    $('wdAvail').textContent = '$ ' + money(bal);
-    $('wdAlertAmt').textContent = money(bal);
-    $('wdAlert').style.display = bal > 0 ? 'none' : '';
-    var up = $('wdUp');
+    var T = window.TradeLabSim;
+    var views = { list: $('wdList'), form: $('wdForm'), done: $('wdDone') };
+    var spin = $('wdSpin'), up = $('wdUp'), loader = $('wdLoader');
+    var amtInput = $('wdAmt'), amtWrap = $('wdAmtWrap');
+    var amount = 0, method = null;
+    var USER = 'Cristhian David Hurtado Sanchez';
+    try { USER = localStorage.getItem('tl_user_name_custom') || localStorage.getItem('tl_user_name') || USER; } catch (_) {}
+    $('dName').textContent = USER; $('fNameV').textContent = USER;
+
+    function show(name, delay) {
+      spin.hidden = false; up.classList.remove('show');
+      Object.keys(views).forEach(function (k) { views[k].hidden = true; });
+      setTimeout(function () {
+        spin.hidden = true; views[name].hidden = false; sc.scrollTop = 0;
+        if (name === 'done') { var c = $('wdCheck'); c.classList.remove('ok'); setTimeout(function () { c.classList.add('ok'); }, 500); }
+        if (name === 'form') flash(['fName', 'fBank']);
+      }, delay || 1500);
+    }
+    function flash(ids) {
+      ids.forEach(function (id) { var e = $(id); e.classList.remove('flash'); void e.offsetWidth; e.classList.add('flash'); });
+    }
+
+    /* --- saldos --- */
+    function paintStats() {
+      var avail = T.loadWallet().USD, pend = T.pendingTotal(), n = T.loadWithdrawals().filter(function (w) { return w.status === 'Procesando'; }).length;
+      $('wdBal').textContent = '$ ' + money(avail + pend);
+      $('wdAvail').textContent = '$ ' + money(avail);
+      $('wdPend').textContent = '-$ ' + money(pend);
+      $('wdPendLbl').textContent = n + ' Retiros Pendientes';
+      $('wdAvailX').style.display = avail > 0 ? '' : 'none';
+      $('wdAlertAmt').textContent = money(avail);
+      $('wdAlert').classList.toggle('show', avail <= 0);
+      amtWrap.classList.toggle('hide', avail <= 0);
+      filter();
+    }
+    function parse(v) { var n = parseFloat(String(v).replace(/[^0-9.]/g, '')); return isFinite(n) ? Math.round(n * 100) / 100 : 0; }
+    function allowed(m, a) {
+      var avail = T.loadWallet().USD;
+      return a > 0 && a <= avail + 1e-9 && a >= +m.dataset.min && a <= +m.dataset.max;
+    }
+    function filter() {
+      var a = parse(amtInput.value), has = a > 0;
+      Array.prototype.forEach.call(document.querySelectorAll('.wd-method'), function (m) { m.classList.toggle('off', has && !allowed(m, a)); });
+    }
+    amtInput.addEventListener('input', function () {
+      var v = amtInput.value.replace(/[^0-9.]/g, ''); var i = v.indexOf('.');
+      if (i >= 0) v = v.slice(0, i + 1) + v.slice(i + 1).replace(/\./g, '').slice(0, 2);
+      amtInput.value = v; filter();
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.wd-method'), function (m) {
+      m.addEventListener('click', function () {
+        if (T.loadWallet().USD <= 0) return;
+        var a = parse(amtInput.value);
+        if (!allowed(m, a)) { amtInput.focus(); return; }
+        if (m.dataset.m !== 'pse') return; // solo PSE tiene formulario en la simulación
+        amount = a; method = 'PSE';
+        $('fAmt').textContent = '$ ' + money(a); $('fTot').textContent = '$ ' + money(a);
+        show('form', 1800);
+      });
+    });
+
+    /* --- formulario PSE --- */
+    var BANKS = [
+      { name: 'NEQUI', num: '3058905802', label: 'NEQUI #3058905802' },
+      { name: 'BANCOLOMBIA', num: '86533090437', label: 'BANCOLOMBIA #86533090437' }
+    ];
+    var BANK_SVG = '<svg viewBox="0 0 16 16"><path d="M8 1.500 1.500 5v1.200h13V5L8 1.500ZM3 7.200v4.800h1.700V7.200H3Zm3.300 0v4.800H8V7.200H6.300Zm3.300 0v4.800h1.700V7.200H9.600Zm3.300 0v4.800h.1V7.200h-.1ZM1.500 13v1.300h13V13h-13Z" fill="currentColor"/></svg>';
+    var menu = $('wdSelMenu'), sel = $('wdSel');
+    menu.innerHTML = BANKS.map(function (b, i) {
+      return '<div data-i="' + i + '">' + BANK_SVG + '<span>' + b.name + ' <small>#' + b.num + '</small></span></div>';
+    }).join('') + '<div data-add="1"><span style="color:#2a9d3f;font-weight:700">+</span>' + BANK_SVG + '<span>[Agregar banco]</span></div>';
+    function closeMenu() { menu.hidden = true; sel.classList.remove('open'); }
+    $('wdSelBtn').addEventListener('click', function (e) { e.stopPropagation(); menu.hidden = !menu.hidden; sel.classList.toggle('open', !menu.hidden); });
+    $('wdSelCur').addEventListener('click', function (e) { e.stopPropagation(); $('wdSelBtn').click(); });
+    document.addEventListener('click', closeMenu);
+    menu.addEventListener('click', function (e) {
+      var it = e.target.closest('div[data-i]'); if (!it) { closeMenu(); return; }
+      var b = BANKS[+it.dataset.i];
+      $('wdSelCur').textContent = b.label; $('fBankV').textContent = b.name; $('fAccV').textContent = b.num;
+      closeMenu(); flash(['fName', 'fBank', 'fType', 'fAcc']);
+    });
+    $('wdFormBack').addEventListener('click', function () { show('list', 900); });
+    $('wdSend').addEventListener('click', function () {
+      var r = T.requestWithdrawal(amount, method);
+      if (!r.ok) { show('list', 900); paintStats(); return; }
+      var d = new Date();
+      $('dAmt').textContent = '$ ' + money(amount);
+      $('dDate').textContent = ('0' + (d.getMonth() + 1)).slice(-2) + '/' + ('0' + d.getDate()).slice(-2) + '/' + d.getFullYear();
+      $('dId').textContent = r.record.id;
+      show('done', 2000);
+    });
+    $('wdReview').addEventListener('click', function () { amtInput.value = ''; paintStats(); show('list', 1500); });
+
     sc.addEventListener('scroll', function () { up.classList.toggle('show', sc.scrollTop > 120); });
     up.addEventListener('click', function () { sc.scrollTo({ top: 0, behavior: 'smooth' }); });
+    $('wdClose').addEventListener('click', function () {
+      loader.classList.add('show');
+      setTimeout(function () { window.location.href = 'portfolio.html'; }, 1500);
+    });
+    paintStats();
     // carga inicial con el logo girando, como en el video
-    var loader = $('wdLoader');
     setTimeout(function () { loader.classList.remove('show'); }, 1500);
   }
 
