@@ -32,10 +32,7 @@
         '<div class="wd-mhead"><h2>Retirar</h2><button class="wd-mx" aria-label="Cerrar"><svg viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="m2.500 2.500 7 7M9.500 2.500l-7 7"/></svg></button></div>' +
         '<button class="wd-cur" data-go="usd"><img src="assets/sim/img/v/flag_us.png" alt=""><span class="tag">Sugerido</span><b>US Dollar</b></button>' +
         '<button class="wd-opt" data-go="usd"><i class="ic ic-pm_usd"></i><div><b>USD</b><span>Retiro a través de banco, tarjeta, billetera electrónica y criptografía.</span></div></button>' +
-        '<button class="wd-opt"><i class="ic ic-pm_p2p"></i><div><b>P2P</b><span>Compra y vende USD con otros traders. Deposita y retira en tu moneda local.</span></div></button>' +
-        '<button class="wd-opt" hidden data-extra><i class="ic ic-pm_agent"></i><div><b>Agente de pago</b><span>Retira en tu moneda local a través de un agente local verificado.</span></div></button>' +
-        '<button class="wd-opt" hidden data-extra><i class="ic ic-pm_crypto"></i><div><b>Cripto</b><span>Retira rápidamente a tu cuenta con USDT, USDC y más.</span></div></button>' +
-        '<button class="wd-more" type="button">Ver más <i class="ic ic-ex_chev"></i></button>' +
+        '<button class="wd-opt" data-go="agent"><i class="ic ic-pm_agent"></i><div><b>Agente de pago</b><span>Deposita y retira en tu moneda local a través de un agente local verificado.</span></div></button>' +
       '</div>';
     document.body.appendChild(ov);
     function open() { ov.classList.add('open'); document.body.classList.add('wd-open'); }
@@ -47,12 +44,6 @@
     ov.querySelectorAll('[data-go=usd]').forEach(function (b) {
       b.addEventListener('click', function () { window.location.href = 'withdraw-verify.html?currency=USD&from=portfolio&openWithdraw=1'; });
     });
-    var more = ov.querySelector('.wd-more');
-    more.addEventListener('click', function () {
-      var show = !more.classList.contains('open');
-      more.classList.toggle('open', show);
-      ov.querySelectorAll('[data-extra]').forEach(function (b) { b.hidden = !show; });
-    });
   }
 
   /* ---------- Verificación por código ---------- */
@@ -60,7 +51,7 @@
     var wrap = $('wdOtp'); if (!wrap) return;
     var inputs = Array.prototype.slice.call(wrap.querySelectorAll('input'));
     var phone = ''; try { phone = localStorage.getItem('tl_user_phone') || ''; } catch (_) {}
-    $('wdPhone').textContent = phone || '+573166219962';
+    $('wdPhone').textContent = phone || '+573058905802';
     $('wdBack').addEventListener('click', function () { window.location.href = 'portfolio.html'; });
     var loader = $('wdLoader'), msg = $('wdMsg');
 
@@ -75,6 +66,7 @@
     inputs.forEach(function (inp, i) {
       inp.addEventListener('input', function () {
         inp.value = inp.value.replace(/\D/g, '').slice(-1);
+        if (inp.value && !counting) startCountdown();
         if (inp.value && i < inputs.length - 1) inputs[i + 1].focus();
         if (value().length === 6) submit();
       });
@@ -94,23 +86,23 @@
     inputs[0].focus();
 
     // "reenvía el código" -> cuenta regresiva de 60 s
-    var resend = $('wdResend'), timer = null;
+    var resend = $('wdResend'), timer = null, counting = false;
     function startCountdown() {
-      var left = 60;
-      function paint() { resend.innerHTML = '¿No recibiste el código? Revisa tus SMS o reenvía el código (' + left + 's).'; }
+      var left = 60; counting = true;
+      function paint() { resend.innerHTML = '¿No recibiste el código? Revisa tu SMS o reenvía el código (' + left + 's).'; }
       paint(); clearInterval(timer);
       timer = setInterval(function () {
         left -= 1;
         if (left <= 0) {
-          clearInterval(timer);
-          resend.innerHTML = '¿No recibiste el código? Revisa tus SMS o <button type="button" id="wdResendBtn">reenvía el código</button>.';
+          clearInterval(timer); counting = false;
+          resend.innerHTML = '¿No recibiste el código? Revisa tu SMS o <button type="button" id="wdResendBtn">reenvía el código</button>.';
           $('wdResendBtn').addEventListener('click', startCountdown);
         } else paint();
       }, 1000);
     }
     $('wdResendBtn').addEventListener('click', startCountdown);
     $('wdEmail').addEventListener('click', function () {
-      msg.textContent = 'Código enviado a tu correo electrónico (simulado).'; msg.className = 'wd-msg';
+      msg.textContent = 'Método alternativo no disponible en la simulación.'; msg.className = 'wd-msg';
       setTimeout(function () { msg.textContent = ''; }, 2600);
     });
   }
