@@ -740,6 +740,7 @@ const server = http.createServer(async (req, res) => {
             '/dashboard/profile': '/profile.html',
             '/dashboard/profile/personal-details': '/datos-personales.html',
             '/dashboard/transfer': '/transfer.html',
+            '/dashboard/portfolio/transactions': '/transactions.html',
             '/dashboard/withdraw/verify': '/withdraw-verify.html',
             '/dashboard/withdraw/currency/USD': '/withdraw-currency.html',
         };

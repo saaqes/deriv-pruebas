@@ -22,15 +22,15 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Portfolio | Deriv</title>
-<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017h">
-<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017h">
-<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017h" media="(max-width:860px)">
-<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017h">
-<link rel="stylesheet" href="assets/sim/css/deriv-withdraw.css?v=20261017h">
+<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017i">
+<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017i">
+<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017i" media="(max-width:860px)">
+<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017i">
+<link rel="stylesheet" href="assets/sim/css/deriv-withdraw.css?v=20261017i">
 </head>
 <body class="bf-static-page" data-page="portfolio">
-<script src="assets/sim/js/sim-shared.js?v=20261017h"></script>
-<script src="assets/sim/js/browser-frame.js?v=20261017h"></script>
+<script src="assets/sim/js/sim-shared.js?v=20261017i"></script>
+<script src="assets/sim/js/browser-frame.js?v=20261017i"></script>
 <script>BrowserFrame.init();</script>
 <div class="dd-shell">
   <div id="ddSidebar"></div>
@@ -81,25 +81,24 @@
     <section class="dd-section">
       <div class="section-title title-lg" style="margin-bottom:0.75rem">Comercio</div>
       <div class="pf-trade">
+        <div class="pf-row"><span class="l"><img src="assets/sim/img/v/tr_ctrader.png" alt=""><span class="nm">cTrader<small>1399343</small></span></span><span class="r"><span data-hideable>0.00</span> USD</span></div>
         <div class="pf-row"><span class="l"><img src="assets/sim/img/v/tr_options.png" alt="">Options</span><span class="r"><span data-hideable data-pf-options>0.00</span> USD</span></div>
-        <div class="pf-row"><span class="l"><img src="assets/sim/img/v/tr_tv.png" alt="">TradingView</span><span class="r"><span data-hideable>0.00</span> USD</span></div>
         <div class="pf-row"><span class="l"><img src="assets/sim/img/v/tr_mts.png" alt="">Standard</span><span class="r"><span data-hideable>0.00</span> USD</span></div>
-        <div class="pf-row"><span class="l"><img src="assets/sim/img/v/tr_dxn.png" alt="">Deriv Exchange</span><span class="r"><span data-hideable>0.00</span> USDT</span></div>
       </div>
-      <div class="pf-all"><button><i class="ic ic-pf_all"></i>Ver todas las transacciones</button></div>
+      <div class="pf-all"><button id="pfAllTx" data-href="transactions.html"><i class="ic ic-pf_all"></i>Ver todas las transacciones</button></div>
     </section>
 
   </main>
 </div>
 <div id="ddBottomNav"></div>
-<script src="assets/sim/js/deriv-shell.js?v=20261017h"></script>
+<script src="assets/sim/js/deriv-shell.js?v=20261017i"></script>
 
-<script src="assets/sim/js/withdraw.js?v=20261017h"></script>
+<script src="assets/sim/js/withdraw.js?v=20261017i"></script>
 <script>(function(){
   function paintPend(){
     var l=[];try{l=TradeLabSim.loadWithdrawals().filter(function(w){return w.status==='Procesando';});}catch(_){}
     var sec=document.getElementById('pfPending');sec.hidden=!l.length;
-    var funded=l.length>0||TradeLabSim.loadWallet().USD>0||TradeLabSim.loadWithdrawals().length>0;
+    var funded=l.length>0||TradeLabSim.loadWallet().USD>0||TradeLabSim.loadTransactions().length>0;
     document.getElementById('pfDeposit').hidden=funded;document.getElementById('pfMethodsSec').hidden=funded;
     document.getElementById('pfPendList').innerHTML=l.map(function(w){
       return '<div class="pf-pend"><span class="mi"><i></i></span><span class="t"><b>Retiro</b><small>hoy</small></span><span class="a"><b data-hideable data-value="'+TradeLabSim.formatMoney(w.amount)+'">'+TradeLabSim.formatMoney(w.amount)+'</b> USD<small>Procesando</small></span></div>';

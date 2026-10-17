@@ -27,14 +27,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Home | Deriv</title>
 <meta name="description" content="Simulador educativo independiente. No es Deriv ni ninguna plataforma de trading real, y no gestiona dinero real.">
-<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017h">
-<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017h">
-<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017h" media="(max-width:860px)">
-<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017h">
+<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017i">
+<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017i">
+<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017i" media="(max-width:860px)">
+<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017i">
 </head>
 <body class="bf-static-page" data-page="home">
-<script src="assets/sim/js/sim-shared.js?v=20261017h"></script>
-<script src="assets/sim/js/browser-frame.js?v=20261017h"></script>
+<script src="assets/sim/js/sim-shared.js?v=20261017i"></script>
+<script src="assets/sim/js/browser-frame.js?v=20261017i"></script>
 <script>BrowserFrame.init();</script>
 
 <div class="dd-shell">
@@ -296,7 +296,7 @@
 
 
 <script>window.TL_CUSTOM_EYE = true;</script>
-<script src="assets/sim/js/deriv-shell.js?v=20261017h"></script>
+<script src="assets/sim/js/deriv-shell.js?v=20261017i"></script>
 <script>
   // ===== PROMO AUTOPLAY CAROUSEL =====
   (function(){
@@ -385,9 +385,9 @@
       if(demoEl) demoEl.textContent = TradeLabSim.formatMoney(data.demo);
       if(virtualEl) virtualEl.textContent = TradeLabSim.formatMoney(data.virtual);
       if(mt5El) mt5El.dataset.value = TradeLabSim.formatMoney(data.demo);
-      if(totalEl) totalEl.dataset.value = TradeLabSim.formatMoney(currentAccount === 'demo' ? data.demo : data.virtual);
+      if(totalEl) totalEl.dataset.value = TradeLabSim.formatMoney(currentAccount === 'demo' ? data.demo : data.virtual + TradeLabSim.loadWallet().USD);
       const totalElM = document.getElementById('totalValueBalanceM');
-      if(totalElM) totalElM.dataset.value = TradeLabSim.formatMoney(data.virtual);
+      if(totalElM) totalElM.dataset.value = TradeLabSim.formatMoney(data.virtual + TradeLabSim.loadWallet().USD);
       applyVisibility();
     }
 

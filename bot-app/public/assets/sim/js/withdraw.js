@@ -22,7 +22,7 @@
     try {
       if (localStorage.getItem('tradelab-sim-wd-seeded')) return;
       localStorage.setItem('tradelab-sim-wd-seeded', '1');
-      if (TradeLabSim.loadWallet().USD <= 0 && !TradeLabSim.loadWithdrawals().length) TradeLabSim.saveWallet({ USD: 10 });
+      if (TradeLabSim.loadWallet().USD <= 0 && !TradeLabSim.loadWithdrawals().length) TradeLabSim.depositWallet(10);
     } catch (_) {}
   }
   function realBalance() { try { return TradeLabSim.loadWallet().USD; } catch (_) { return 0; } }

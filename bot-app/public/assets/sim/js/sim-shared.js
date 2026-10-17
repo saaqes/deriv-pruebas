@@ -140,7 +140,12 @@
       return { ok: false, reason: 'unknown-action' };
     }
 
+    var before = loadBalances()[account];
     saveBalances(data);
+    var delta = round2(data[account] - before);
+    if (account === 'virtual' && delta !== 0) {
+      addLedger(delta > 0 ? { type: 'deposit', amount: delta, to: 'options' } : { type: 'withdraw', amount: -delta, from: 'options' });
+    }
     return { ok: true, data: data };
   }
 
@@ -174,6 +179,27 @@
     }
   });
 
+  // ---- Historial de transacciones (Depósito / Retiro / Transferir) ----
+  var LEDGER_KEY = 'tradelab-sim-ledger';
+  var WD_DONE_MS = 5 * 60 * 1000; // un retiro "Procesando" pasa a "Completado" a los 5 min
+  function readLedger() {
+    try { var l = JSON.parse(localStorage.getItem(LEDGER_KEY) || '[]'); return Array.isArray(l) ? l : []; } catch (err) { return []; }
+  }
+  function addLedger(entry) {
+    var l = readLedger();
+    l.unshift(Object.assign({ id: String(Date.now()) + Math.floor(Math.random() * 1000), ts: Date.now(), status: 'Completado' }, entry));
+    try { localStorage.setItem(LEDGER_KEY, JSON.stringify(l.slice(0, 500))); } catch (err) { /* sin espacio */ }
+  }
+  /** Todas las transacciones (depósitos, retiros y transferencias), más recientes primero. */
+  function loadTransactions() {
+    var out = readLedger().slice();
+    loadWithdrawals().forEach(function (w) {
+      out.push({ id: 'wd' + w.id, type: 'withdraw', amount: w.amount, ts: w.ts, status: w.status });
+    });
+    out.sort(function (a, b) { return b.ts - a.ts; });
+    return out;
+  }
+
   // ---- Billetera (wallet) USD del simulador ----
   var WALLET_KEY = 'tradelab-sim-wallet';
   function loadWallet() {
@@ -203,7 +229,17 @@
     else { w.USD = round2(w.USD - amt); b.virtual = round2(b.virtual + amt); }
     try { localStorage.setItem(WALLET_KEY, JSON.stringify(w)); } catch (err) { return { ok: false, reason: 'storage' }; }
     saveBalances(b); // actualiza también la clave espejo que lee el gráfico (bot-app)
+    addLedger({ type: 'transfer', from: from, to: to, amount: amt });
     return { ok: true, balances: b, wallet: w };
+  }
+
+  /** Depósito simulado en la Billetera USD (también queda en el historial). */
+  function depositWallet(amount) {
+    var amt = round2(Number(amount)); if (!isFinite(amt) || amt <= 0) return false;
+    var w = loadWallet(); w.USD = round2(w.USD + amt);
+    if (!saveWallet(w)) return false;
+    addLedger({ type: 'deposit', amount: amt, to: 'usd' });
+    return true;
   }
 
   // ---- Retiros pendientes (simulados) ----
@@ -211,7 +247,11 @@
   function loadWithdrawals() {
     try {
       var l = JSON.parse(localStorage.getItem(WD_KEY) || '[]');
-      return Array.isArray(l) ? l : [];
+      if (!Array.isArray(l)) return [];
+      var now = Date.now();
+      return l.map(function (w) {
+        return (w.status === 'Procesando' && now - w.ts > WD_DONE_MS) ? Object.assign({}, w, { status: 'Completado' }) : w;
+      });
     } catch (err) { return []; }
   }
   function pendingTotal() {
@@ -229,6 +269,9 @@
   }
 
   global.TradeLabSim = {
+    loadTransactions: loadTransactions,
+    addLedger: addLedger,
+    depositWallet: depositWallet,
     loadWithdrawals: loadWithdrawals,
     pendingTotal: pendingTotal,
     requestWithdrawal: requestWithdrawal,
