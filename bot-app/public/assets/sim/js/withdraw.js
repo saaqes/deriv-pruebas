@@ -17,7 +17,7 @@
   } catch (_) {}
 
   function money(n) { return window.TradeLabSim ? TradeLabSim.formatMoney(n) : Number(n).toFixed(2); }
-  function realBalance() { try { return TradeLabSim.loadBalances().virtual; } catch (_) { return 0; } }
+  function realBalance() { try { return TradeLabSim.loadWallet().USD; } catch (_) { return 0; } }
 
   /* ---------- Modal "Retirar" (se monta en cualquier página que tenga el botón Retirar) ---------- */
   function mountModal() {

@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="assets/sim/css/deriv-withdraw.css?v=20261017b">
 </head>
 <body class="bf-static-page" data-page="portfolio">
-<script src="assets/sim/js/sim-shared.js?v=20261015p"></script>
+<script src="assets/sim/js/sim-shared.js?v=20261017c"></script>
 <script src="assets/sim/js/browser-frame.js?v=20261015p"></script>
 <script>BrowserFrame.init();</script>
 <div class="dd-shell">
@@ -41,10 +41,10 @@
       <div class="dd-hero-body">
         <div class="header-text">
           <div class="valor-total-label">Est. valor total</div>
-          <div class="valor-total-amount"><span class="balance-amount" data-hideable data-hero-amount>0.00</span><span class="balance-currency">USD</span><i class="ic ic-refresh"></i></div>
+          <div class="valor-total-amount"><span class="balance-amount" data-hideable data-hero-amount data-hero-wallet>0.00</span><span class="balance-currency">USD</span><i class="ic ic-refresh"></i></div>
           <div class="valor-total-updated" id="updatedTxt">Actualizado hace 1 min</div>
         </div>
-        <div class="dd-hero-actions"><div class="dd-action"><div class="circle primary"><i class="ic ic-h_plus2"></i></div>Depósito</div><div class="dd-action"><div class="circle ghost"><i class="ic ic-h_transfer2"></i></div>Transferir</div><div class="dd-action"><div class="circle ghost"><i class="ic ic-h_minus"></i></div>Retirar</div></div>
+        <div class="dd-hero-actions"><div class="dd-action"><div class="circle primary"><i class="ic ic-h_plus2"></i></div>Depósito</div><div class="dd-action" data-go="transfer.html"><div class="circle ghost"><i class="ic ic-h_transfer2"></i></div>Transferir</div><div class="dd-action"><div class="circle ghost"><i class="ic ic-h_minus"></i></div>Retirar</div></div>
       </div>
     </section>
 
@@ -67,9 +67,16 @@
     </section>
 
     <section class="dd-section">
+      <div class="section-title title-lg" style="margin-bottom:0.75rem">Billetera</div>
+      <div class="pf-trade">
+        <div class="pf-row"><span class="l"><img src="assets/sim/img/v/cx_us.png" alt="">US Dollar</span><span class="r"><span data-hideable data-pf-wallet>0.00</span> USD</span></div>
+      </div>
+    </section>
+
+    <section class="dd-section">
       <div class="section-title title-lg" style="margin-bottom:0.75rem">Comercio</div>
       <div class="pf-trade">
-        <div class="pf-row"><span class="l"><img src="assets/sim/img/v/tr_options.png" alt="">Options</span><span class="r"><span data-hideable>0.00</span> USD</span></div>
+        <div class="pf-row"><span class="l"><img src="assets/sim/img/v/tr_options.png" alt="">Options</span><span class="r"><span data-hideable data-pf-options>0.00</span> USD</span></div>
         <div class="pf-row"><span class="l"><img src="assets/sim/img/v/tr_tv.png" alt="">TradingView</span><span class="r"><span data-hideable>0.00</span> USD</span></div>
         <div class="pf-row"><span class="l"><img src="assets/sim/img/v/tr_mts.png" alt="">Standard</span><span class="r"><span data-hideable>0.00</span> USD</span></div>
         <div class="pf-row"><span class="l"><img src="assets/sim/img/v/tr_dxn.png" alt="">Deriv Exchange</span><span class="r"><span data-hideable>0.00</span> USDT</span></div>
@@ -80,8 +87,9 @@
   </main>
 </div>
 <div id="ddBottomNav"></div>
-<script src="assets/sim/js/deriv-shell.js?v=20261015p"></script>
+<script src="assets/sim/js/deriv-shell.js?v=20261017c"></script>
 
-<script src="assets/sim/js/withdraw.js?v=20261017b"></script>
+<script src="assets/sim/js/withdraw.js?v=20261017c"></script>
+<script>document.addEventListener('click',function(e){var a=e.target.closest('[data-go]');if(a)location.href=a.getAttribute('data-go');});</script>
 </body>
 </html>

@@ -272,7 +272,11 @@
       var acct = 'real';
       var paint = function () {
         var d = TradeLabSim.loadBalances();
-        var v = TradeLabSim.formatMoney(acct === 'demo' ? d.demo : d.virtual);
+        var tot = acct === 'demo' ? d.demo : d.virtual;
+        if (amt.hasAttribute('data-hero-wallet') && acct !== 'demo') tot += TradeLabSim.loadWallet().USD;
+        var v = TradeLabSim.formatMoney(tot);
+        document.querySelectorAll('[data-pf-options]').forEach(function (e) { e.dataset.value = TradeLabSim.formatMoney(d.virtual); if (!window.__ddHidden) e.textContent = e.dataset.value; });
+        document.querySelectorAll('[data-pf-wallet]').forEach(function (e) { e.dataset.value = TradeLabSim.formatMoney(TradeLabSim.loadWallet().USD); if (!window.__ddHidden) e.textContent = e.dataset.value; });
         amt.dataset.value = v;
         if (!window.__ddHidden) amt.textContent = v;
       };

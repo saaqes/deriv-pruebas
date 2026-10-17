@@ -174,7 +174,42 @@
     }
   });
 
+  // ---- Billetera (wallet) USD del simulador ----
+  var WALLET_KEY = 'tradelab-sim-wallet';
+  function loadWallet() {
+    try {
+      var p = JSON.parse(localStorage.getItem(WALLET_KEY) || 'null');
+      if (p && typeof p.USD === 'number' && isFinite(p.USD) && p.USD >= 0) return { USD: round2(p.USD) };
+    } catch (err) { /* usa el valor por defecto */ }
+    return { USD: 0 };
+  }
+  function saveWallet(w) {
+    try {
+      localStorage.setItem(WALLET_KEY, JSON.stringify({ USD: round2(w.USD) }));
+      window.dispatchEvent(new CustomEvent('tradelab-sim:balances-updated', { detail: loadBalances() }));
+      return true;
+    } catch (err) { return false; }
+  }
+  /** Mueve saldo entre 'options' (Cuenta Real del simulador / gráfico) y 'usd' (Billetera). */
+  function transfer(from, to, amount) {
+    var amt = round2(Number(amount));
+    if (!isFinite(amt) || amt <= 0 || from === to) return { ok: false, reason: 'invalid' };
+    var ids = { options: 1, usd: 1 };
+    if (!ids[from] || !ids[to]) return { ok: false, reason: 'unsupported' };
+    var b = loadBalances(), w = loadWallet();
+    var src = from === 'options' ? b.virtual : w.USD;
+    if (amt > src + 1e-9) return { ok: false, reason: 'insufficient' };
+    if (from === 'options') { b.virtual = round2(b.virtual - amt); w.USD = round2(w.USD + amt); }
+    else { w.USD = round2(w.USD - amt); b.virtual = round2(b.virtual + amt); }
+    try { localStorage.setItem(WALLET_KEY, JSON.stringify(w)); } catch (err) { return { ok: false, reason: 'storage' }; }
+    saveBalances(b); // actualiza también la clave espejo que lee el gráfico (bot-app)
+    return { ok: true, balances: b, wallet: w };
+  }
+
   global.TradeLabSim = {
+    loadWallet: loadWallet,
+    saveWallet: saveWallet,
+    transfer: transfer,
     STORAGE_KEY: STORAGE_KEY,
     loadBalances: loadBalances,
     saveBalances: saveBalances,
