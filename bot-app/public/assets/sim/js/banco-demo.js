@@ -12,6 +12,8 @@
     bell: 'M6 16V11a6 6 0 0112 0v5l2 2H4zM10 21h4', help: 'M12 21a9 9 0 100-18 9 9 0 000 18zM9.5 9.5a2.5 2.5 0 115 .5c0 1.5-2.5 2-2.5 3.5M12 17v.5', head: 'M4 14v-2a8 8 0 0116 0v2M4 14h3v5H4zM17 14h3v5h-3zM17 19c0 1.5-2 2-5 2',
     out: 'M9 4H5v16h4M16 8l4 4-4 4M20 12H9', user: 'M12 12a4 4 0 100-8 4 4 0 000 8zM4 21c0-4 4-6 8-6s8 2 8 6', chev: 'M9 5l7 7-7 7', chevD: 'M5 9l7 7 7-7', chevU: 'M5 15l7-7 7 7', back: 'M15 5l-7 7 7 7', x: 'M5 5l14 14M19 5L5 19',
     qr: 'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 14h2v6h-6v-2M14 18h2', eye: 'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 15a3 3 0 100-6 3 3 0 000 6z', eyeoff: 'M3 3l18 18M10 6a9 9 0 0112 6 13 13 0 01-3 4M6 8a13 13 0 00-4 4s4 7 10 7a9 9 0 004-1',
+    docCoin: 'M6 3h8l4 4v6M14 3v4h4M6 3v18h6M15 21a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM15 15.5v4M16.2 16.2c-.5-.5-2.4-.4-2.4.6s2.4.7 2.4 1.6-2 1.1-2.5.4', plane2: 'M3 12l18-9-5 18-4.5-7zM11.5 14L21 3M7 4c1.2.2 2 1 2 2.2',
+    cardL: 'M3 6h18v12H3zM3 10h18M6 14.5h5M14 14.5h4', laptop: 'M4 6h12v9H4zM2 18.5h14M14 10h6v10h-6zM17 17.5h.01', targetA: 'M12 21a9 9 0 119-9M12 17a5 5 0 115-5M12 12h.01M12 12L20 4M16.5 3.5v4h4', house2: 'M3.5 11.5L12 4l8.5 7.5M6 10v10h12V10M10 20v-5h4v5', car2: 'M4 15l1.6-5.2A2 2 0 017.5 8.4h9a2 2 0 011.9 1.4L20 15M3 15h18v4H3zM7 17h.01M17 17h.01', docStack: 'M8 4h8l4 4v10H8zM4 8v12h12M15 4v5h5M11 13h5M11 16h5',
     send: 'M21 3L3 11l7 3 3 7zM10 14l4-4', key: 'M14 10a4 4 0 11-3 3l-7 7v-3h3v-3h3l1-1', phone: 'M8 3h8v18H8zM11 18h2', cart: 'M3 4h3l2 11h10l2-8H7M10 20h.01M17 20h.01', plane: 'M3 13l18-9-5 17-4-7zM12 14l-3 5',
     bus: 'M5 4h14v13H5zM5 11h14M8 20v-3M16 20v-3', gift: 'M4 9h16v4H4zM6 13v7h12v-7M12 9v11M12 9c-3 0-4-4-1-4s1 4 1 4zM12 9c3 0 4-4 1-4', plus: 'M12 5v14M5 12h14', lock: 'M6 11h12v9H6zM8 11V8a4 4 0 018 0v3', shield: 'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z', star: 'M12 3l2.7 5.8 6.3.7-4.7 4.2 1.3 6.3L12 17l-5.6 3 1.3-6.3L3 9.5l6.3-.7z',
     list: 'M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01', finger: 'M7 11a5 5 0 0110 0v2M5 15V11a7 7 0 0114 0v3M9 20c0-3 1-5 3-5v5M15 18c0-2 0-4-3-4M12 11v3', face: 'M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3M9 10v1.5M15 10v1.5M9 15c1.7 1.5 4.3 1.5 6 0M12 10v3',
@@ -46,9 +48,9 @@
     app.insertBefore(el, navEl);
     if (old) { old.classList.add('leave'); setTimeout(function () { old.remove(); }, 260); }
     view = el;
-    var showNav = !!def.nav && logged;
+    var showNav = !!def.nav && (logged || cur.name === 'home');
     navEl.style.display = showNav ? 'flex' : 'none';
-    fabEl.style.display = def.fab && logged ? 'grid' : 'none';
+    fabEl.style.display = def.fab ? 'grid' : 'none';
     if (showNav) [].forEach.call(navEl.children, function (b) { b.classList.toggle('on', b.dataset.tab === def.nav); });
     var body = $('.body', el); if (body && def.nav === undefined) body.classList.add('nonav'); else if (body && !showNav) body.classList.add('nonav');
     if (def.after) def.after(el, cur.args);
@@ -56,6 +58,8 @@
   document.addEventListener('click', function (e) {
     var t = e.target.closest('[data-go],[data-act],[data-back]'); if (!t || !app.contains(t)) return;
     if (t.dataset.back != null) return back();
+    if (t.dataset.go === 'login' && !logged && !t.dataset.pre) { return modal('<h4>Antes de continuar</h4><p>Esta es una app de demostración. No ingreses usuarios ni claves reales y no compartas tu clave dinámica con nadie.</p><button class="btn p" data-go="login" data-pre="1">Continuar</button><button class="btn o" data-act="close">Cancelar</button>'); }
+    if (t.dataset.go === 'login') { var ov = t.closest('.ovl'); if (ov) ov.remove(); }
     if (t.dataset.go) { var a = {}; try { a = t.dataset.args ? JSON.parse(t.dataset.args) : {}; } catch (_) { /* sin args */ } return go(t.dataset.go, a, { tab: t.dataset.tab != null, dir: t.dataset.dir }); }
     if (t.dataset.act && ACT[t.dataset.act]) ACT[t.dataset.act](t, e);
   });
@@ -67,6 +71,9 @@
   function loading(ms, fn) { var l = document.createElement('div'); l.className = 'loading'; l.innerHTML = '<div class="bx"><div class="spin" style="width:34px;height:34px"></div>Cargando</div>'; app.appendChild(l); setTimeout(function () { l.remove(); fn && fn(); }, ms); }
   function arc(small) {
     return '<div class="arc' + (small ? ' small' : '') + '"><svg viewBox="0 0 430 130" preserveAspectRatio="none"><path d="M-10 20 Q215 160 440 10" stroke="#ffd23f"/><path d="M-10 40 Q215 170 440 28" stroke="#4cc9f0" transform="translate(0,6)"/><path d="M20 70 Q230 190 440 50" stroke="#ff9f43" transform="translate(30,0)"/><path d="M-10 60 Q215 150 440 70" stroke="#b66dff" opacity=".8"/><path d="M60 100 Q240 170 440 30" stroke="#4fe0a0" opacity=".7"/></svg></div>';
+  }
+  function arcGuest() {
+    return '<div class="arcG"><svg viewBox="0 0 430 130" aria-hidden="true"><path d="M420 10 Q408 76 317 92" stroke="#ffd23f" stroke-width="12"/><path d="M316 93 Q328 92 339 88" stroke="#ffd23f" stroke-width="8"/><path d="M353 98 Q386 94 403 69" stroke="#ff9f43" stroke-width="14"/><path d="M299 105 Q320 105 341 101" stroke="#4cc9f0" stroke-width="8"/></svg></div>';
   }
   function arcHome() {
     return '<div class="arcH"><svg viewBox="0 0 430 130" aria-hidden="true"><path d="M0 56 Q20 70 36 82" stroke="#4cc9f0" stroke-width="7"/><path d="M42 88 Q66 96 92 86" stroke="#4fe0a0" stroke-width="7"/><path d="M198 50 Q300 -12 378 52" stroke="#ffd23f" stroke-width="14"/><path d="M236 58 Q282 40 332 52" stroke="#4cc9f0" stroke-width="7"/><path d="M340 44 Q392 52 412 100" stroke="#ff9f43" stroke-width="14"/><path d="M386 40 Q412 52 424 74" stroke="#b66dff" stroke-width="8"/></svg></div>';
@@ -104,11 +111,11 @@
   R.home = {
     nav: 'home', fab: true, render: function (a) {
       if (!logged) {
-        return head() + '<div class="body nonav"><div class="hello" style="font-size:24px">' + greet() + '</div>' +
-          (a.boot ? '<div class="skel" style="margin:14px 18px;height:40px;width:130px" id="sk1"></div><div class="skel" style="margin:20px 18px;height:56px"></div><div class="skel" style="margin:20px 18px;height:110px"></div>' : '') +
-          '<button class="guest-pill" ' + G('login', null, ' id="gp"') + (a.boot ? ' style="display:none"' : '') + '>Iniciar sesión ' + ic('chev', 14) + '</button>' + arc(true) +
-          '<button class="key" data-act="keyinfo"><span class="ring" id="kring"><i>' + ic('lock', 14) + '</i></span><span><small>Clave demo</small><b id="kcode">------</b></span>' + ic('chev', 16) + '</button>' +
-          '<div class="sec"><h3>Transacciones principales</h3>' + tiles() + '</div><div class="sec"><h3>Más opciones</h3>' + circles() + '</div></div>';
+        return head() + '<div class="top">' + arcGuest() + '<div class="hello" style="cursor:default">' + greet() + '</div>' +
+          (a.boot ? '<div class="skel" id="sk1" style="position:absolute;right:18px;top:66px;height:38px;width:150px"></div><div class="skel" style="margin:50px 18px 0;height:60px;width:230px"></div>' : '') +
+          '<button class="guest-pill" ' + G('login', null, ' id="gp"') + (a.boot ? ' style="display:none"' : '') + '>Iniciar sesión ' + ic('out', 16).replace('<svg ', '<svg style="transform:scaleX(-1)" ') + '</button>' +
+          '<button class="key" id="gk" data-act="keyinfo"' + (a.boot ? ' style="display:none"' : '') + '><span class="ring" id="kring"><i>' + ic('lock', 14) + '</i></span><span><small>Clave demo</small><b id="kcode">------</b></span>' + ic('chev', 16) + '</button></div>' +
+          '<div class="body" id="hb"><div class="sec" style="margin-top:22px"><h3>Transacciones principales</h3>' + tiles() + '</div><div class="sec"><h3>Más opciones</h3>' + circles() + '</div></div>';
       }
       return head() + '<div class="top">' + arcHome() + '<button class="hello" ' + G('ajustes', null, ' data-tab') + '>Hola, ' + esc(firstName()) + ' ' + ic('chev', 18) + '</button>' +
         '<button class="key" data-act="keyinfo"><span class="ring" id="kring"><i>' + ic('lock', 14) + '</i></span><span><small>Clave demo</small><b id="kcode">------</b></span>' + ic('chev', 16) + '</button></div><div class="body" id="hb">' +
@@ -124,7 +131,7 @@
     after: function (el, a) {
       if (!logged) {
         keyTick(el);
-        if (a.boot) setTimeout(function () { var g = $('#gp', el); if (!g) return; el.querySelectorAll('.skel').forEach(function (k) { k.style.transition = 'opacity .4s'; k.style.opacity = 0; setTimeout(function () { k.remove(); }, 400); }); g.style.display = 'block'; g.classList.add('fade'); }, 1100);
+        if (a.boot) setTimeout(function () { var g = $('#gp', el); if (!g) return; el.querySelectorAll('.skel').forEach(function (k) { k.style.transition = 'opacity .4s'; k.style.opacity = 0; setTimeout(function () { k.remove(); }, 400); }); g.style.display = 'flex'; g.classList.add('fade'); var gk = $('#gk', el); if (gk) { gk.style.display = 'inline-flex'; gk.classList.add('fade'); } }, 1100);
         return;
       }
       var acc = $('#accs', el), dots = $('#dots', el).children;
@@ -144,10 +151,10 @@
     f(); keyTimer = setInterval(f, 500);
   }
   function tiles() {
-    var t = [['Ver saldos y movimientos', 'list', G('saldos')], ['Tus llaves', 'key', G('feat', { t: 'Tus llaves', i: 'key' })], ['Transferir plata', 'send', G('transfer')], ['Pagar tarjetas y créditos', 'card', G('feat', { t: 'Pagar tarjetas y créditos', i: 'card' })], ['Pagar facturas', 'receipt', G('feat', { t: 'Pagar facturas', i: 'receipt' })], ['Ver todas', 'grid', G('trans', null, ' data-tab')]];
-    return '<div class="tiles">' + t.map(function (x) { return '<button class="tile" ' + x[2] + '>' + ic(x[1], 28) + x[0] + '</button>'; }).join('') + '</div>';
+    var t = [['Ver saldos y movimientos', 'docCoin', G('saldos')], ['Tus llaves', 'bre', G('feat', { t: 'Tus llaves', i: 'key' })], ['Transferir plata', 'plane2', G('transfer')], ['Pagar tarjetas y créditos', 'cardL', G('feat', { t: 'Pagar tarjetas y créditos', i: 'card' })], ['Pagar facturas', 'receipt', G('feat', { t: 'Pagar facturas', i: 'receipt' })], ['Ver todas', 'grid', G('trans', null, ' data-tab')]];
+    return '<div class="tiles">' + t.map(function (x) { return '<button class="tile" ' + x[2] + '>' + (x[1] === 'bre' ? '<b class="bre">Bre-B</b>' : ic(x[1], 28)) + x[0] + '</button>'; }).join('') + '</div>';
   }
-  var CIRC = [['Sucursal virtual', 'phone', '#f3c5e9', '#6a2a5e'], ['Organiza tu plata', 'target', '#c9a8ff', '#3a1d6e'], ['Hogar y servicios', 'home', '#7fe3c0', '#0e4a37'], ['Transporte', 'bus', '#ffd23f', '#5a4300'], ['Beneficios y compras', 'gift', '#ff9f8a', '#611b0c'], ['Trámites y solicitudes', 'doc', '#9fd8ff', '#0e3a5e']];
+  var CIRC = [['Sucursal virtual', 'laptop', '#f3c5e9', '#6a2a5e'], ['Organiza tu plata', 'targetA', '#c9a8ff', '#3a1d6e'], ['Hogar y servicios', 'house2', '#7fe3c0', '#0e4a37'], ['Transporte', 'car2', '#ffd23f', '#5a4300'], ['Beneficios y compras', 'star', '#ff9f8a', '#611b0c'], ['Trámites y solicitudes', 'docStack', '#9fd8ff', '#0e3a5e']];
   function circles() { return '<div class="circles">' + CIRC.map(function (c) { return '<button class="circ" ' + (c[0].indexOf('Trámites') === 0 ? G('tram', null, ' data-tab') : c[0].indexOf('Organiza') === 0 || c[0].indexOf('Hogar') === 0 || c[0].indexOf('Transporte') === 0 || c[0].indexOf('Benef') === 0 ? G('explore', null, ' data-tab') : G('feat', { t: c[0], i: c[1] })) + '><i style="background:' + c[2] + ';color:' + c[3] + '">' + ic(c[1], 28) + '</i>' + c[0] + '</button>'; }).join('') + '</div>'; }
   function offers() {
     var o = [['linear-gradient(135deg,#ffb36b,#ff6f91 55%,#6a82fb)', 'Viajes y hospedaje', '¡Viaja en Hot Days!', 'Descuentos en vuelos y hoteles al pagar con tus tarjetas (oferta ficticia).', 'Válido hasta: 31 Oct 2026'], ['linear-gradient(135deg,#4cc9f0,#4fe0a0)', 'Compras', 'Viaja y paga con 0% de interés', 'Paga hasta en 4 cuotas con tu cuenta (oferta ficticia).', 'Válido hasta: 30 Nov 2026'], ['linear-gradient(135deg,#7f5af0,#2cb67d)', 'Seguridad', 'Alarma para tu hogar', '15% de descuento en la mensualidad (oferta ficticia).', 'Válido hasta: 30 Dic 2026']];
@@ -415,7 +422,7 @@
     nsave: function () { var el = view, a = $('#n1', el).value.trim(), b = $('#n2', el).value.trim(), ts = new Date($('#n3', el).value).getTime(); if (!a || !b || isNaN(ts)) return toast('Completa título, contenido y fecha'); S.notifications.unshift({ id: D.uid('n'), title: a, body: b, ts: ts, read: false }); D.log('admin', 'Notificación agregada'); saveS(); drawAdmin(el, true); toast('Notificación agregada'); },
     reconc: function () { var c = D.reconcile(); toast(c ? 'Reconciliación: hubo cambios' : 'Reconciliación: sin novedades'); drawAdmin(view, true); }
   };
-  ACT.qr = function () { go('qr', {}, { dir: 'up' }); };
+  ACT.qr = function () { if (!logged) return go('login'); go('qr', {}, { dir: 'up' }); };
   R.qr = {
     nav: undefined, render: function () {
       var c = '', s = 7;
@@ -430,7 +437,7 @@
     app.insertAdjacentHTML('beforeend', '<div class="demo-tag">MODO DEMO · APP FICTICIA</div>');
     navEl = document.createElement('nav'); navEl.className = 'nav'; navEl.style.display = 'none';
     navEl.innerHTML = NAVD.map(function (n) { return '<button data-tab="' + n[0] + '" data-go="' + n[3] + '" data-tab-reset>' + ic(n[2], 22) + n[1] + '</button>'; }).join('');
-    navEl.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) { e.stopPropagation(); go(b.dataset.go, {}, { tab: true }); } }, true);
+    navEl.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) { e.stopPropagation(); if (!logged && b.dataset.go !== 'home') return go('login'); go(b.dataset.go, {}, { tab: true }); } }, true);
     app.appendChild(navEl);
     fabEl = document.createElement('button'); fabEl.className = 'fab'; fabEl.style.display = 'none'; fabEl.setAttribute('aria-label', 'Pagar con QR (demo)'); fabEl.dataset.act = 'qr'; fabEl.innerHTML = ic('qr', 24); app.appendChild(fabEl);
     document.addEventListener('aurora:data', function () { S = D.get(); });
