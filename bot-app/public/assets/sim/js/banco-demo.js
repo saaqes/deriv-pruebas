@@ -103,7 +103,8 @@
       if (!logged) {
         return head() + '<div class="body nonav"><div class="hello" style="font-size:24px">' + greet() + '</div>' +
           (a.boot ? '<div class="skel" style="margin:14px 18px;height:40px;width:130px" id="sk1"></div><div class="skel" style="margin:20px 18px;height:56px"></div><div class="skel" style="margin:20px 18px;height:110px"></div>' : '') +
-          '<button class="guest-pill" ' + G('login', null, ' id="gp"') + (a.boot ? ' style="display:none"' : '') + '>Iniciar sesión</button>' + arc(true) +
+          '<button class="guest-pill" ' + G('login', null, ' id="gp"') + (a.boot ? ' style="display:none"' : '') + '>Iniciar sesión ' + ic('chev', 14) + '</button>' + arc(true) +
+          '<button class="key" data-act="keyinfo"><span class="ring" id="kring"><i>' + ic('lock', 14) + '</i></span><span><small>Clave demo</small><b id="kcode">------</b></span>' + ic('chev', 16) + '</button>' +
           '<div class="sec"><h3>Transacciones principales</h3>' + tiles() + '</div><div class="sec"><h3>Más opciones</h3>' + circles() + '</div></div>';
       }
       return head() + arc() + '<div class="body" id="hb"><button class="hello" ' + G('ajustes', null, ' data-tab') + '>Hola, ' + esc(firstName()) + ' ' + ic('chev', 18) + '</button>' +
@@ -119,6 +120,7 @@
     },
     after: function (el, a) {
       if (!logged) {
+        keyTick(el);
         if (a.boot) setTimeout(function () { var g = $('#gp', el); if (!g) return; el.querySelectorAll('.skel').forEach(function (k) { k.style.transition = 'opacity .4s'; k.style.opacity = 0; setTimeout(function () { k.remove(); }, 400); }); g.style.display = 'block'; g.classList.add('fade'); }, 1100);
         return;
       }
@@ -224,7 +226,7 @@
   };
   R.ajustes = {
     nav: 'aj', render: function () {
-      var t = [['Tu usuario', 'user', G('usuario')], ['Seguridad', 'shield', G('seguridad')], ['Productos y servicios', 'card', 0, 1], ['Preferencias de pantalla', 'gear', G('aspecto')], ['Protección de datos', 'lock'], ['Términos y condiciones', 'doc'], ['Califica nuestra app', 'star'], ['Panel demo', 'edit', G('admin')]];
+      var t = [['Tu usuario', 'user', G('usuario')], ['Seguridad', 'shield', G('seguridad')], ['Productos y servicios', 'card', 0, 1], ['Preferencias de pantalla', 'gear', G('aspecto')], ['Protección de datos', 'lock'], ['Términos y condiciones', 'doc'], ['Califica nuestra app', 'star'], ['Editar saldo (demo)', 'edit', G('admin')]];
       return gridScr('Ajustes', '<div style="text-align:center;padding:0 20px 14px"><b style="font-size:17px">' + esc(S.name) + '</b><div style="font-size:12px;color:var(--mut);margin-top:4px">' + (S.lastLogin ? 'Último ingreso: ' + D.fdate(S.lastLogin) + ', ' + D.ftime(S.lastLogin) : 'Primer ingreso') + '</div></div><div class="grid3">' + t.map(function (x) { return gi(x[0], x[1], N[0], N[1], x[2], 0, x[3]); }).join('') + '</div><button class="btn o" style="margin-top:34px" data-act="logout">Cerrar sesión</button>');
     }
   };
@@ -248,22 +250,24 @@
         '<div class="tabs"><button data-act="tab" data-t="Detalles" class="' + (tabSel === 'Detalles' ? 'on' : '') + '">Detalles</button><button data-act="tab" data-t="Movimientos" class="' + (tabSel === 'Movimientos' ? 'on' : '') + '">Movimientos</button></div><div class="body">';
       if (tabSel === 'Detalles') {
         var tot = S.balance + S.pockets;
-        return h + '<div class="row hd" style="margin-top:14px">' + ic('user', 22) + '<span class="g"><small style="margin:0">Este es tu plan</small>Plan Demo<small>$ 0 / mes</small></span>' + ic('chev', 16) + '</div><div class="kv"><span>Saldo en bolsillos</span><span>' + money(S.pockets) + '</span></div><div class="kv"><span>Cobros en proceso</span><span>' + money(S.processing) + '</span></div><div class="kv"><span>Saldo en canje</span><span>' + money(S.onhold) + '</span></div><div class="kv"><b>Saldo total</b><b>' + money(tot) + '</b></div><div class="note w" style="margin-top:20px">' + ic('info', 20) + '<span>Datos de demostración editables por un administrador. No son un saldo verificado de ningún banco.</span></div></div>';
+        return h + '<div class="plan"><i>' + ic('star', 22) + '</i><span class="g"><small>Este es tu plan</small><b>Plan Demo</b><small>$ 0 /mes</small></span>' + ic('chev', 16) + '</div><div class="sumbox"><div class="kv2"><span>Saldo en bolsillos ' + ic('info', 14) + '</span><b>' + mhtml(S.pockets) + '</b></div><div class="kv2"><span>Cobros en proceso ' + ic('info', 14) + '</span><b>' + mhtml(S.processing) + '</b></div><div class="kv2"><span>Saldo en canje ' + ic('info', 14) + '</span><b>' + mhtml(S.onhold) + '</b></div><div class="kv2 tot"><span>Saldo total</span><b>' + mhtml(tot) + '</b></div></div><div class="subt">Tarjetas que tienes con esta cuenta</div><div class="note w" style="margin-top:20px">' + ic('info', 20) + '<span>Datos de demostración editables por un administrador. No son un saldo verificado de ningún banco.</span></div></div>' + actbar();
       }
       var list = allMov().filter(function (m) { return filt === 'Todos' || (filt === 'Ingresos' && (m.amount || 0) >= 0 && m.status !== 'Pendiente') || (filt === 'Egresos' && m.amount < 0) || (filt === 'Pendientes' && m.status === 'Pendiente'); });
-      return h + '<button class="row" ' + G('comprob') + '>' + ic('receipt', 20) + '<span class="g" style="font-size:13px">Consultar comprobantes (demo)</span>' + ic('chev', 16) + '</button><div class="filters">' + ['Todos', 'Ingresos', 'Egresos', 'Pendientes'].map(function (f) { return '<button data-act="filt" data-t="' + f + '" class="' + (filt === f ? 'on' : '') + '">' + f + '</button>'; }).join('') + '</div>' + (list.length ? list.map(mvRow).join('') : '<div style="text-align:center;color:var(--mut);padding:40px">Sin movimientos para este filtro.</div>') + '</div>';
+      return h + '<button class="row" ' + G('comprob') + '>' + ic('receipt', 20) + '<span class="g" style="font-size:13px">Consultar comprobantes (demo)</span>' + ic('chev', 16) + '</button><div class="filters">' + ['Todos', 'Ingresos', 'Egresos', 'Pendientes'].map(function (f) { return '<button data-act="filt" data-t="' + f + '" class="' + (filt === f ? 'on' : '') + '">' + f + '</button>'; }).join('') + '</div>' + (list.length ? list.map(mvRow).join('') : '<div style="text-align:center;color:var(--mut);padding:40px">Sin movimientos para este filtro.</div>') + '</div>' + actbar();
     }
   };
+  function actbar() { return '<div class="actbar"><button ' + G('transfer') + '>' + ic('send', 26) + 'Transferir plata</button><button ' + G('feat', { t: 'Ir a Día a Día', i: 'cash' }) + '>' + ic('cash', 26) + 'Ir a Día a Día</button><button ' + G('feat', { t: 'Bolsillos', i: 'wallet' }) + '>' + ic('wallet', 26) + 'Bolsillos</button></div>'; }
   function allMov() { return S.movements.slice().sort(function (a, b) { return b.date - a.date; }); }
-  function amtTxt(m) { return m.amount == null ? (m.usd != null ? D.money(m.usd, 'USD') + ' · COP pendiente de confirmación' : '—') : '<span class="' + (m.amount < 0 ? 'neg' : 'pos') + '">COP ' + money(m.amount) + '</span>'; }
+  function mhtml(n) { var neg = n < 0, p = Math.abs(n).toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).split(','); return (neg ? '-' : '') + '$ ' + p[0] + '<small>,' + p[1] + '</small>'; }
+  function amtTxt(m) { return m.amount == null ? (m.usd != null ? '<span class="cop">USD</span> ' + D.money(m.usd).replace('$ ', '').replace('USD ', '') + '<small> · COP pendiente</small>' : '—') : '<span class="cop">COP</span> <span class="' + (m.amount < 0 ? 'neg' : 'pos') + '">' + mhtml(m.amount) + '</span>'; }
   function chip(s) { return '<span class="chip ' + (s === 'Completado' ? 'ok' : s === 'Pendiente' ? 'pend' : 'fail') + '">' + esc(s) + '</span>'; }
-  function mvRow(m) { return '<button class="mv" ' + G('mov', { id: m.id }) + '><div class="d"><span>' + D.fdate(m.date) + ' · ' + D.ftime(m.date) + chip(m.status) + '</span></div><div class="t"><span>' + esc(m.desc) + '</span><span>' + amtTxt(m) + '</span></div></button>'; }
+  function mvRow(m) { return '<button class="mv" ' + G('mov', { id: m.id }) + '><div class="dt">' + D.fdate(m.date) + (m.status !== 'Completado' ? chip(m.status) : '') + '</div><div class="ds">' + esc(m.desc) + '</div><div class="am">' + amtTxt(m) + '</div></button>'; }
   function findMov(id) { return S.movements.filter(function (m) { return m.id === id; })[0]; }
   R.mov = {
     nav: undefined, render: function (a) {
       var m = findMov(a.id); if (!m) return sub('Volver', '') + '<div class="body nonav"><div class="ttl">Movimiento no encontrado</div></div>';
       var kv = function (k, v) { return v ? '<div class="kv"><span>' + k + '</span><span>' + v + '</span></div>' : ''; };
-      return sub('Volver', '') + '<div class="ttl"><small>Detalle del movimiento</small>' + esc(m.desc) + '</div><div class="body nonav"><div style="padding:6px 20px 14px;font-size:26px;font-weight:700">' + (m.amount == null ? D.money(m.usd, 'USD') : '<span class="' + (m.amount < 0 ? 'neg' : 'pos') + '">' + money(m.amount) + '</span>') + '</div>' +
+      return sub('Volver', '') + '<div class="ttl"><small>Detalle del movimiento</small>' + esc(m.desc) + '</div><div class="body nonav"><div style="padding:6px 20px 14px;font-size:26px;font-weight:700">' + (m.amount == null ? D.money(m.usd, 'USD') : '<span class="' + (m.amount < 0 ? 'neg' : 'pos') + '">' + mhtml(m.amount) + '</span>') + '</div>' +
         kv('Estado', chip(m.status)) + kv('Tipo de operación', esc(m.type)) + kv('Moneda', m.amount == null ? 'USD → COP' : 'COP') +
         (m.usd != null ? kv('Importe original (USD)', D.money(m.usd, 'USD')) : '') + kv('Importe abonado (COP)', m.amount == null ? 'Pendiente de confirmación' : money(m.amount)) +
         kv('Tipo de cambio aplicado', m.fx ? esc(m.fx) : (m.usd != null ? 'No disponible' : '')) + kv('Comisiones', m.fee != null ? money(m.fee) : (m.usd != null ? 'No disponible' : '')) +

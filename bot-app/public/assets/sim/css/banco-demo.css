@@ -214,3 +214,24 @@ svg{display:block}
 /* ---- Volver a Deriv ---- */
 .to-deriv{position:absolute;z-index:96;left:10px;top:calc(env(safe-area-inset-top) + 4px);font-size:11px;font-weight:700;color:#fff;background:rgba(0,0,0,.45);border-radius:12px;padding:3px 10px;text-decoration:none;backdrop-filter:blur(4px)}
 .sec{position:relative;z-index:2}
+
+/* ---- Movimientos (fecha arriba, texto debajo, monto a la derecha) ---- */
+.mv{padding:22px 20px 0;border-bottom:0}
+.mv .dt{font-size:19px;font-weight:700;display:flex;align-items:center}
+.mv .ds{font-size:14px;color:#e9e3ec;margin-top:4px;text-transform:uppercase}
+.mv .am{text-align:right;margin-top:10px;font-size:20px;font-weight:600;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.55)}
+.mv .am small{font-size:.62em;font-weight:600}
+.mv .am .cop{font-size:.6em;font-weight:600}
+.mv .am .cop+span{font-weight:700}
+.body:has(+ .actbar){padding-bottom:110px}
+.actbar{position:absolute;left:14px;right:14px;bottom:calc(var(--nav-h) + 12px + env(safe-area-inset-bottom));background:rgba(70,63,74,.96);border-radius:16px;display:flex;z-index:25;box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.actbar button{flex:1;padding:14px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px}
+.plan{margin:14px 14px 0;background:var(--card);border-radius:14px;padding:14px;display:flex;align-items:center;gap:14px}
+.plan i{width:46px;height:46px;border-radius:50%;background:#c9a8ff;color:#3a1d6e;display:grid;place-items:center;flex:0 0 auto}
+.plan .g{flex:1;font-size:13px}.plan .g small{display:block;font-size:12px;color:var(--mut)}.plan .g b{font-size:19px;font-weight:500;display:block}
+.sumbox{margin:14px 14px 0;background:var(--card);border-radius:14px;padding:6px 16px}
+.kv2{display:flex;justify-content:space-between;align-items:center;padding:15px 0;font-size:14px}
+.kv2 span{display:flex;align-items:center;gap:6px}.kv2 b{font-size:15px}.kv2 b small{font-size:.7em}
+.kv2.tot{border-top:1px solid rgba(255,255,255,.55);margin-top:2px}
+.guest-pill{display:flex;align-items:center;gap:6px}
+.guest-pill{white-space:nowrap}
