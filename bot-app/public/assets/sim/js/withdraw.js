@@ -226,14 +226,7 @@
       $('dDate').textContent = ('0' + (d.getMonth() + 1)).slice(-2) + '/' + ('0' + d.getDate()).slice(-2) + '/' + d.getFullYear();
       $('dId').textContent = r.record.id;
       // Nequi: registro interno SIMULADO (una vez por retiro; no hay transferencia real)
-      var nq = $('wdNqRcpt');
-      if (nq) {
-        nq.style.display = 'none';
-        if (bankName === 'NEQUI' && window.NequiSim) {
-          var q = NequiSim.register(r.record);
-          if (q.ok) { nq.style.display = ''; nq.onclick = function () { window.location.href = 'nequi-retiros.html#' + encodeURIComponent(q.record.id); }; }
-        }
-      }
+      if (bankName === 'NEQUI' && window.NequiSim) NequiSim.register(r.record);
       show('done', 2000);
     });
     $('wdReview').addEventListener('click', function () { amtInput.value = ''; paintStats(); show('pend', 1500); });
