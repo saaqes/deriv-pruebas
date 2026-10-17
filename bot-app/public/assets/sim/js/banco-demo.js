@@ -159,12 +159,12 @@
   R.login = {
     nav: null, render: function () {
       var b = bioMeta();
-      return sub('Cerrar', '<button class="r" id="lcont" disabled style="opacity:.5">Continuar ' + ic('chev', 16) + '</button>') + arc(true) +
+      return sub('Cerrar', '<button class="r" id="lcont" disabled style="opacity:.5">Continuar ' + ic('chev', 16) + '</button>') +
         '<div class="body nonav"><div class="ttlc" style="font-size:24px;padding-top:6px">¡Hola!</div>' +
         '<div class="field" style="margin-top:18px"><label class="inp">' + ic('user', 22) + '<input id="lusr" autocomplete="off" autocapitalize="off" placeholder="Ingresa tu usuario" maxlength="30" value="' + esc(S.user) + '"></label></div>' +
         '<button class="btn p" id="lbtn" disabled>Continuar</button>' +
         '<a class="linkc" data-act="forgot">¿Olvidaste tu usuario o clave?</a>' +
-        '<button class="bio" data-act="bio">' + ic(b.i, 36, '#fff', 1.4) + '<span>' + b.t + '</span></button>' +
+        '<div class="valley"><svg viewBox="0 0 430 300" preserveAspectRatio="none" aria-hidden="true"><path class="v1" d="M-20 40 Q110 60 205 160" stroke="#ffd23f" stroke-width="13"/><path class="v2" d="M-10 78 Q100 150 205 178" stroke="#b66dff" stroke-width="22"/><path class="v3" d="M205 178 Q310 160 372 62" stroke="#ff9f43" stroke-width="22"/><path class="v4" d="M262 150 Q350 118 450 6" stroke="#ffd23f" stroke-width="13"/></svg>' + '<button class="bio" data-act="bio">' + ic(b.i, 36, '#fff', 1.4) + '<span>' + b.t + '</span></button>' + '</div>' +
         '<a class="linkc" style="margin-top:34px" data-act="noacct">¿Aún no tienes usuario o cuenta?</a>' +
         '<div class="note w">' + ic('info', 20) + '<span>Modo demostración: escribe cualquier alias. <b>No ingreses usuarios ni claves reales</b>; no se envía ni se guarda ninguna clave.</span></div></div>';
     },
