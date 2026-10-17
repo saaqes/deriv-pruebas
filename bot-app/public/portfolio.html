@@ -22,15 +22,15 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Portfolio | Deriv</title>
-<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017f">
-<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017f">
-<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017f" media="(max-width:860px)">
-<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017f">
-<link rel="stylesheet" href="assets/sim/css/deriv-withdraw.css?v=20261017f">
+<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017g">
+<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017g">
+<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017g" media="(max-width:860px)">
+<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017g">
+<link rel="stylesheet" href="assets/sim/css/deriv-withdraw.css?v=20261017g">
 </head>
 <body class="bf-static-page" data-page="portfolio">
-<script src="assets/sim/js/sim-shared.js?v=20261017f"></script>
-<script src="assets/sim/js/browser-frame.js?v=20261017f"></script>
+<script src="assets/sim/js/sim-shared.js?v=20261017g"></script>
+<script src="assets/sim/js/browser-frame.js?v=20261017g"></script>
 <script>BrowserFrame.init();</script>
 <div class="dd-shell">
   <div id="ddSidebar"></div>
@@ -44,7 +44,7 @@
           <div class="valor-total-amount"><span class="balance-amount" data-hideable data-hero-amount data-hero-wallet>0.00</span><span class="balance-currency">USD</span><i class="ic ic-refresh"></i></div>
           <div class="valor-total-updated" id="updatedTxt">Actualizado hace 1 min</div>
         </div>
-        <div class="dd-hero-actions"><div class="dd-action"><div class="circle primary"><i class="ic ic-h_plus2"></i></div>Depósito</div><div class="dd-action" data-go="transfer.html"><div class="circle ghost"><i class="ic ic-h_transfer2"></i></div>Transferir</div><div class="dd-action"><div class="circle ghost"><i class="ic ic-h_minus"></i></div>Retirar</div></div>
+        <div class="dd-hero-actions"><div class="dd-action"><div class="circle primary"><i class="ic ic-h_plus2"></i></div>Depósito</div><div class="dd-action" data-href="transfer.html"><div class="circle ghost"><i class="ic ic-h_transfer2"></i></div>Transferir</div><div class="dd-action"><div class="circle ghost"><i class="ic ic-h_minus"></i></div>Retirar</div></div>
       </div>
     </section>
 
@@ -92,9 +92,9 @@
   </main>
 </div>
 <div id="ddBottomNav"></div>
-<script src="assets/sim/js/deriv-shell.js?v=20261017f"></script>
+<script src="assets/sim/js/deriv-shell.js?v=20261017g"></script>
 
-<script src="assets/sim/js/withdraw.js?v=20261017f"></script>
+<script src="assets/sim/js/withdraw.js?v=20261017g"></script>
 <script>(function(){
   function paintPend(){
     var l=[];try{l=TradeLabSim.loadWithdrawals().filter(function(w){return w.status==='Procesando';});}catch(_){}
@@ -108,6 +108,6 @@
   paintPend();window.addEventListener('tradelab-sim:balances-updated',paintPend);
   var u=document.getElementById('updatedTxt');if(u)u.textContent='Actualizado ahora';
 })();</script>
-<script>document.addEventListener('click',function(e){var a=e.target.closest('[data-go]');if(a)location.href=a.getAttribute('data-go');});</script>
+<script>document.addEventListener('click',function(e){var a=e.target.closest('[data-href]');if(a)location.href=a.getAttribute('data-href');});</script>
 </body>
 </html>
