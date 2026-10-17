@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<base href="/">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="deriv-d-32.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<title>Nequi · retiros simulados</title>
+<link rel="stylesheet" href="assets/sim/css/nequi-sim.css?v=1">
+</head>
+<body>
+<div class="nq">
+  <a class="to-deriv" href="profile.html" aria-label="Volver a Deriv">‹ Deriv</a>
+  <div id="view"></div>
+</div>
+<script src="assets/sim/js/sim-shared.js?v=20261017n"></script>
+<script src="assets/sim/js/nequi-sim.js?v=1"></script>
+<script>
+(function () {
+  'use strict';
+  var $v = document.getElementById('view');
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function cop(n) { return '$ ' + Math.round(n).toLocaleString('es-CO') + ' COP'; }
+  function usd(n) { return 'US$ ' + Number(n).toFixed(2); }
+  function when(ts) { return new Date(ts).toLocaleString('es-CO', { dateStyle: 'long', timeStyle: 'short' }); }
+  function ws() { try { return TradeLabSim.loadWithdrawals(); } catch (_) { return []; } }
+
+  function renderList() {
+    var cfg = NequiSim.getConfig(), recs = NequiSim.reconcile(ws());
+    $v.innerHTML =
+      '<h1>Nequi · retiros simulados</h1>' +
+      '<div class="banner"><b>SIMULACIÓN.</b> Esto no es Nequi ni Deriv: no existe integración, no se transfiere dinero y el saldo de Nequi no cambia. Los registros solo viven en este navegador.</div>' +
+      '<div class="card"><h2>Reglas de conversión de prueba</h2><div class="cfg">' +
+      '<div><label for="cfgRate">Tasa USD/COP (valor de prueba)</label><input id="cfgRate" inputmode="decimal" value="' + cfg.rate + '"></div>' +
+      '<div><label for="cfgFee">Comisión / diferencia (%)</label><input id="cfgFee" inputmode="decimal" value="' + cfg.feePct + '"></div></div>' +
+      '<div class="row"><button class="btn" id="cfgSave">Guardar</button></div>' +
+      '<p class="note">Valores de ejemplo, no una cotización en tiempo real. Afectan a los retiros nuevos; los registros existentes conservan sus importes.</p></div>' +
+      '<h2 style="font-size:16px">Historial</h2>' +
+      (recs.length ? recs.map(function (r) {
+        return '<button class="item" data-id="' + esc(r.id) + '"><span class="st">' + esc(r.status) + '</span><b>' + usd(r.usd) + ' → ' + cop(r.netCOP) + '</b><small>' + esc(when(r.ts)) + ' · ' + esc(r.id) + '</small></button>';
+      }).join('') : '<div class="empty">Aún no hay retiros simulados con Nequi.<br>Haz un retiro en Deriv (Portafolio → Retirar) eligiendo NEQUI.</div>');
+    document.getElementById('cfgSave').onclick = function () {
+      var ok = NequiSim.setConfig({ rate: document.getElementById('cfgRate').value.replace(',', '.'), feePct: document.getElementById('cfgFee').value.replace(',', '.') });
+      alert(ok ? 'Reglas guardadas.' : 'Valores inválidos: la tasa debe ser mayor que 0 y la comisión estar entre 0 y 99.');
+      if (ok) renderList();
+    };
+    Array.prototype.forEach.call($v.querySelectorAll('.item'), function (b) {
+      b.onclick = function () { location.hash = encodeURIComponent(b.dataset.id); };
+    });
+  }
+
+  function renderReceipt(id) {
+    NequiSim.reconcile(ws());
+    var r = NequiSim.get(id);
+    if (!r) { location.hash = ''; return; }
+    $v.innerHTML =
+      '<div class="rc"><h2>Comprobante de retiro simulado</h2>' +
+      '<span class="tag">' + esc(r.status === 'Cancelado' ? 'Cancelado (simulación)' : 'Simulación') + ' · no es un comprobante real</span>' +
+      '<dl><dt>Concepto (de prueba)</dt><dd>' + esc(r.concept) + '</dd>' +
+      '<dt>Método</dt><dd>' + esc(r.method) + '</dd>' +
+      '<dt>Importe retirado</dt><dd>' + usd(r.usd) + '</dd>' +
+      '<dt>Tasa de conversión usada (valor de prueba)</dt><dd>' + Number(r.rate).toLocaleString('es-CO', { maximumFractionDigits: 4 }) + ' COP por USD</dd>' +
+      '<dt>Valor bruto</dt><dd>' + cop(r.grossCOP) + '</dd>' +
+      '<dt>Comisión / diferencia aplicada (' + Number(r.feePct) + '%)</dt><dd>- ' + cop(r.feeCOP) + '</dd>' +
+      '<div class="net"><dt>Valor neto estimado</dt><dd>' + cop(r.netCOP) + '</dd></div>' +
+      '<dt>Fecha y hora</dt><dd>' + esc(when(r.ts)) + '</dd>' +
+      '<dt>Identificador interno</dt><dd>' + esc(r.id) + '</dd>' +
+      '<dt>Referencia interna</dt><dd>' + esc(r.ref) + '</dd>' +
+      '<dt>Estado</dt><dd>' + esc(r.status) + '</dd></dl>' +
+      '<p class="legal">Registro local de demostración. No confirma ninguna transferencia real ni contiene autorizaciones de Nequi, Bancolombia o Deriv. No debe presentarse como prueba de pago.</p></div>' +
+      '<div class="row noprint"><button class="btn line" id="back">‹ Historial</button><button class="btn" id="print">Imprimir</button></div>';
+    document.getElementById('back').onclick = function () { location.hash = ''; };
+    document.getElementById('print').onclick = function () { window.print(); };
+  }
+
+  function route() {
+    var id = decodeURIComponent((location.hash || '').slice(1));
+    if (id) renderReceipt(id); else renderList();
+  }
+  window.addEventListener('hashchange', route);
+  route();
+})();
+</script>
+</body>
+</html>
