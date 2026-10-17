@@ -17,6 +17,14 @@
   } catch (_) {}
 
   function money(n) { return window.TradeLabSim ? TradeLabSim.formatMoney(n) : Number(n).toFixed(2); }
+  // Como en el video, la primera vez la Billetera USD de la simulación ya tiene 10.00 para poder probar el retiro.
+  function seedWallet() {
+    try {
+      if (localStorage.getItem('tradelab-sim-wd-seeded')) return;
+      localStorage.setItem('tradelab-sim-wd-seeded', '1');
+      if (TradeLabSim.loadWallet().USD <= 0 && !TradeLabSim.loadWithdrawals().length) TradeLabSim.saveWallet({ USD: 10 });
+    } catch (_) {}
+  }
   function realBalance() { try { return TradeLabSim.loadWallet().USD; } catch (_) { return 0; } }
 
   /* ---------- Modal "Retirar" (se monta en cualquier página que tenga el botón Retirar) ---------- */
@@ -37,7 +45,7 @@
     document.body.appendChild(ov);
     function open() { ov.classList.add('open'); document.body.classList.add('wd-open'); }
     function close() { ov.classList.remove('open'); document.body.classList.remove('wd-open'); }
-    trigger.addEventListener('click', open);
+    trigger.addEventListener('click', function () { seedWallet(); open(); });
     ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
     ov.querySelector('.wd-mx').addEventListener('click', close);
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
@@ -110,7 +118,7 @@
   /* ---------- Cashier "Retirar USD" ---------- */
   function initCashier() {
     var sc = $('wdScroll'); if (!sc) return;
-    var T = window.TradeLabSim;
+    var T = window.TradeLabSim; seedWallet();
     var views = { list: $('wdList'), form: $('wdForm'), done: $('wdDone') };
     var spin = $('wdSpin'), up = $('wdUp'), loader = $('wdLoader');
     var amtInput = $('wdAmt'), amtWrap = $('wdAmtWrap');
