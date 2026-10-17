@@ -739,6 +739,8 @@ const server = http.createServer(async (req, res) => {
             '/dashboard/portfolio': '/portfolio.html',
             '/dashboard/profile': '/profile.html',
             '/dashboard/profile/personal-details': '/datos-personales.html',
+            '/dashboard/withdraw/verify': '/withdraw-verify.html',
+            '/dashboard/withdraw/currency/USD': '/withdraw-currency.html',
         };
         const target = safeJoin(DIST_DIR, SCENE_ROUTES[pathname] || (pathname === '/' ? '/index.html' : pathname));
         if (!target) {

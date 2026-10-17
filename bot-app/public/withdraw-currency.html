@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es" class="wd-page">
+<head>
+<meta charset="UTF-8">
+<base href="/">
+<link rel="icon" type="image/png" sizes="48x48" href="deriv-d-48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="deriv-d-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="deriv-d-16.png">
+<link rel="apple-touch-icon" href="deriv-d-180.png">
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Withdraw | Deriv</title>
+<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017b">
+<link rel="stylesheet" href="assets/sim/css/deriv-withdraw.css?v=20261017b">
+</head>
+<body class="wd-body" data-scene="/dashboard/withdraw/currency/USD">
+<script src="assets/sim/js/sim-shared.js?v=20261017b"></script>
+<div class="wd-cashier">
+  <div class="wd-cashier-top"><span></span><span class="wd-ask"><i class="ic ic-amy"></i>Ask Amy</span><button class="wd-xbtn" id="wdClose" aria-label="Cerrar"><svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="m2.5 2.5 7 7M9.5 2.5l-7 7"/></svg></button></div>
+  <h1 class="wd-title" style="margin-left:0">Retirar USD</h1>
+  <div class="wd-scroll" id="wdScroll">
+    <div class="wd-stats">
+      <div class="wd-stat"><span>Saldo Actual</span><b id="wdBal">$ 0.00</b></div>
+      <div class="wd-stat"><span>0 Retiros Pendientes</span><b>-$ 0.00 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="2" width="12" height="12" rx="2.5" fill="#dbe8ff"/><circle cx="8" cy="8" r="2.3"/></svg></b></div>
+      <div class="wd-stat"><span>Saldo Disponible USD</span><b id="wdAvail">$ 0.00</b></div>
+    </div>
+    <div class="wd-alert" id="wdAlert"><svg viewBox="0 0 20 20" fill="none" stroke="#555" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 9V4.6a1.1 1.1 0 0 1 2.2 0V8M8.7 8V3.6a1.1 1.1 0 0 1 2.2 0V8M10.9 8V4.4a1.1 1.1 0 0 1 2.2 0V9.5M13.1 7.4a1.1 1.1 0 0 1 2.2 0v4.2a5.5 5.5 0 0 1-5.5 5.5c-2 0-3.300-1-4.500-2.700L3.700 11a1.200 1.200 0 0 1 1.900-1.400L6.500 11"/></svg><div>Su saldo disponible de $ <span id="wdAlertAmt">0.00</span> USD no es suficiente para completar tu solicitud.</div></div>
+    <div class="wd-step"><i>1</i>Enter withdrawal amount</div>
+    <div class="wd-step"><i>2</i>Select a payment method below</div>
+    <div class="wd-methods">
+      <div class="wd-method"><div class="wd-mlogo"><img src="assets/sim/img/v/pse.png" alt="PSE" class="pse"></div><div class="wd-mtext"><b>PSE</b><p>Realiza retiros fácilmente a tu cuenta bancaria.</p><small class="first">Retiro: 1-2 días hábiles</small><small class="max">Max <em>$ 1,000</em></small></div></div>
+      <div class="wd-method"><div class="wd-mlogo"><img src="assets/sim/img/v/payretailers.png" alt="Local BankWire" class=""></div><div class="wd-mtext"><b>Local BankWire</b><p>Realiza retiros fácilmente a tu cuenta bancaria.</p><small class="first">Retiro: 1 día hábil</small><small class="max">Max <em>$ 3,000</em></small></div></div>
+      <div class="wd-method"><div class="wd-mlogo"><img src="assets/sim/img/v/airtm.png" alt="AirTM" class=""></div><div class="wd-mtext"><b>AirTM</b><p>Realiza retiros fácilmente usando tu billetera electrónica.</p><small class="first">Retiro: 1 día hábil</small><small class="max">Max <em>$ 2,500</em></small></div></div>
+      <div class="wd-method"><div class="wd-mlogo"><img src="assets/sim/img/v/cards.png" alt="Credit &amp; Debit Cards"></div><div class="wd-mtext"><b>Credit &amp; Debit Cards</b><p>Realiza depósitos y retiros usando tus tarjetas de crédito y débito.</p><p class="strong">Pueden tardar entre 5 y 15 días hábiles en aparecer tus fondos en tu cuenta. Esto depende del banco emisor de la tarjeta.</p></div></div>
+    </div>
+    <div class="wd-note"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#1f2937"/><path d="M8 7v4.2M8 4.7v.2" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg><div>To view all available payout options, please <a href="#" onclick="return false">haga clic aquí</a>. Payout options will appear here based on your prior cashier deposit activity and account verification.</div></div>
+    <button class="wd-up" id="wdUp" aria-label="Subir"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3.500 10 4.500-4.500L12.500 10"/></svg></button>
+  </div>
+</div>
+<div class="wd-loader show" id="wdLoader"><div class="wd-ring"><img src="deriv-d-48.png" alt=""></div></div>
+<script src="assets/sim/js/withdraw.js?v=20261017b"></script>
+</body>
+</html>
