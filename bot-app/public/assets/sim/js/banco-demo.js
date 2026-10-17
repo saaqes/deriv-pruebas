@@ -68,6 +68,9 @@
   function arc(small) {
     return '<div class="arc' + (small ? ' small' : '') + '"><svg viewBox="0 0 430 130" preserveAspectRatio="none"><path d="M-10 20 Q215 160 440 10" stroke="#ffd23f"/><path d="M-10 40 Q215 170 440 28" stroke="#4cc9f0" transform="translate(0,6)"/><path d="M20 70 Q230 190 440 50" stroke="#ff9f43" transform="translate(30,0)"/><path d="M-10 60 Q215 150 440 70" stroke="#b66dff" opacity=".8"/><path d="M60 100 Q240 170 440 30" stroke="#4fe0a0" opacity=".7"/></svg></div>';
   }
+  function arcHome() {
+    return '<div class="arcH"><svg viewBox="0 0 430 130" aria-hidden="true"><path d="M0 56 Q20 70 36 82" stroke="#4cc9f0" stroke-width="7"/><path d="M42 88 Q66 96 92 86" stroke="#4fe0a0" stroke-width="7"/><path d="M198 50 Q300 -12 378 52" stroke="#ffd23f" stroke-width="14"/><path d="M236 58 Q282 40 332 52" stroke="#4cc9f0" stroke-width="7"/><path d="M340 44 Q392 52 412 100" stroke="#ff9f43" stroke-width="14"/><path d="M386 40 Q412 52 424 74" stroke="#b66dff" stroke-width="8"/></svg></div>';
+  }
   function head(opts) {
     opts = opts || {};
     return '<div class="hdr">' + BRAND +
@@ -107,10 +110,10 @@
           '<button class="key" data-act="keyinfo"><span class="ring" id="kring"><i>' + ic('lock', 14) + '</i></span><span><small>Clave demo</small><b id="kcode">------</b></span>' + ic('chev', 16) + '</button>' +
           '<div class="sec"><h3>Transacciones principales</h3>' + tiles() + '</div><div class="sec"><h3>Más opciones</h3>' + circles() + '</div></div>';
       }
-      return head() + arc() + '<div class="body" id="hb"><button class="hello" ' + G('ajustes', null, ' data-tab') + '>Hola, ' + esc(firstName()) + ' ' + ic('chev', 18) + '</button>' +
-        '<button class="key" data-act="keyinfo"><span class="ring" id="kring"><i>' + ic('lock', 14) + '</i></span><span><small>Clave demo</small><b id="kcode">------</b></span>' + ic('chev', 16) + '</button>' +
-        '<div class="sec" style="margin-top:56px"><h3>Tus cuentas<a data-act="hide">' + ic(S.hide ? 'eyeoff' : 'eye', 15) + (S.hide ? 'Mostrar saldos' : 'Ocultar saldos') + '</a></h3>' +
-        '<div class="hscroll" id="accs"><div class="acc-card" ' + G('cuenta') + '><span class="chev">' + ic('chev', 18) + '</span><h4>Cuenta de Ahorros</h4><small>Ahorros 000 - 000000 - 00 (demo)</small><div class="bal">Saldo disponible<b id="hbal">' + balTxt() + '</b></div><button class="btn-acc" ' + G('cuenta', { tab: 'Detalles' }) + '>Conoce más de tu cuenta</button></div>' +
+      return head() + '<div class="top">' + arcHome() + '<button class="hello" ' + G('ajustes', null, ' data-tab') + '>Hola, ' + esc(firstName()) + ' ' + ic('chev', 18) + '</button>' +
+        '<button class="key" data-act="keyinfo"><span class="ring" id="kring"><i>' + ic('lock', 14) + '</i></span><span><small>Clave demo</small><b id="kcode">------</b></span>' + ic('chev', 16) + '</button></div><div class="body" id="hb">' +
+        '<div class="sec" style="margin-top:22px"><h3>Tus cuentas<a data-act="hide">' + ic(S.hide ? 'eyeoff' : 'eye', 15) + (S.hide ? 'Mostrar saldos' : 'Ocultar saldos') + '</a></h3>' +
+        '<div class="hscroll" id="accs"><div class="accwrap"><div class="acc-card" ' + G('cuenta') + '><span class="chev">' + ic('chev', 18) + '</span><h4>Cuenta de Ahorros</h4><small>Ahorros 000 - 000000 - 00 (demo)</small><div class="bal">Saldo disponible<b id="hbal">' + balTxt() + '</b></div></div><button class="btn-acc straddle" ' + G('cuenta', { tab: 'Detalles' }) + '>Conoce más de tu cuenta</button></div>' +
         '<div class="acc-card slim" ' + G('saldos') + '>' + ic('card', 26) + '<span>Ir a todos tus productos</span></div></div><div class="dots" id="dots"><i class="on"></i><i></i></div></div>' +
         '<div class="sec"><h3>Transacciones principales</h3>' + tiles() + '</div>' +
         '<div class="sec"><h3>Más opciones</h3>' + circles() + '</div>' +
@@ -136,7 +139,7 @@
     function f() {
       var c = $('#kcode', el); if (!c || !document.body.contains(c)) return clearInterval(keyTimer);
       var w = Math.floor(Date.now() / 30000), x = (w * 2654435761) % 1000000; var s = String(Math.abs(x)).padStart(6, '0'); c.textContent = s.slice(0, 3) + ' ' + s.slice(3);
-      $('#kring', el).style.setProperty('--p', (100 - ((Date.now() % 30000) / 300)) + '%');
+      $('#kring', el).style.setProperty('--p', ((Date.now() % 30000) / 300) + '%');
     }
     f(); keyTimer = setInterval(f, 500);
   }

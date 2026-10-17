@@ -247,3 +247,20 @@ svg{display:block}
 @keyframes vL{from{stroke-dashoffset:420;transform:translateX(-40px)}to{stroke-dashoffset:0;transform:none}}
 @keyframes vR{from{stroke-dashoffset:-420;transform:translateX(50px)}to{stroke-dashoffset:0;transform:none}}
 .valley .bio{margin-top:34px}
+
+/* ---- Zona superior del inicio: línea divisoria y trazos que cruzan la clave ---- */
+.top{position:relative;flex:0 0 auto;background:linear-gradient(#433c46,#39343b);border-bottom:1px solid rgba(255,255,255,.22);padding-bottom:18px;z-index:2}
+.top .hello{padding-top:2px}
+.top .key{margin-top:10px;position:relative;z-index:3}
+.arcH{position:absolute;left:0;right:0;top:8px;height:130px;pointer-events:none;z-index:4}
+.arcH svg{width:100%;height:100%;overflow:visible}
+.arcH path{fill:none;stroke-linecap:round;stroke-dasharray:420;stroke-dashoffset:420;animation:arcIn 1.3s .1s cubic-bezier(.3,.7,.2,1) forwards}
+.arcH path:nth-child(2){animation-delay:.2s}.arcH path:nth-child(3){animation-delay:.3s}.arcH path:nth-child(4){animation-delay:.45s}.arcH path:nth-child(5){animation-delay:.55s}.arcH path:nth-child(6){animation-delay:.65s}
+.key .ring{background:conic-gradient(var(--c1) var(--p,0%),rgba(255,255,255,.2) 0)}
+/* ---- Botón "Conoce más" a caballo entre la tarjeta y el exterior ---- */
+.accwrap{position:relative;flex:0 0 82%;margin-bottom:34px}
+.accwrap .acc-card{width:100%}
+.btn-acc.straddle{position:absolute;left:14px;right:14px;bottom:-22px;margin:0;z-index:2;box-shadow:0 4px 10px rgba(0,0,0,.3)}
+.accwrap .acc-card{padding-bottom:38px}
+.acc-card.slim{align-self:flex-start;height:calc(100% - 34px)}
+.hscroll{scroll-padding-left:18px}
