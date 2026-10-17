@@ -181,7 +181,7 @@
 
   // ---- Historial de transacciones (Depósito / Retiro / Transferir) ----
   var LEDGER_KEY = 'tradelab-sim-ledger';
-  var WD_DONE_MS = 5 * 60 * 1000; // un retiro "Procesando" pasa a "Completado" a los 5 min
+  var WD_DONE_MS = 3 * 60 * 1000; // un retiro "Procesando" pasa a "Completado" a los 3 min
   function readLedger() {
     try { var l = JSON.parse(localStorage.getItem(LEDGER_KEY) || '[]'); return Array.isArray(l) ? l : []; } catch (err) { return []; }
   }
