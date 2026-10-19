@@ -427,6 +427,7 @@ const MIME = {
     '.otf': 'font/otf',
     '.wasm': 'application/wasm',
     '.mp4': 'video/mp4',
+    '.webm': 'video/webm',
     '.mp3': 'audio/mpeg',
     '.wav': 'audio/wav',
     '.ogg': 'audio/ogg',

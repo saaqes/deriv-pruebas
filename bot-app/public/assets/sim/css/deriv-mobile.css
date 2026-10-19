@@ -211,3 +211,8 @@
   .dd-bn-item svg{display:block;fill:currentColor;width:26px;height:26px;transform:none;}
   .dd-bn-item.active{color:#ff444f;}
 }
+
+@media (max-width:860px){
+  .promo-art-vid{height:100%;}
+  .promo-text p{max-width:none;}
+}

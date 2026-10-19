@@ -578,3 +578,15 @@ a.pr-item{color:inherit;}
 .mk-skel .sk.b4{left:73.1%;top:79.5%;width:26.4%;height:10%;}
 .sparkline polyline.mk-draw{stroke-dasharray:1;stroke-dashoffset:1;animation:mkDraw .6s linear forwards;}
 @keyframes mkDraw{to{stroke-dashoffset:0;}}
+
+/* ----- Carrusel promocional de Home (medidas del video de referencia: tarjeta 120 px de alto, 4,2 s por tarjeta) ----- */
+.promo-track{transition:transform .33s cubic-bezier(.4,0,.2,1);}
+.promo-slide{background:#161b23;}
+.promo-slide.slide-exchange{background:radial-gradient(ellipse 85% 150% at 88% 0%,#431a1e 0%,#2a1114 46%,#160a0c 100%);}
+.promo-art-vid{position:absolute;right:0;top:0;height:100%;width:auto;max-width:none;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 32%);mask-image:linear-gradient(90deg,transparent 0,#000 32%);}
+.promo-close{border:0;padding:0;background:transparent;color:transparent;font-size:0;top:0.75rem;right:0.75rem;width:1.5rem;height:1.5rem;cursor:pointer;z-index:2;}
+.promo-text h3{font-size:1rem;}
+.promo-text p{font-size:0.9rem;max-width:29.5rem;color:#bfc2c9;}
+.promo-progress{gap:0.625rem;}
+.promo-dot{width:0.25rem;height:0.25rem;background:#c9c9cc;}
+.promo-dot.active{width:3rem;}

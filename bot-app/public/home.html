@@ -27,14 +27,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Home | Deriv</title>
 <meta name="description" content="Simulador educativo independiente. No es Deriv ni ninguna plataforma de trading real, y no gestiona dinero real.">
-<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017s">
-<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017s">
-<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017s" media="(max-width:860px)">
-<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017s">
+<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017v">
+<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017v">
+<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017v" media="(max-width:860px)">
+<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017v">
 </head>
 <body class="bf-static-page" data-page="home">
-<script src="assets/sim/js/sim-shared.js?v=20261017s"></script>
-<script src="assets/sim/js/browser-frame.js?v=20261017s"></script>
+<script src="assets/sim/js/sim-shared.js?v=20261017v"></script>
+<script src="assets/sim/js/browser-frame.js?v=20261017v"></script>
 <script>BrowserFrame.init();</script>
 
 <div class="dd-shell">
@@ -108,39 +108,39 @@
     </section>
 
     <!-- PROMO CAROUSEL (autoplay) -->
-    <div class="promo-wrapper">
+    <div class="promo-wrapper" id="promoWrap">
       <div class="promo-track" id="promoTrack">
         <div class="promo-slide slide-exchange">
-          <div class="promo-close">✕</div>
+          <video class="promo-art-vid" poster="assets/sim/video/promo_exchange.jpg" muted playsinline preload="auto" aria-hidden="true"><source src="assets/sim/video/promo_exchange.mp4" type="video/mp4"><source src="assets/sim/video/promo_exchange.webm" type="video/webm"></video></video>
+          <button class="promo-close" type="button" aria-label="Cerrar"></button>
           <div class="promo-text">
             <h3><span class="dd-badge-dxn"><img class="dd-ico" src="assets/sim/img/v/dxn_icon.png" alt="" style="width:100%;height:100%"></span>Deriv Exchange</h3>
             <p>Compra, vende y opera con los pares cripto más populares en spot y futuros 24/7.</p>
           </div>
-          <img class="promo-art-img" src="assets/sim/img/v/promo_exchange.png" alt="">
         </div>
         <div class="promo-slide slide-tv">
-          <div class="promo-close">✕</div>
+          <video class="promo-art-vid" poster="assets/sim/video/promo_tv.jpg" muted playsinline preload="auto" aria-hidden="true"><source src="assets/sim/video/promo_tv.mp4" type="video/mp4"><source src="assets/sim/video/promo_tv.webm" type="video/webm"></video></video>
+          <button class="promo-close" type="button" aria-label="Cerrar"></button>
           <div class="promo-text">
-            <h3>Opera con TradingView</h3>
-            <p>Gráficos y herramientas avanzadas para los índices Deriv disponibles las 24 horas, todos los días.</p>
+            <h3>TradingView</h3>
+            <p>Gráficos y herramientas avanzados para Derived Indices 24/7.</p>
           </div>
-          <img class="promo-art-img" src="assets/sim/img/v/promo_tv.png" alt="">
         </div>
         <div class="promo-slide slide-spacex">
-          <div class="promo-close">✕</div>
+          <video class="promo-art-vid" poster="assets/sim/video/promo_spacex.jpg" muted playsinline preload="auto" aria-hidden="true"><source src="assets/sim/video/promo_spacex.mp4" type="video/mp4"><source src="assets/sim/video/promo_spacex.webm" type="video/webm"></video></video>
+          <button class="promo-close" type="button" aria-label="Cerrar"></button>
           <div class="promo-text">
-            <h3>SpaceX CFDs</h3>
+            <h3>CFDs de SpaceX</h3>
             <p>Opera con el gigante espacial con apalancamiento competitivo.</p>
           </div>
-          <img class="promo-art-gif" src="assets/sim/img/spaceX.gif" alt="SpaceX Logo">
         </div>
         <div class="promo-slide slide-ai">
-          <div class="promo-close">✕</div>
+          <video class="promo-art-vid" poster="assets/sim/video/promo_ai.jpg" muted playsinline preload="auto" aria-hidden="true"><source src="assets/sim/video/promo_ai.mp4" type="video/mp4"><source src="assets/sim/video/promo_ai.webm" type="video/webm"></video></video>
+          <button class="promo-close" type="button" aria-label="Cerrar"></button>
           <div class="promo-text">
             <h3 class="ai-title">Análisis de mercado con IA</h3>
             <p>Obtén información basada en IA sobre Oro, BTC, Plata, ETH y más.</p>
           </div>
-          <img class="promo-art-img" src="assets/sim/img/v/promo_ai.png" alt="">
         </div>
       </div>
     </div>
@@ -296,7 +296,7 @@
 
 
 <script>window.TL_CUSTOM_EYE = true;</script>
-<script src="assets/sim/js/deriv-shell.js?v=20261017s"></script>
+<script src="assets/sim/js/deriv-shell.js?v=20261017v"></script>
 <script>
   // ===== PROMO AUTOPLAY CAROUSEL =====
   (function(){
@@ -304,11 +304,19 @@
     const dots = document.querySelectorAll('#promoProgress .promo-dot');
     let index = 0;
     const total = dots.length;
-    const duration = 4000;
+    const duration = 4200;                       // medido en el video: ~4,2 s por tarjeta
+    const vids = track.querySelectorAll('video');
+    function playVideo(i){ vids.forEach((v, k) => { if (k === i) { try { v.currentTime = 0; const pr = v.play(); if (pr && pr.catch) pr.catch(()=>{}); } catch(_){} } else { v.pause(); } }); }
+    document.querySelectorAll('.promo-close').forEach(b => b.addEventListener('click', () => {
+      const w = document.getElementById('promoWrap'), pg = document.getElementById('promoProgress');
+      clearInterval(timer); w.style.transition = pg.style.transition = 'opacity .25s'; w.style.opacity = pg.style.opacity = 0;
+      setTimeout(() => { w.style.display = pg.style.display = 'none'; }, 260);
+    }));
 
     function showSlide(i){
       index = i;
       track.style.transform = `translateX(-${i * 100}%)`;
+      playVideo(i);
 
       dots.forEach((dot, idx) => {
         const fill = dot.querySelector('.fill');
@@ -321,7 +329,7 @@
           fill.style.animation = 'none';
           fill.style.transform = 'scaleX(0)';
           void fill.offsetWidth; // force reflow
-          fill.style.animation = 'fillBar 4s linear forwards';
+          fill.style.animation = 'fillBar 4.2s linear forwards';
         } else if(idx < i){
           // dot ya recorrido: conserva el color de la carga progresiva
           dot.classList.add('filled');
@@ -338,7 +346,7 @@
 
     showSlide(0);
 
-    setInterval(() => {
+    const timer = setInterval(() => {
       const next = (index + 1) % total;
       showSlide(next);
     }, duration);
