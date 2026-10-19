@@ -22,14 +22,14 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Options | Deriv</title>
-<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017q">
-<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017q">
-<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017q" media="(max-width:860px)">
-<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017q">
+<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017s">
+<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017s">
+<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017s" media="(max-width:860px)">
+<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017s">
 </head>
 <body class="bf-static-page" data-page="options">
-<script src="assets/sim/js/sim-shared.js?v=20261017q"></script>
-<script src="assets/sim/js/browser-frame.js?v=20261017q"></script>
+<script src="assets/sim/js/sim-shared.js?v=20261017s"></script>
+<script src="assets/sim/js/browser-frame.js?v=20261017s"></script>
 <script>BrowserFrame.init();</script>
 <div class="dd-shell">
   <div id="ddSidebar"></div>
@@ -124,7 +124,7 @@
   </main>
 </div>
 <div id="ddBottomNav"></div>
-<script src="assets/sim/js/deriv-shell.js?v=20261017q"></script>
+<script src="assets/sim/js/deriv-shell.js?v=20261017s"></script>
 <script>
 /* ================= WebSocket de mercados — gráficas en vivo ================= */
 const APP_ID = 1089;
@@ -187,7 +187,7 @@ function connect(){
       ws.send(JSON.stringify({
         ticks_history: m.code,
         adjust_start_time: 1,
-        count: 60,
+        count: 200,
         end: 'latest',
         start: 1,
         style: 'ticks',
@@ -227,7 +227,7 @@ function handle(data){
     const code = t.symbol;
     if (!history[code]) history[code] = [];
     history[code].push({ epoch: t.epoch, price: parseFloat(t.quote) });
-    if (history[code].length > 100) history[code].shift();
+    if (history[code].length > 300) history[code].shift();
     render(code);
   }
 }
@@ -246,7 +246,7 @@ function render(code){
     changeEl.className = 'market-change ' + (change >= 0 ? 'up' : 'down');
     changeEl.innerHTML = `${change>=0?'+':''}${change.toFixed(2)}% <span class="tf">(5m)</span>`;
   }
-  drawSparkline(code, arr.slice(-40), change >= 0);
+  drawSparkline(code, arr.slice(-140), change >= 0);
 }
 
 function drawSparkline(code, points, up){
@@ -264,8 +264,8 @@ function drawSparkline(code, points, up){
     const y = h - ((p.price - min) / range) * h;
     return `${x.toFixed(2)},${y.toFixed(2)}`;
   }).join(' ');
-  const color = up ? '#00875a' : '#de0040';
-  svg.innerHTML = `<polyline${animate ? ' class="mk-draw" pathLength="1"' : ''} points="${coords}" fill="none" stroke="${color}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const color = up ? '#00c896' : '#de0040';
+  svg.innerHTML = `<polyline${animate ? ' class="mk-draw" pathLength="1"' : ''} points="${coords}" fill="none" stroke="${color}" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>`;
 }
 
 
@@ -278,12 +278,13 @@ function seedFallback(m){
   if (history[m.code] && history[m.code].length) return;
   let seed = 0; for (const ch of m.code) seed = (seed * 31 + ch.charCodeAt(0)) % 9973;
   const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
-  const base = m.ref[0], pct = m.ref[1] / 100, n = 40, arr = [];
-  let p = base / (1 + pct);
+  const base = m.ref[0], pct = m.ref[1] / 100, n = 140, arr = [];
+  let p = base / (1 + pct), walk = 0;
   for (let i = 0; i < n; i++){
     const target = base / (1 + pct) + (base - base / (1 + pct)) * (i / (n - 1));
-    p = target + (rnd() - 0.5) * base * 0.0009;
-    arr.push({ epoch: i, price: i === n - 1 ? base : p });
+    walk += (rnd() - 0.5) * base * 0.0022; walk *= 0.82;   // ruido correlacionado: picos finos y juntos
+    p = target + walk;
+    arr.push({ epoch: i, price: i === n - 1 ? base : i === 0 ? base / (1 + pct) : p });
   }
   history[m.code] = arr; render(m.code);
 }
