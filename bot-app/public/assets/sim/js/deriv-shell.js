@@ -209,6 +209,11 @@
         '<span class="dd-m-search" role="button" aria-label="Buscar">' + MSEARCH + '</span></div>' +
       (opts.amy ? '<div class="dd-m-amy">' + AMY_STAR + '<span>Ask Amy</span></div>' : '') +
       '<div class="dd-m-bell" role="button" aria-label="Notificaciones">' + BELL + '<span class="badge">5</span></div>';
+    var av = d.querySelector('.dd-m-av');
+    if (av) {
+      av.setAttribute('role', 'link'); av.setAttribute('aria-label', 'Perfil'); av.style.cursor = 'pointer';
+      av.addEventListener('click', function () { window.location.href = 'profile.html'; });
+    }
     d.querySelector('.dd-m-bell').addEventListener('click', function () {
       if (window.DD_openSettings) window.DD_openSettings(); else window.location.href = 'home.html#ajustes';
     });
