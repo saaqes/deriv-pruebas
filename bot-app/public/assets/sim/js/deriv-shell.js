@@ -207,7 +207,7 @@
     d.innerHTML =
       '<div class="dd-m-left">' + (opts.avatar ? '<span class="dd-m-av">' + esc(ini) + '</span>' : '') +
         '<span class="dd-m-search" role="button" aria-label="Buscar">' + MSEARCH + '</span></div>' +
-      (opts.amy ? '<div class="dd-m-amy">' + AMY_STAR + '<span>Ask Amy</span></div>' : '') +
+      (opts.amy ? '<div class="dd-m-amy" role="button" aria-label="Ask Amy"><img src="assets/sim/img/ask_amy_mobile.svg" alt="Ask Amy" width="114" height="32" draggable="false"></div>' : '') +
       '<div class="dd-m-bell" role="button" aria-label="Notificaciones">' + BELL + '<span class="badge">5</span></div>';
     var av = d.querySelector('.dd-m-av');
     if (av) {

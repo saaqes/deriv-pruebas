@@ -247,3 +247,8 @@
   .dd-m-amy span{background:linear-gradient(90deg,#9fd2ff 0%,#a9a6f8 30%,#cf9df0 48%,#f8a5b3 66%,#fbd98c 88%,#f6e57f 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
   [data-page=portfolio] .dd-m-amy{background:linear-gradient(90deg,#182b31 0%,#1a2035 22%,#1c1a33 40%,#2a1c2c 60%,#2a2623 78%,#2a2a22 100%);}
 }
+
+/* ===== Ask Amy móvil: el SVG oficial de la referencia (114x32), sin estilos extra ===== */
+.dd-m-amy,[data-page=portfolio] .dd-m-amy{width:7.125rem;height:2rem;padding:0;border:0;border-radius:1rem;background:none !important;box-shadow:none;display:flex;align-items:center;justify-content:center;gap:0;}
+.dd-m-amy img{display:block;width:100%;height:100%;pointer-events:none;-webkit-user-drag:none;}
+.dd-m-amy span,.dd-m-amy .dd-m-star{display:none;}
