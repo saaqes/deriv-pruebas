@@ -561,3 +561,20 @@ a.pr-item{color:inherit;}
 .dd-nt-mail small{display:block;margin-top:0.25rem;font-size:0.75rem;color:#6e7377;line-height:1rem;word-break:break-all;}
 .dp-wd{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid #e8e8ea;}
 .dp-sub{font-size:1.25rem;font-weight:700;line-height:1.75rem;margin:0 0 1.25rem;color:#0e0e0e;}
+
+/* ----- Mercados más negociados: esqueleto de carga y dibujo de las gráficas ----- */
+.mk-title-skel{display:none;width:7rem;height:1.5rem;border-radius:0.25rem;background:#e4e6eb;margin-bottom:1.0625rem;}
+.mk-skel-grid{display:none;}
+.mk-loading .mk-title-skel,.mk-loading .mk-skel-grid{display:block;}
+.mk-loading .mk-skel-grid{display:grid;}
+.mk-loading .section-title,.mk-loading #marketGrid{display:none;}
+.market-card.mk-skel{pointer-events:none;animation:mkPulse .9s ease-in-out infinite alternate;}
+@keyframes mkPulse{from{background:#f3f3f5;}to{background:#f5f7f6;}}
+.mk-skel .sk{position:absolute;background:#e4e6eb;border-radius:0.25rem;display:block;}
+.mk-skel .sk.c{left:7.5%;top:8%;width:14.2%;aspect-ratio:1;border-radius:50%;}
+.mk-skel .sk.b1{left:7.5%;top:32%;width:63.7%;height:20%;}
+.mk-skel .sk.b2{left:7.5%;top:54%;width:42.5%;height:14%;}
+.mk-skel .sk.b3{left:7.5%;top:76%;width:54.7%;height:16%;}
+.mk-skel .sk.b4{left:73.1%;top:79.5%;width:26.4%;height:10%;}
+.sparkline polyline.mk-draw{stroke-dasharray:1;stroke-dashoffset:1;animation:mkDraw .6s linear forwards;}
+@keyframes mkDraw{to{stroke-dashoffset:0;}}

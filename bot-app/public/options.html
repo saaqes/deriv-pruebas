@@ -22,14 +22,14 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Options | Deriv</title>
-<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017o">
-<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017o">
-<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017o" media="(max-width:860px)">
-<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017o">
+<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017q">
+<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017q">
+<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017q" media="(max-width:860px)">
+<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017q">
 </head>
 <body class="bf-static-page" data-page="options">
-<script src="assets/sim/js/sim-shared.js?v=20261017o"></script>
-<script src="assets/sim/js/browser-frame.js?v=20261017o"></script>
+<script src="assets/sim/js/sim-shared.js?v=20261017q"></script>
+<script src="assets/sim/js/browser-frame.js?v=20261017q"></script>
 <script>BrowserFrame.init();</script>
 <div class="dd-shell">
   <div id="ddSidebar"></div>
@@ -47,8 +47,10 @@
       </div>
     </section>
 
-    <section class="dd-section">
+    <section class="dd-section mk-loading" id="mkSection">
+      <div class="mk-title-skel" aria-hidden="true"></div>
       <div class="section-title" style="margin-bottom:1.0625rem">Mercados más negociados</div>
+      <div class="market-grid mk-skel-grid" id="marketSkel" aria-hidden="true"></div>
       <div class="market-grid" id="marketGrid"></div>
     </section>
 
@@ -122,7 +124,7 @@
   </main>
 </div>
 <div id="ddBottomNav"></div>
-<script src="assets/sim/js/deriv-shell.js?v=20261017o"></script>
+<script src="assets/sim/js/deriv-shell.js?v=20261017q"></script>
 <script>
 /* ================= WebSocket de mercados — gráficas en vivo ================= */
 const APP_ID = 1089;
@@ -130,11 +132,11 @@ const WS_URL = `wss://ws.derivws.com/websockets/v3?app_id=${APP_ID}`;
 
 // Mismos 5 mercados que el panel original
 const MARKETS = [
-  { code:'R_75',    name:'Volatility 75 Index',      label:'75',  oneSec:false },
-  { code:'R_10',    name:'Volatility 10 Index',      label:'10',  oneSec:false },
-  { code:'1HZ10V',  name:'Volatility 10 (1s) Index', label:'10',  oneSec:true  },
-  { code:'1HZ100V', name:'Volatility 100 (1s) Index',label:'100', oneSec:true  },
-  { code:'1HZ75V',  name:'Volatility 75 (1s) Index', label:'75',  oneSec:true  },
+  { code:'R_75',    name:'Volatility 75 Index',      label:'75',  oneSec:false, ref:[37203.03, -0.03] },
+  { code:'1HZ10V',  name:'Volatility 10 (1s) Index', label:'10',  oneSec:true,  ref:[9292.13, 0.03] },
+  { code:'1HZ25V',  name:'Volatility 25 (1s) Index', label:'25',  oneSec:true,  ref:[879091.24, -0.01] },
+  { code:'R_100',   name:'Volatility 100 Index',     label:'100', oneSec:false, ref:[711.17, -0.21] },
+  { code:'1HZ75V',  name:'Volatility 75 (1s) Index', label:'75',  oneSec:true,  ref:[5174.84, 0.07] },
 ];
 
 const MARKET_ICONS = {};
@@ -250,7 +252,9 @@ function render(code){
 function drawSparkline(code, points, up){
   const svg = document.getElementById(`spark-${code}`);
   if (!svg || points.length < 2) return;
-  const w = 100, h = 30;
+  const animate = window.__mkReveal && !svg.dataset.anim;
+  if (animate) svg.dataset.anim = '1';
+  const w = 64, h = 28;
   const prices = points.map(p=>p.price);
   const max = Math.max(...prices), min = Math.min(...prices);
   const range = (max - min) || 1;
@@ -261,11 +265,49 @@ function drawSparkline(code, points, up){
     return `${x.toFixed(2)},${y.toFixed(2)}`;
   }).join(' ');
   const color = up ? '#00875a' : '#de0040';
-  svg.innerHTML = `<polyline points="${coords}" fill="none" stroke="${color}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>`;
+  svg.innerHTML = `<polyline${animate ? ' class="mk-draw" pathLength="1"' : ''} points="${coords}" fill="none" stroke="${color}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>`;
 }
 
 
 buildGrid();
+
+/* ---- Animación de carga (medida fotograma a fotograma del video): esqueleto ~0.9 s y luego las
+   tarjetas aparecen con las gráficas dibujándose de izquierda a derecha (~0.6 s). Se repite cada vez que se entra. ---- */
+function seedFallback(m){
+  // Si aún no llegó el historial en vivo, se usa el valor de referencia con una serie de muestra.
+  if (history[m.code] && history[m.code].length) return;
+  let seed = 0; for (const ch of m.code) seed = (seed * 31 + ch.charCodeAt(0)) % 9973;
+  const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  const base = m.ref[0], pct = m.ref[1] / 100, n = 40, arr = [];
+  let p = base / (1 + pct);
+  for (let i = 0; i < n; i++){
+    const target = base / (1 + pct) + (base - base / (1 + pct)) * (i / (n - 1));
+    p = target + (rnd() - 0.5) * base * 0.0009;
+    arr.push({ epoch: i, price: i === n - 1 ? base : p });
+  }
+  history[m.code] = arr; render(m.code);
+}
+function buildSkeleton(){
+  document.getElementById('marketSkel').innerHTML = Array.from({length:8}, () =>
+    '<div class="market-card mk-skel"><i class="sk c"></i><i class="sk b1"></i><i class="sk b2"></i><i class="sk b3"></i><i class="sk b4"></i></div>').join('');
+}
+let mkTimer;
+function playMarketsIntro(){
+  const sec = document.getElementById('mkSection');
+  clearTimeout(mkTimer);
+  window.__mkReveal = false;
+  MARKETS.forEach(m => { const s = document.getElementById(`spark-${m.code}`); if (s) delete s.dataset.anim; });
+  sec.classList.add('mk-loading');
+  mkTimer = setTimeout(() => {
+    MARKETS.forEach(seedFallback);
+    sec.classList.remove('mk-loading');
+    window.__mkReveal = true;
+    MARKETS.forEach(m => render(m.code));
+  }, 900);
+}
+buildSkeleton();
+playMarketsIntro();
+window.addEventListener('pageshow', e => { if (e.persisted) playMarketsIntro(); });
 connect();
 </script>
 </body>
