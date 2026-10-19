@@ -148,14 +148,17 @@
     function fillInfo() {
       if (!info) return;
       $('fNameV').textContent = info.name; $('fCcV').textContent = info.cc;
-      $('wdSelCur').textContent = 'NEQUI #' + info.nequi; $('fBankV').textContent = 'NEQUI'; $('fAccV').textContent = info.account; $('dName').textContent = info.name;
+      $('wdSelCur').textContent = 'NEQUI #' + info.nequi; $('fBankV').textContent = 'NEQUI'; $('fAccV').textContent = info.account; $('dName').textContent = 'Gracias ' + info.name + ',';
     }
     var spin = $('wdSpin'), up = $('wdUp'), loader = $('wdLoader');
     var amtInput = $('wdAmt'), amtWrap = $('wdAmtWrap');
     var amount = 0, method = null;
-    var USER = 'Cristhian David Hurtado Sanchez';
+    var USER = '';
     try { USER = localStorage.getItem('tl_user_name_custom') || localStorage.getItem('tl_user_name') || USER; } catch (_) {}
-    $('dName').textContent = USER; fillInfo();
+    // ID de cuenta simulado (aleatorio, se guarda solo en este navegador)
+    var acct = ''; try { acct = localStorage.getItem('tl_sim_acct') || ''; if (!acct) { acct = 'L' + Math.floor(1e6 + Math.random() * 9e6); localStorage.setItem('tl_sim_acct', acct); } } catch (_) { acct = 'L0000000'; }
+    $('dAcct').textContent = acct;
+    $('dName').textContent = USER ? 'Gracias ' + USER + ',' : 'Gracias,'; fillInfo();
 
     function show(name, delay) {
       spin.hidden = false; up.classList.remove('show');

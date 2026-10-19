@@ -22,14 +22,14 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Personal details | Deriv</title>
-<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017z">
-<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017z">
-<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017z" media="(max-width:860px)">
-<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017z">
+<link rel="stylesheet" href="assets/sim/css/browser-frame.css?v=20261017zz">
+<link rel="stylesheet" href="assets/sim/css/deriv-desktop.css?v=20261017zz">
+<link rel="stylesheet" href="assets/sim/css/deriv-mobile.css?v=20261017zz" media="(max-width:860px)">
+<link rel="stylesheet" href="assets/sim/css/deriv-icons.css?v=20261017zz">
 </head>
 <body class="bf-static-page" data-page="profile" data-scene="/dashboard/profile/personal-details">
-<script src="assets/sim/js/sim-shared.js?v=20261017z"></script>
-<script src="assets/sim/js/browser-frame.js?v=20261017z"></script>
+<script src="assets/sim/js/sim-shared.js?v=20261017zz"></script>
+<script src="assets/sim/js/browser-frame.js?v=20261017zz"></script>
 <script>BrowserFrame.init();</script>
 <div class="dd-shell">
   <div id="ddSidebar"></div>
@@ -39,10 +39,10 @@
     <form class="dp-form" id="dpForm" autocomplete="off">
       <label class="dp-field"><span>nombre</span><input id="dpNombre" type="text" maxlength="60"></label>
       <label class="dp-field"><span>apellido</span><input id="dpApellido" type="text" maxlength="60"></label>
-      <label class="dp-field"><span>fecha de nacimiento</span><input id="dpFecha" type="text" value="02/12/2007" inputmode="numeric" maxlength="10" placeholder="dd/mm/aaaa"></label>
+      <label class="dp-field"><span>fecha de nacimiento</span><input id="dpFecha" type="text" value="" inputmode="numeric" maxlength="10" placeholder="dd/mm/aaaa"></label>
       <label class="dp-field"><span>País de nacimiento</span><div class="dp-select"><em>co</em>Colombia<i class="ic ic-ex_chev"></i></div></label>
       <label class="dp-field"><span>ciudadanía</span><div class="dp-select"><em>co</em>Colombia<i class="ic ic-ex_chev"></i></div></label>
-      <label class="dp-field"><span>Apodo</span><div class="dp-select dp-readonly"><b id="dpApodo">client_y8loiur3rj</b><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 3 2.5 2.5-7 7H3.500V10z"/><path d="M2.500 14h11"/></svg></div></label>
+      <label class="dp-field"><span>Apodo</span><div class="dp-select dp-readonly"><b id="dpApodo"></b><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 3 2.5 2.5-7 7H3.500V10z"/><path d="M2.500 14h11"/></svg></div></label>
       <label class="dp-field"><span>Correo electrónico</span><input id="dpCorreo" type="email" maxlength="120" placeholder="tucorreo@ejemplo.com"></label>
       <label class="dp-field"><span>Número de teléfono</span><input id="dpTel" type="tel" maxlength="20" inputmode="tel" placeholder="+57 300 000 0000"></label>
       <div class="dp-actions"><span class="dp-msg" id="dpMsg"></span><button type="submit" class="dp-save" id="dpSave" disabled>Guardar</button></div>
@@ -58,11 +58,13 @@
   </main>
 </div>
 <div id="ddBottomNav"></div>
-<script src="assets/sim/js/deriv-shell.js?v=20261017z"></script>
+<script src="assets/sim/js/deriv-shell.js?v=20261017zz"></script>
 <script>
   // Datos personales: el nombre y el correo guardados aparecen en la barra lateral (junto al avatar).
   (function(){
     var $ = function(id){ return document.getElementById(id); };
+    // Apodo simulado (aleatorio, solo en este navegador)
+    try { var ap = localStorage.getItem('tl_sim_nick'); if (!ap) { ap = 'client_' + Math.random().toString(36).slice(2, 12); localStorage.setItem('tl_sim_nick', ap); } $('dpApodo').textContent = ap; } catch(_) {}
     var nom = $('dpNombre'), ape = $('dpApellido'), mail = $('dpCorreo'), tel = $('dpTel'), save = $('dpSave'), msg = $('dpMsg');
     var initial = {};
     function get(k){ try { return localStorage.getItem(k) || ''; } catch(_) { return ''; } }
