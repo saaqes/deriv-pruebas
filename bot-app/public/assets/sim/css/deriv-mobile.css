@@ -216,3 +216,27 @@
   .promo-art-vid{height:100%;}
   .promo-text p{max-width:none;}
 }
+
+/* ===== Portafolio en teléfono: banner exacto de la referencia (408 px de ancho = 16 px por rem) ===== */
+@media (max-width:860px){
+  [data-page=portfolio] .dd-hero.dd-hero-tabs{position:relative;height:17.75rem;padding:0;background:#181c25;border-radius:0 0 1.75rem 1.75rem;}
+  [data-page=portfolio] .dd-m-bar{left:1.375rem;right:1.375rem;top:0.625rem;height:2rem;}
+  [data-page=portfolio] .dd-m-search,[data-page=portfolio] .dd-m-bell{width:2rem;height:2rem;background:#212530;}
+  [data-page=portfolio] .dd-m-bell .badge{display:none;}
+  [data-page=portfolio] .dd-m-amy{height:2rem;background:linear-gradient(90deg,#182933 0%,#261a34 50%,#282a22 100%);}
+  [data-page=portfolio] .dd-hero.dd-hero-tabs .dd-eye{top:0.625rem;right:3.9375rem;width:2rem;height:2rem;background:#212530;}
+  [data-page=portfolio] .dd-hero .dd-tabs{position:absolute;left:1.375rem;right:0;top:4rem;margin:0;gap:1.3125rem;font-size:0.855rem;font-weight:600;padding-right:0;overflow:hidden;}
+  [data-page=portfolio] .dd-tabs span{line-height:1.5rem;padding-bottom:0.125rem;}
+  [data-page=portfolio] .dd-tabs span.active::after{bottom:0;height:2px;background:#ff444f;}
+  [data-page=portfolio] .dd-hero.dd-hero-tabs .header-text{position:absolute;left:1.375rem;top:6.5rem;margin:0;}
+  [data-page=portfolio] .valor-total-label{font-size:0.8125rem;line-height:1.2rem;color:#fff;}
+  [data-page=portfolio] .dd-hero.dd-hero-tabs .valor-total-amount{margin-top:-0.05rem;height:1.6rem;line-height:1.6rem;}
+  [data-page=portfolio] .valor-total-amount .balance-amount,[data-page=portfolio] .valor-total-amount .balance-currency{font-size:1.6rem;line-height:1.6rem;font-weight:700;}
+  [data-page=portfolio] .dd-hero.dd-hero-tabs .valor-total-updated{margin-top:0.1rem;font-size:0.8125rem;line-height:1rem;color:#fff;}
+  [data-page=portfolio] .dd-hero.dd-hero-tabs .dd-hero-body{position:static;display:block;margin:0;}
+  [data-page=portfolio] .dd-hero.dd-hero-tabs .dd-hero-actions{position:absolute;left:0;right:0;top:11.375rem;margin:0;display:grid;grid-template-columns:repeat(3,7.75rem);justify-content:center;gap:0;}
+  [data-page=portfolio] .dd-action{width:auto;min-width:0;display:flex;flex-direction:column;align-items:center;gap:0;font-size:0.75rem;font-weight:700;line-height:1.125rem;}
+  [data-page=portfolio] .dd-action .circle{width:3rem;height:3rem;margin-bottom:0.3125rem;}
+  [data-page=portfolio] .dd-action .circle.primary{background:#ff444f;}
+  [data-page=portfolio] .dd-hero + .dd-pf-gap,[data-page=portfolio] .dd-hero + .pf-deposit{margin-top:1.5rem;}
+}
