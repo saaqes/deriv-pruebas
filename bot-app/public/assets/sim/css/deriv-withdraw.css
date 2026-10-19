@@ -302,3 +302,68 @@ body.wd-open{overflow:hidden;}
 
 .wd-ask{background:linear-gradient(90deg,#e9f9f5 0%,#eef7fc 8%,#ecf0fd 18%,#eeebfc 35%,#f1e9fa 46%,#f6e7fb 58%,#f8ebe8 70%,#fcf3eb 80%,#fdf8ec 90%,#fbfbea 95%,#f7fbe6 100%);box-shadow:none;}
 .wd-ask .ic{background:#2d1b6b;color:#2d1b6b;}
+
+/* ===== Retirar en teléfono (≤860 px): todas las pantallas del cajero a ancho completo ===== */
+@media (max-width:860px){
+  html.wd-page{font-size:16px;}
+  .wd-cashier{width:100%;max-width:none;padding:0 1rem;}
+  .wd-cashier-top{margin-top:1rem;padding-right:0;}
+  .wd-xbtn{margin-right:0;}
+  .wd-cashier .wd-title{margin:1.25rem 0 0;font-size:1.25rem;}
+  .wd-scroll{height:calc(100vh - 7.25rem);height:calc(100dvh - 7.25rem);margin:0.25rem -1rem 0;padding:0 1rem;scrollbar-width:none;}
+  .wd-scroll::-webkit-scrollbar{display:none;}
+  /* lista */
+  .wd-stats{margin:1.5rem 0 0;gap:0.25rem;}
+  .wd-stat span{font-size:0.8125rem;line-height:1.1rem;}
+  .wd-stat b{font-size:1rem;margin-top:0.35rem;flex-wrap:wrap;justify-content:center;}
+  .wd-alert{width:100%;margin-top:1.5rem;height:auto;padding:0.75rem 0.875rem;white-space:normal;font-size:0.8125rem;line-height:1.15rem;letter-spacing:0;}
+  .wd-alert.show ~ .wd-step{margin-top:0.875rem;}
+  .wd-alert.show ~ .wd-step.s2{margin-top:1.5rem;}
+  .wd-step{font-size:0.875rem;margin-top:1.25rem;}
+  .wd-step.s2{margin-top:1.25rem;}
+  .wd-amt{margin:0.5rem 0 0 2rem;width:11rem;}
+  .wd-methods,.wd-note{width:100%;}
+  .wd-method[data-m=binance]{height:auto;min-height:7.5rem;}
+  .wd-method[data-m=pse]{height:auto;min-height:6.5rem;}
+  .wd-mlogo{flex:0 0 5.5rem;padding:1.1rem 0 0;justify-content:flex-start;}
+  .wd-mlogo img.bn{width:4.8rem;margin-top:0;}
+  .wd-mlogo img.pse{width:2.5rem;height:2.5rem;margin-left:0.5rem;}
+  .wd-mtext{padding:1rem 0.25rem 0.9rem 0;}
+  .wd-mtext small.first{margin-top:0.9rem;}
+  .wd-note{padding:0.9rem 1rem;font-size:0.8125rem;line-height:1.15rem;margin-bottom:1.5rem;}
+  /* formulario PSE */
+  .wd-back{margin:1rem 0 0;}
+  .wd-fpse{margin:1.25rem auto 0;left:0;}
+  .wd-sum{margin:1.25rem auto 0;}
+  .wd-sum th{width:7rem;padding-right:0.9rem;}
+  .wd-info,.wd-warn{width:100%;margin-left:0;margin-right:0;}
+  .wd-info{margin-top:1rem;height:auto;min-height:3rem;padding:0.75rem 1rem;font-size:0.875rem;}
+  .wd-warn{padding:0.9rem 1rem;font-size:0.78rem;line-height:1.1rem;}
+  .wd-fields{width:100%;margin:0.75rem 0 0;padding:0 0 4rem;}
+  .fl > span{padding-left:0;}
+  .wd-sel{width:100%;}
+  .wd-sel .cur{flex:1;width:auto;}
+  .wd-sel .menu{width:calc(100% - 3rem);}
+  .inp.w265,.inp.w275,.inp.bank,.ta{width:100%;}
+  .wd-send{width:100%;}
+  /* confirmación */
+  .wd-check{margin:3rem auto 0;left:0;}
+  .wd-dt{font-size:1.25rem;line-height:1.5rem;left:0;margin-top:1rem;}
+  .wd-dp{width:100%;margin:1.1rem 0 0;font-size:0.875rem;line-height:1.25rem;}
+  .wd-dtbl th{width:46%;}
+  .wd-dtbl td{font-size:1rem;}
+  .wd-review{left:0;max-width:100%;}
+  /* solicitudes pendientes */
+  .pd-sel{width:100%;margin-left:0;font-size:0.9rem;}
+  .pd-tbl{display:block;overflow-x:auto;width:100%;margin:1.25rem 0 0;font-size:0.68rem;}
+  .pd-tbl th{font-size:0.64rem;padding-right:0.25rem;white-space:nowrap;}
+  .pd-tbl td{padding:0.5rem 0.25rem 0.5rem 0.2rem;}
+  .pd-total{margin-left:0;font-size:0.9rem;}
+  .pd-note{margin-left:0;}
+  .pd-btn{width:100%;}
+  .wd-up{margin-right:0;}
+  .wd-inspin{height:calc(100vh - 11rem);}
+  /* modal "Retirar" */
+  .wd-modal{padding:1.25rem 1.25rem 1.25rem;}
+  .wd-cur{width:100%;}
+}

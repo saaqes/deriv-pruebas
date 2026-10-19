@@ -240,3 +240,10 @@
   [data-page=portfolio] .dd-action .circle.primary{background:#ff444f;}
   [data-page=portfolio] .dd-hero + .dd-pf-gap,[data-page=portfolio] .dd-hero + .pf-deposit{margin-top:1.5rem;}
 }
+
+/* ===== Ask Amy (barra móvil sobre fondo oscuro): colores exactos de la referencia ===== */
+@media (max-width:860px){
+  .dd-m-amy{background:linear-gradient(90deg,#182b31 0%,#1a2035 22%,#1c1a33 40%,#2a1c2c 60%,#2a2623 78%,#2a2a22 100%);}
+  .dd-m-amy span{background:linear-gradient(90deg,#9fd2ff 0%,#a9a6f8 30%,#cf9df0 48%,#f8a5b3 66%,#fbd98c 88%,#f6e57f 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  [data-page=portfolio] .dd-m-amy{background:linear-gradient(90deg,#182b31 0%,#1a2035 22%,#1c1a33 40%,#2a1c2c 60%,#2a2623 78%,#2a2a22 100%);}
+}
