@@ -15,6 +15,12 @@
         min-width: 0;
     }
 
+    // Ícono "DB" (Deriv Bot) de la esquina superior izquierda.
+    &__logo-db {
+        display: block;
+        flex: none;
+    }
+
     &__logo-img {
         width: auto;
         max-width: 160px;
